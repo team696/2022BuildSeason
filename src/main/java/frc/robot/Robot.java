@@ -4,13 +4,9 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.SwerveDrive;
-import frc.robot.subsystems.WheelDrive;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -21,19 +17,7 @@ import frc.robot.subsystems.WheelDrive;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-  private SwerveDrive m_swerveDrive;
-
-
   private RobotContainer m_robotContainer;
-
-  private WheelDrive backRight = new WheelDrive(7, 8, 9);
-  private WheelDrive backLeft = new WheelDrive(4, 5, 6);
-  private WheelDrive frontRight = new WheelDrive(10, 11, 12);
-  private WheelDrive frontLeft = new WheelDrive(1, 2, 3);
-
-  private SwerveDrive swerveDrive = new SwerveDrive (backRight, backLeft, frontRight, frontLeft);
-
-  private Joystick joystick = new Joystick(0);
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -55,12 +39,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Front Right Encoder", frontRight.wheelEncoder.getPosition());
-    SmartDashboard.putNumber("Front Left Encoder ", frontLeft.wheelEncoder.getPosition());
-    SmartDashboard.putNumber("Back Right Encoder", backRight.wheelEncoder.getPosition());
-    SmartDashboard.putNumber("Back Left Encoder", backLeft.wheelEncoder.getPosition());
-    // SmartDashboard.putNumber("Front Right Speed", frontLeft.motorSpeed);
-
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -92,8 +70,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-        // m_swerveDrive.drive();
-
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -105,11 +81,7 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {
-    swerveDrive.drive (joystick.getRawAxis (0), joystick.getRawAxis (1), joystick.getRawAxis (4));
-
-
-  }
+  public void teleopPeriodic() {}
 
   @Override
   public void testInit() {
