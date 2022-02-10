@@ -5,15 +5,14 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import frc.robot.commands.ClimbCommand;
+import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.ClimberSub;
+import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.DefaultDriveCommand;
-import frc.robot.subsystems.DrivetrainSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -23,28 +22,16 @@ import frc.robot.subsystems.DrivetrainSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
-  private final XboxController m_controller = new XboxController(0);
-  private final JoystickButton leftStickButton = new JoystickButton(m_controller, 3) ;
+  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  public final ClimberSub m_climberSub = new ClimberSub() ;
 
+  private final Joystick m_Joystick = new Joystick(1);
+  private final JoystickButton climbButton = new JoystickButton(m_Joystick, 2);
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
+  /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Set up the default command for the drivetrain.
-    // The controls are for field-oriented driving:
-    // Left stick Y axis -> forward and backwards movement
-    // Left stick X axis -> left and right movement
-    // Right stick X axis -> rotation
-    m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
-            m_drivetrainSubsystem,
-            () -> -modifyAxis(m_controller.getRawAxis(4)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(-m_controller.getRawAxis(1)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(-m_controller.getRawAxis(3)) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-    ));
-
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -56,10 +43,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Back button zeros the gyroscope
-    //  leftStickButton = m_controller.getRawButton(3);
-            // No requirements because we don't need to interrupt anything
-    leftStickButton.whenPressed(m_drivetrainSubsystem::zeroGyroscope);
+
+
+    climbButton.whenPressed(new ClimbCommand(m_climberSub, 0.1));
+    climbButton.whenReleased(new ClimbCommand(m_climberSub, 0));
   }
 
   /**
@@ -69,28 +56,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new InstantCommand();
-  }
-
-  private static double deadband(double value, double deadband) {
-    if (Math.abs(value) > deadband) {
-      if (value > 0.0) {
-        return (value - deadband) / (1.0 - deadband);
-      } else {
-        return (value + deadband) / (1.0 - deadband);
-      }
-    } else {
-      return 0.0;
-    }
-  }
-
-  private static double modifyAxis(double value) {
-    // Deadband
-    value = deadband(value, 0.01);
-
-    // Square the axis
-    value = Math.copySign(value * value, value);
-
-    return value;
+    return m_autoCommand;
   }
 }
