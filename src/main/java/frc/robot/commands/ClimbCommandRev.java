@@ -7,40 +7,33 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ClimberSub;
 
-public class ClimbCommand extends CommandBase {
+public class ClimbCommandRev extends CommandBase {
   ClimberSub climberSub;
   double percent;
-  
-  /** Creates a new ClimbCommand. */
-  public ClimbCommand(ClimberSub climberSub, double percent) {
-    
+
+  /** Creates a new ClimbCommandRev. */
+  public ClimbCommandRev(ClimberSub climberSub, double percent) {
     this.climberSub = climberSub;
     this.percent = percent;
     addRequirements(climberSub);
-
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    // climberSub.lClimberMotor.setInverted(leftRev);
-    // climberSub.rClimberMotor.setInverted(rightRev);
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climberSub.lClimberMotor.setInverted(true);
-    climberSub.rClimberMotor.setInverted(false);;
+    climberSub.lClimberMotor.setInverted(false);
+    climberSub.rClimberMotor.setInverted(true);
     climberSub.moveClimber(percent);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    // climberSub.moveClimber(0);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

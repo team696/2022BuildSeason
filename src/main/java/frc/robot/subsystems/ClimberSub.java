@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -12,8 +13,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ClimberSub extends SubsystemBase {
-  WPI_TalonFX lClimberMotor;
-  WPI_TalonFX rClimberMotor;
+ public  WPI_TalonFX lClimberMotor;
+public   WPI_TalonFX rClimberMotor;
   /** Creates a new ClimberSub. */
   public ClimberSub() {
 
@@ -22,6 +23,7 @@ public class ClimberSub extends SubsystemBase {
 
     rClimberMotor.configFactoryDefault();
     rClimberMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 1, 30);
+    rClimberMotor.setNeutralMode(NeutralMode.Brake);
     rClimberMotor.setSensorPhase(true);
     rClimberMotor.setInverted(false);
     rClimberMotor.config_kF(1, 1.0, 30);
@@ -32,6 +34,7 @@ public class ClimberSub extends SubsystemBase {
     lClimberMotor.configFactoryDefault();
     // lClimberMotor.follow(rClimberMotor);
     lClimberMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 1, 30);
+    lClimberMotor.setNeutralMode(NeutralMode.Brake);
     lClimberMotor.setSensorPhase(false);
     lClimberMotor.setInverted(true);
     lClimberMotor.config_kF(1, 1.0, 30);
