@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ClimbCommand;
-import frc.robot.commands.ClimbCommandRev;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.PneumaticsCommand1;
 import frc.robot.commands.PneumaticsCommand2;
@@ -31,26 +30,22 @@ import frc.robot.subsystems.DrivetrainSubsystem;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final Climber climber = new Climber();
-
   private final XboxController m_controller = new XboxController(0);
   public  static final Joystick controlPanel = new Joystick(2);
-  private final JoystickButton leftStickButton = new JoystickButton(m_controller, 3) ;
-  private final JoystickButton climbForButton = new JoystickButton(controlPanel, 16);
-  // private final JoystickButton climbRevbutton = new JoystickButton(controlPanel, 17);
-  private final JoystickButton climbPneuButton1 = new JoystickButton(controlPanel, 3);
-  private final JoystickButton climbPneuButton2 = new JoystickButton(controlPanel, 5);
-  // private final 
-  // private final double climbStick = controlPanel.getRawAxis(0);
-
+  private final JoystickButton leftStickButton = new JoystickButton(m_controller,  Constants.GYRO_RECALIBRATE_BUTTON) ;
+  private final JoystickButton climbPneuButton1 = new JoystickButton(controlPanel, Constants.CLIMBER_DOUBLE_HAND_BUTTON);
+  private final JoystickButton climbPneuButton2 = new JoystickButton(controlPanel, Constants.CLIMBER_SINGLE_HAND_BUTTON);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     climber.setDefaultCommand(new ClimbCommand(climber));
+
+    
     // Set up the default command for the drivetrain.
     // The controls are for field-oriented driving:
     // Left stick Y axis -> forward and backwards movement
@@ -58,9 +53,9 @@ public class RobotContainer {
     // Right stick X axis -> rotation
     m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
             m_drivetrainSubsystem,
-            () -> -modifyAxis(m_controller.getRawAxis(4)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(-m_controller.getRawAxis(1)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(-m_controller.getRawAxis(3)) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+            () -> -modifyAxis(m_controller.getRawAxis(Constants.TRANSLATE_X_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(-m_controller.getRawAxis(Constants.TRANSALTE_Y_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(-m_controller.getRawAxis(Constants.ROTATE_AXIS)) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
 
     // Configure the button bindings
@@ -74,18 +69,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Back button zeros the gyroscope
-    //  leftStickButton = m_controller.getRawButton(3);
-            // No requirements because we don't need to interrupt anything
-    leftStickButton.whenPressed(m_drivetrainSubsystem::zeroGyroscope);
 
-    // climbForButton.whileHeld(new ClimbCommand(climber, controlPanel.getRawAxis(0)));
-    // climbForButton.whenReleased(new ClimbCommand(climber, 0));
-    // climbForButton.
+    leftStickButton.whenPressed(m_drivetrainSubsystem::zeroGyroscope); //Zero's the gyro to the robot's current direction
 
-    // climbRevbutton.whenPressed(new ClimbCommand(climber, -0.7, false , true));
-    // climbRevbutton.whenReleased(new ClimbCommand(climber, 0, false, true));
-
+    //Actuation of the climber's pneumatic components via switches
     climbPneuButton1.whenPressed(new PneumaticsCommand1(climber, Value.kForward));
     climbPneuButton1.whenReleased(new PneumaticsCommand1(climber, Value.kReverse));
 
@@ -119,7 +106,7 @@ public class RobotContainer {
 
   private static double modifyAxis(double value) {
     // Deadband
-    value = deadband(value, 0.03);
+    value = deadband(value, Constants.DEADBAND_VALUE);
 
     // Square the axis
     value = Math.copySign(value * value, value);

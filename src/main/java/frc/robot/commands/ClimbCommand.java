@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Climber;
+import frc.robot.Constants;
 
 public class ClimbCommand extends CommandBase {
   
@@ -16,10 +17,7 @@ public class ClimbCommand extends CommandBase {
   // boolean rightDir;
   /** Creates a new ClimbCommand1. */
   public ClimbCommand(Climber climber) {
-    // this.percent = percent;
     this.climber = climber;
-    // this.leftDir = leftDir;
-    // this.rightDir = rightDir;
 
     addRequirements(climber);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -33,8 +31,7 @@ public class ClimbCommand extends CommandBase {
   @Override
   public void execute() {
 
-climber.moveClimber(RobotContainer.controlPanel.getRawAxis(0));
-System.out.println(RobotContainer.controlPanel.getRawAxis(0));
+climber.moveClimber(RobotContainer.controlPanel.getRawAxis(Constants.CLIMBER_MANUAL_ROTATION_AXIS));
 
   }
 
