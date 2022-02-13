@@ -5,14 +5,23 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Joystick.AxisType;
+import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.ClimbCommand;
+import frc.robot.commands.ClimbCommandRev;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.PneumaticsCommand1;
+import frc.robot.commands.PneumaticsCommand2;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 /**
@@ -24,15 +33,24 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  private final Climber climber = new Climber();
 
   private final XboxController m_controller = new XboxController(0);
+  public  static final Joystick controlPanel = new Joystick(2);
   private final JoystickButton leftStickButton = new JoystickButton(m_controller, 3) ;
+  private final JoystickButton climbForButton = new JoystickButton(controlPanel, 16);
+  // private final JoystickButton climbRevbutton = new JoystickButton(controlPanel, 17);
+  private final JoystickButton climbPneuButton1 = new JoystickButton(controlPanel, 3);
+  private final JoystickButton climbPneuButton2 = new JoystickButton(controlPanel, 5);
+  // private final 
+  // private final double climbStick = controlPanel.getRawAxis(0);
 
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    climber.setDefaultCommand(new ClimbCommand(climber));
     // Set up the default command for the drivetrain.
     // The controls are for field-oriented driving:
     // Left stick Y axis -> forward and backwards movement
@@ -60,9 +78,24 @@ public class RobotContainer {
     //  leftStickButton = m_controller.getRawButton(3);
             // No requirements because we don't need to interrupt anything
     leftStickButton.whenPressed(m_drivetrainSubsystem::zeroGyroscope);
+
+    // climbForButton.whileHeld(new ClimbCommand(climber, controlPanel.getRawAxis(0)));
+    // climbForButton.whenReleased(new ClimbCommand(climber, 0));
+    // climbForButton.
+
+    // climbRevbutton.whenPressed(new ClimbCommand(climber, -0.7, false , true));
+    // climbRevbutton.whenReleased(new ClimbCommand(climber, 0, false, true));
+
+    climbPneuButton1.whenPressed(new PneumaticsCommand1(climber, Value.kForward));
+    climbPneuButton1.whenReleased(new PneumaticsCommand1(climber, Value.kReverse));
+
+    climbPneuButton2.whenPressed(new PneumaticsCommand2(climber, Value.kForward));
+    climbPneuButton2.whenReleased(new PneumaticsCommand2(climber, Value.kReverse));
+
+
   }
 
-  /**
+  /**\
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
@@ -86,7 +119,7 @@ public class RobotContainer {
 
   private static double modifyAxis(double value) {
     // Deadband
-    value = deadband(value, 0.01);
+    value = deadband(value, 0.03);
 
     // Square the axis
     value = Math.copySign(value * value, value);
