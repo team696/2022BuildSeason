@@ -6,16 +6,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Pneumatics;
 
 public class PneumaticsCommand2 extends CommandBase {
   Value value;
-  Climber climber;
+  Pneumatics pneumatics;
   /** Creates a new PneumaticsCommand2. */
-  public PneumaticsCommand2(Climber climber, Value value) {
+  public PneumaticsCommand2(Pneumatics pneumatics, Value value) {
     this.value = value;
-    this.climber = climber;
-    addRequirements(climber);
+    this.pneumatics = pneumatics;
+    addRequirements(pneumatics);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -26,7 +26,7 @@ public class PneumaticsCommand2 extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climber.movePneumatics2(value);
+    pneumatics.movePneumatics2(value);
   }
 
   // Called once the command ends or is interrupted.

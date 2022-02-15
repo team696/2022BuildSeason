@@ -9,15 +9,19 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Pneumatics;
 
 public class SingleLatchRelease extends CommandBase {
 
   Climber climber;
+  Pneumatics pneumatics;
   double timer;
   /** Creates a new SingleLatchRelease. */
-  public SingleLatchRelease(Climber climber) {
+  public SingleLatchRelease(Climber climber, Pneumatics pneumatics) {
     this.climber = climber;
-    addRequirements(climber);
+    this.pneumatics = pneumatics;
+
+    addRequirements(climber, pneumatics);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -33,7 +37,7 @@ public class SingleLatchRelease extends CommandBase {
     climber.lClimberMotor.setNeutralMode(NeutralMode.Brake);
     climber.rClimberMotor.setNeutralMode(NeutralMode.Brake);
     climber.moveClimber(0.1);
-    climber.movePneumatics2(Value.kReverse);
+    pneumatics.movePneumatics2(Value.kReverse);
     timer++;
   }
 

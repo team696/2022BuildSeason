@@ -58,5 +58,7 @@ public final class Constants {
     public static final int DOUBLEHAND_R_TOP = 3;
     public static final int SINGLEHAND_L = 4;
     public static final int SINGLEHAD_R = 5;
+    public static final double CLIMBER_MAX_VOLTAGE = 12;
+    public static final int CLIMBER_AUTO_BUTTON = 13;
 
 }   

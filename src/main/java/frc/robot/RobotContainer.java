@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.AutoClimbSequence;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.PneumaticsCommand1;
@@ -23,6 +24,7 @@ import frc.robot.commands.PneumaticsCommand2;
 import frc.robot.commands.SingleLatchRelease;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.Pneumatics;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -34,12 +36,14 @@ public class RobotContainer {
 
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final Climber climber = new Climber();
+  private final Pneumatics pneumatics = new Pneumatics();
   private final XboxController m_controller = new XboxController(0);
   public  static final Joystick controlPanel = new Joystick(2);
   private final JoystickButton leftStickButton = new JoystickButton(m_controller,  Constants.GYRO_RECALIBRATE_BUTTON) ;
   private final JoystickButton climbPneuButton1 = new JoystickButton(controlPanel, Constants.CLIMBER_DOUBLE_HAND_BUTTON);
   private final JoystickButton climbPneuButton2 = new JoystickButton(controlPanel, Constants.CLIMBER_SINGLE_HAND_BUTTON);
   private final JoystickButton singleRelockButton = new JoystickButton(controlPanel , Constants.CLIMBER_SINGLE_RELOCK_BUTTON);
+  private final JoystickButton autoClimbButton = new JoystickButton(controlPanel, Constants.CLIMBER_AUTO_BUTTON);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -75,13 +79,18 @@ public class RobotContainer {
     leftStickButton.whenPressed(m_drivetrainSubsystem::zeroGyroscope); //Zero's the gyro to the robot's current direction
 
     //Actuation of the climber's pneumatic components via switches
-    climbPneuButton1.whenPressed(new PneumaticsCommand1(climber, Value.kForward).andThen(new ClimbCommand(climber)));
-    climbPneuButton1.whenReleased(new PneumaticsCommand1(climber, Value.kReverse).andThen(new ClimbCommand(climber)));
+    climbPneuButton1.whenPressed(new PneumaticsCommand1(pneumatics, Value.kForward));
+    climbPneuButton1.whenReleased(new PneumaticsCommand1(pneumatics, Value.kReverse));
 
     // climbPneuButton2.whenPressed(new PneumaticsCommand2(climber, Value.kForward));
     // climbPneuButton2.whenReleased(new PneumaticsCommand2(climber, Value.kReverse));
-    singleRelockButton.whenPressed(new PneumaticsCommand2(climber, Value.kForward).andThen(new ClimbCommand(climber)));
-    climbPneuButton2.whenPressed(new SingleLatchRelease(climber).andThen(new ClimbCommand(climber)));
+    singleRelockButton.whenPressed(new PneumaticsCommand2(pneumatics, Value.kForward));
+    // singleRelockButton.whenReleased(new ClimbCommand(climber));
+    climbPneuButton2.whenPressed(new SingleLatchRelease(climber, pneumatics));
+    climbPneuButton2.whenReleased(new ClimbCommand(climber));
+
+    autoClimbButton.toggleWhenPressed(new AutoClimbSequence());
+    autoClimbButton.toggleWhenPressed(new ClimbCommand(climber)); 
     // climbPneuButton2.whenReleased(new PneumaticsCommand2(climber, Value.kReverse));
 
   }

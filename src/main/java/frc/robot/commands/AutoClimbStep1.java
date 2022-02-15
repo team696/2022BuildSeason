@@ -6,36 +6,47 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Pneumatics;
+import frc.robot.subsystems.Pneumatics.LatchStates;
 
-public class PneumaticsCommand1 extends CommandBase {
-  Value value;
+public class AutoClimbStep1 extends CommandBase {
+  Climber climber;
   Pneumatics pneumatics;
-  /** Creates a new PneumaticsCommand1. */
-  public PneumaticsCommand1(Pneumatics pneumatics, Value value) {
-    this.value = value;
+  /** Creates a new AutoClimbStep1. */
+  public AutoClimbStep1(Climber climber, Pneumatics pneumatics) {
+    this.climber = climber;
     this.pneumatics = pneumatics;
-    addRequirements(pneumatics);
+    addRequirements(climber, pneumatics);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    pneumatics.autoPneumatics(LatchStates.DOUBLE_LATCHES, Value.kForward);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    pneumatics.movePeumatics1(value);
+
+    // while(climber.getClimberVoltage() < Constants.CLIMBER_MAX_VOLTAGE){
+      climber.moveClimber(0.2);
+    // }
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    pneumatics.autoPneumatics(LatchStates.DOUBLE_LATCHES, Value.kReverse);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return climber.getClimberVoltage() > Constants.CLIMBER_MAX_VOLTAGE;
   }
 }
