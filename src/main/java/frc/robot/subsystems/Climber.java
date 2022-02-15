@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 
+import java.util.Dictionary;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
@@ -16,6 +18,8 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.DigitalInput;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 public class Climber extends SubsystemBase {
@@ -73,6 +77,16 @@ public class Climber extends SubsystemBase {
 
   public void movePneumatics2(Value value){
     sol2.set(value);
+  }
+
+  public void getSensorStates(){
+    DigitalInput DH_L_B = new DigitalInput(Constants.DOUBLEHAND_L_BOTOTM);
+    DigitalInput DH_L_T = new DigitalInput(Constants.DOUBLEHAND_L_TOP);
+    DigitalInput DH_R_B = new DigitalInput(Constants.DOUBLEHAND_R_BOTTOM);
+    DigitalInput DH_R_T = new DigitalInput(Constants.DOUBLEHAND_R_TOP);
+    DigitalInput SH_L = new DigitalInput(Constants.SINGLEHAND_L);
+    DigitalInput SH_R = new DigitalInput(Constants.SINGLEHAD_R);
+
   }
   
   public void moveClimber(double percent){

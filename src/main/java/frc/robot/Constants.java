@@ -50,4 +50,13 @@ public final class Constants {
     public static final int CLIMBER_DOUBLE_HAND_BUTTON = 3;
     public static final int CLIMBER_SINGLE_HAND_BUTTON = 1;
     public static final int CLIMBER_SINGLE_RELOCK_BUTTON = 7;
+
+    //DIO Pins on the RIO for climber sensors
+    public static final int DOUBLEHAND_L_BOTOTM = 0;
+    public static final int DOUBLEHAND_L_TOP = 1;
+    public static final int DOUBLEHAND_R_BOTTOM = 2;
+    public static final int DOUBLEHAND_R_TOP = 3;
+    public static final int SINGLEHAND_L = 4;
+    public static final int SINGLEHAD_R = 5;
+
 }   
