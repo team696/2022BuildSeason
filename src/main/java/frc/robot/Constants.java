@@ -48,5 +48,6 @@ public final class Constants {
     //==================== Climber Constants ====================
     public static final int CLIMBER_MANUAL_ROTATION_AXIS = 0;
     public static final int CLIMBER_DOUBLE_HAND_BUTTON = 3;
-    public static final int CLIMBER_SINGLE_HAND_BUTTON = 5;
-}
+    public static final int CLIMBER_SINGLE_HAND_BUTTON = 1;
+    public static final int CLIMBER_SINGLE_RELOCK_BUTTON = 7;
+}   

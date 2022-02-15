@@ -4,47 +4,50 @@
 
 package frc.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.Climber;
-import frc.robot.Constants;
 
-public class ClimbCommand extends CommandBase {
-  
+public class SingleLatchRelease extends CommandBase {
+
   Climber climber;
-  // double percent;
-  // boolean leftDir;
-  // boolean rightDir;
-  /** Creates a new ClimbCommand1. */
-  public ClimbCommand(Climber climber) {
+  double timer;
+  /** Creates a new SingleLatchRelease. */
+  public SingleLatchRelease(Climber climber) {
     this.climber = climber;
-
     addRequirements(climber);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    timer = 0;
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    double joystick_val = RobotContainer.controlPanel.getRawAxis(Constants.CLIMBER_MANUAL_ROTATION_AXIS);
-    climber.moveClimber(joystick_val);
-
+    climber.lClimberMotor.setNeutralMode(NeutralMode.Brake);
+    climber.rClimberMotor.setNeutralMode(NeutralMode.Brake);
+    climber.moveClimber(0.1);
+    climber.movePneumatics2(Value.kReverse);
+    timer++;
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    // climber.moveClimber(0);\
+  public void end(boolean interrupted) {  
+    climber.lClimberMotor.setNeutralMode(NeutralMode.Coast);;
+    climber.rClimberMotor.setNeutralMode(NeutralMode.Coast);
+    climber.moveClimber(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return timer>30;
   }
 }

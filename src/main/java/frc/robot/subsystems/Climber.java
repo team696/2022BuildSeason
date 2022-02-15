@@ -76,9 +76,10 @@ public class Climber extends SubsystemBase {
   }
   
   public void moveClimber(double percent){
-    // rClimberMotor.set(TalonFXControlMode.PercentOutput, percent);
+    System.out.println("Left: " + percent);
+    System.out.println("Right: " + (-percent));
     lClimberMotor.set(TalonFXControlMode.PercentOutput, percent);
-    rClimberMotor.set(TalonFXControlMode.PercentOutput, percent);
+    rClimberMotor.set(TalonFXControlMode.PercentOutput, -percent);
 
   }
 
