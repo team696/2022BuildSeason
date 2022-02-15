@@ -26,6 +26,12 @@ public class Climber extends SubsystemBase {
   //  private RobotContainer robotContainer;
   public WPI_TalonFX lClimberMotor;
   public WPI_TalonFX rClimberMotor;
+  public DigitalInput DH_L_B;
+  public DigitalInput DH_L_T;
+  public DigitalInput DH_R_B;
+  public DigitalInput DH_R_T;
+  public DigitalInput SH_L;
+  public DigitalInput SH_R;
 
    public DoubleSolenoid sol1;
   public DoubleSolenoid sol2;
@@ -34,6 +40,13 @@ public class Climber extends SubsystemBase {
   double climberDirection;
   /** Creates a new Climber. */
   public Climber() {
+
+    DH_L_B = new DigitalInput(Constants.DOUBLEHAND_L_BOTOTM);
+    DH_L_T = new DigitalInput(Constants.DOUBLEHAND_L_TOP);
+    DH_R_B = new DigitalInput(Constants.DOUBLEHAND_R_BOTTOM);
+    DH_R_T = new DigitalInput(Constants.DOUBLEHAND_R_TOP);
+    SH_L  = new DigitalInput(Constants.SINGLEHAND_L);
+    SH_R = new DigitalInput(Constants.SINGLEHAD_R);
     
     lClimberMotor = new WPI_TalonFX(21);
     rClimberMotor = new WPI_TalonFX(20);
@@ -79,13 +92,18 @@ public class Climber extends SubsystemBase {
     sol2.set(value);
   }
 
-  public void getSensorStates(){
-    DigitalInput DH_L_B = new DigitalInput(Constants.DOUBLEHAND_L_BOTOTM);
-    DigitalInput DH_L_T = new DigitalInput(Constants.DOUBLEHAND_L_TOP);
-    DigitalInput DH_R_B = new DigitalInput(Constants.DOUBLEHAND_R_BOTTOM);
-    DigitalInput DH_R_T = new DigitalInput(Constants.DOUBLEHAND_R_TOP);
-    DigitalInput SH_L = new DigitalInput(Constants.SINGLEHAND_L);
-    DigitalInput SH_R = new DigitalInput(Constants.SINGLEHAD_R);
+  public boolean[] getSensorStates(){
+
+    boolean out_array[]=new boolean[6];
+    
+    out_array[0] = DH_L_B.get();
+    out_array[1] = DH_L_T.get();
+    out_array[2] = DH_R_B.get();
+    out_array[3] = DH_L_B.get();
+    out_array[4] = DH_L_B.get();
+    out_array[5] = DH_L_B.get();
+
+    return out_array;
 
   }
   
