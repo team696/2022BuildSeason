@@ -33,10 +33,10 @@ public class Pneumatics extends SubsystemBase {
   public void autoPneumatics(LatchStates state, Value value){
     switch(state) {
       case SINGLE_LATCHES:
-      movePeumatics1(value);
+      movePneumatics2(value);
       break;
       case DOUBLE_LATCHES:
-      movePneumatics2(value);
+      movePeumatics1(value);
       break;
 
     }

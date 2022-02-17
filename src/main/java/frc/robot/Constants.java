@@ -46,10 +46,15 @@ public final class Constants {
     public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(192.25);
 
     //==================== Climber Constants ====================
+
+    public static final double CLIMBER_SENSOR_TIMEOUT_LOOPS = 10;
+
     public static final int CLIMBER_MANUAL_ROTATION_AXIS = 0;
     public static final int CLIMBER_DOUBLE_HAND_BUTTON = 3;
     public static final int CLIMBER_SINGLE_HAND_BUTTON = 1;
     public static final int CLIMBER_SINGLE_RELOCK_BUTTON = 7;
+    public static final double CLIMBER_MAX_VOLTAGE = 12;
+    public static final int CLIMBER_AUTO_BUTTON = 16;
 
     //DIO Pins on the RIO for climber sensors
     public static final int DOUBLEHAND_L_BOTOTM = 0;
@@ -58,7 +63,6 @@ public final class Constants {
     public static final int DOUBLEHAND_R_TOP = 3;
     public static final int SINGLEHAND_L = 4;
     public static final int SINGLEHAD_R = 5;
-    public static final double CLIMBER_MAX_VOLTAGE = 12;
-    public static final int CLIMBER_AUTO_BUTTON = 13;
+    
 
 }   

@@ -17,12 +17,15 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AutoClimbSequence;
+import frc.robot.commands.AutoClimbStep1;
 import frc.robot.commands.ClimbCommand;
+import frc.robot.commands.DIOTest;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.PneumaticsCommand1;
 import frc.robot.commands.PneumaticsCommand2;
 import frc.robot.commands.SingleLatchRelease;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.DIOSub;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Pneumatics;
 
@@ -37,6 +40,7 @@ public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final Climber climber = new Climber();
   private final Pneumatics pneumatics = new Pneumatics();
+  public final DIOSub dioSub = new DIOSub();
   private final XboxController m_controller = new XboxController(0);
   public  static final Joystick controlPanel = new Joystick(2);
   private final JoystickButton leftStickButton = new JoystickButton(m_controller,  Constants.GYRO_RECALIBRATE_BUTTON) ;
@@ -50,6 +54,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
     climber.setDefaultCommand(new ClimbCommand(climber));
+    // pneumatics.setDefaultCommand(new DIOTest(pneumatics, dioSub));
 
     
     // Set up the default command for the drivetrain.
@@ -89,8 +94,10 @@ public class RobotContainer {
     climbPneuButton2.whenPressed(new SingleLatchRelease(climber, pneumatics));
     climbPneuButton2.whenReleased(new ClimbCommand(climber));
 
-    autoClimbButton.toggleWhenPressed(new AutoClimbSequence());
-    autoClimbButton.toggleWhenPressed(new ClimbCommand(climber)); 
+    autoClimbButton.whenPressed(new AutoClimbSequence(climber, pneumatics, dioSub));
+    // autoClimbButton.whenPressed(new AutoClimbStep1(climber, pneumatics, dioSub));
+
+    // autoClimbButton.whenReleased(new ClimbCommand(climber)); 
     // climbPneuButton2.whenReleased(new PneumaticsCommand2(climber, Value.kReverse));
 
   }
