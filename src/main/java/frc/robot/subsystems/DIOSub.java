@@ -9,12 +9,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class DIOSub extends SubsystemBase {
-  DigitalInput DH_L_B = new DigitalInput(Constants.DOUBLEHAND_L_BOTOTM);
+  DigitalInput DH_L_B = new DigitalInput(Constants.DOUBLEHAND_L_BOTTOM);
   DigitalInput DH_L_T = new DigitalInput(Constants.DOUBLEHAND_L_TOP);
   DigitalInput DH_R_B = new DigitalInput(Constants.DOUBLEHAND_R_BOTTOM);
   DigitalInput DH_R_T = new DigitalInput(Constants.DOUBLEHAND_R_TOP);
   DigitalInput SH_L = new DigitalInput(Constants.SINGLEHAND_L);
-  DigitalInput SH_R = new DigitalInput(Constants.SINGLEHAD_R);
+  DigitalInput SH_R = new DigitalInput(Constants.SINGLEHAND_R);
   /** Creates a new DIO. */
   public DIOSub() {}
   public boolean[] getSensorStates(){

@@ -26,7 +26,7 @@ public final class Constants {
     public static final double DRIVETRAIN_WHEELBASE_METERS = 0.622; // The front-to-back distance between the drivetrain wheels, measured center-to-center
 
     public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 2;                           //Swerve FL Drive CAN ID
-    public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 15;                          //Swerve FL Steer CAN ID
+    public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 1;                          //Swerve FL Steer CAN ID
     public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 3;                         //Swerve FL CANCoder ID
     public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(346.72); // Steering offset. Measure as described on SDS Github
 
@@ -57,12 +57,22 @@ public final class Constants {
     public static final int CLIMBER_AUTO_BUTTON = 16;
 
     //DIO Pins on the RIO for climber sensors
-    public static final int DOUBLEHAND_L_BOTOTM = 0;
+    public static final int DOUBLEHAND_L_BOTTOM = 0;
     public static final int DOUBLEHAND_L_TOP = 1;
     public static final int DOUBLEHAND_R_BOTTOM = 2;
-    public static final int DOUBLEHAND_R_TOP = 3;
+    public static final int DOUBLEHAND_R_TOP = 5;
     public static final int SINGLEHAND_L = 4;
-    public static final int SINGLEHAD_R = 5;
+    public static final int SINGLEHAND_R = 3;
     
+    public static final class SerializerConstants {
+        public static final boolean serializerMotorInverted = false;
+        public static final boolean serializerMotorSensorPhase = true;
+        public static final int leftSerMotorport = 30;
+        public static final int rightSerMotor = 31;
+        public static final double peakOutput = 1;
+        public static final double kP = 1.00;
+        public static final double kI = 1.00;
+        public static final double kD = 1.00;
+    }
 
 }   

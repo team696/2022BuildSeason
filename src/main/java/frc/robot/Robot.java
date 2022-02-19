@@ -42,12 +42,12 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     boolean[] dioPort = m_robotContainer.dioSub.getSensorStates();
-    SmartDashboard.putBoolean("DIO 0", dioPort[0]);
-    SmartDashboard.putBoolean("DIO 1", dioPort[1]);
-    SmartDashboard.putBoolean("DIO 2", dioPort[2]);
-    SmartDashboard.putBoolean("DIO 3", dioPort[3]);
-    SmartDashboard.putBoolean("DIO 4", dioPort[4]);
-    SmartDashboard.putBoolean("DIO 5", dioPort[5]);
+    SmartDashboard.putBoolean("DIO 0 (DH L B)", dioPort[0]);
+    SmartDashboard.putBoolean("DIO 1 (DH L T)", dioPort[1]);
+    SmartDashboard.putBoolean("DIO 2 (DH R B)", dioPort[2]);
+    SmartDashboard.putBoolean("DIO 5 (DH R T)", dioPort[3]);
+    SmartDashboard.putBoolean("DIO 4 (SH L)", dioPort[4]);
+    SmartDashboard.putBoolean("DIO 3 (SH R)", dioPort[5]);
     SmartDashboard.putNumber("Climber Stick ", RobotContainer.controlPanel.getRawAxis(0));
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,

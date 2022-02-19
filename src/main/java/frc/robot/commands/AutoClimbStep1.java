@@ -39,7 +39,7 @@ public class AutoClimbStep1 extends CommandBase {
     sensor = dioSub.getSensorStates();
 
     // while(climber.getClimberVoltage() < Constants.CLIMBER_MAX_VOLTAGE){
-      climber.moveClimber(-0.3);
+      climber.moveClimber(-0.55);
     // }
     
   }
@@ -48,7 +48,7 @@ public class AutoClimbStep1 extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     
-    pneumatics.autoPneumatics(LatchStates.DOUBLE_LATCHES, Value.kReverse);
+    // pneumatics.autoPneumatics(LatchStates.DOUBLE_LATCHES, Value.kReverse);
     climber.moveClimber(0);
   }
 
@@ -56,7 +56,7 @@ public class AutoClimbStep1 extends CommandBase {
   @Override
   public boolean isFinished() {
         
-    if(!sensor[4] && !sensor[5]){
+    if(!sensor[4] || !sensor[5]){
       return true;
     } 
     else{

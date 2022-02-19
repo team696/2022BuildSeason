@@ -23,11 +23,13 @@ import frc.robot.commands.DIOTest;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.PneumaticsCommand1;
 import frc.robot.commands.PneumaticsCommand2;
+import frc.robot.commands.SerializerCommand;
 import frc.robot.commands.SingleLatchRelease;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DIOSub;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Pneumatics;
+import frc.robot.subsystems.Serializer;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -38,6 +40,7 @@ import frc.robot.subsystems.Pneumatics;
 public class RobotContainer {
 
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  private final Serializer serializer = new Serializer();
   private final Climber climber = new Climber();
   private final Pneumatics pneumatics = new Pneumatics();
   public final DIOSub dioSub = new DIOSub();
@@ -48,6 +51,9 @@ public class RobotContainer {
   private final JoystickButton climbPneuButton2 = new JoystickButton(controlPanel, Constants.CLIMBER_SINGLE_HAND_BUTTON);
   private final JoystickButton singleRelockButton = new JoystickButton(controlPanel , Constants.CLIMBER_SINGLE_RELOCK_BUTTON);
   private final JoystickButton autoClimbButton = new JoystickButton(controlPanel, Constants.CLIMBER_AUTO_BUTTON);
+  private final JoystickButton serializerForButton = new JoystickButton(controlPanel, 17);
+  private final JoystickButton serializerRevButton = new JoystickButton(controlPanel, 12);
+
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -80,6 +86,12 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+
+    serializerForButton.whenPressed(new SerializerCommand(serializer, 0.6, -0.6));
+    serializerForButton.whenReleased(new SerializerCommand(serializer, 0, 0));
+
+    serializerRevButton.whenPressed(new SerializerCommand(serializer, -0.6, 0.6));
+    serializerRevButton.whenReleased(new SerializerCommand(serializer, 0, 0));
 
     leftStickButton.whenPressed(m_drivetrainSubsystem::zeroGyroscope); //Zero's the gyro to the robot's current direction
 
