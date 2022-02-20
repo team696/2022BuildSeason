@@ -20,7 +20,7 @@ import frc.robot.commands.AutoClimbSequence;
 import frc.robot.commands.AutoClimbStep1;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.DIOTest;
-import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.JoystickDriveCommand;
 import frc.robot.commands.PneumaticsCommand1;
 import frc.robot.commands.PneumaticsCommand2;
 import frc.robot.commands.SerializerCommand;
@@ -68,14 +68,13 @@ public class RobotContainer {
     // Left stick Y axis -> forward and backwards movement
     // Left stick X axis -> left and right movement
     // Right stick X axis -> rotation
-    m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
+    m_drivetrainSubsystem.setDefaultCommand(new JoystickDriveCommand(
             m_drivetrainSubsystem,
             () -> -modifyAxis(m_controller.getRawAxis(Constants.TRANSLATE_X_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
             () -> -modifyAxis(-m_controller.getRawAxis(Constants.TRANSALTE_Y_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
             () -> -modifyAxis(-m_controller.getRawAxis(Constants.ROTATE_AXIS)) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
 
-    // Configure the button bindings
     configureButtonBindings();
   }
 
