@@ -28,6 +28,7 @@ public class Serializer extends SubsystemBase {
     leftSerMotor.configPeakOutputReverse(-SerializerConstants.peakOutput);
     leftSerMotor.configForwardSoftLimitEnable(false);
     leftSerMotor.configReverseSoftLimitEnable(false);
+    
 
     rightSerMotor.configFactoryDefault();
     rightSerMotor.setSensorPhase(SerializerConstants.serializerMotorSensorPhase);

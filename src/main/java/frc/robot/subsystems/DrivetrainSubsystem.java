@@ -9,10 +9,13 @@ import com.kauailabs.navx.frc.AHRS;
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -60,6 +63,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   // The important thing about how you configure your gyroscope is that rotating the robot counter-clockwise should
   // cause the angle reading to increase until it wraps back over to zero.
   private final AHRS m_navx = new AHRS(); // NavX connected over MXP
+  private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(m_kinematics, new Rotation2d(0));
 
   // These are our modules. We initialize them in the constructor.
   private final SwerveModule m_frontLeftModule;
@@ -151,14 +155,33 @@ public class DrivetrainSubsystem extends SubsystemBase {
     m_chassisSpeeds = chassisSpeeds;
   }
 
+  private SwerveModuleState getState(double velocity, double angle){
+        return new SwerveModuleState(velocity, new Rotation2d(angle));
+  }
+
+  public Pose2d getOdometryPose() {
+        return odometer.getPoseMeters();
+  }
+
+  public void resetOdometry(Pose2d pose) {
+          odometer.resetPosition(pose, getGyroscopeRotation());
+  }
   @Override
   public void periodic() {
     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
     SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
 
+    final SwerveModuleState frontLeftState = getState(m_frontLeftModule.getDriveVelocity(), m_frontLeftModule.getSteerAngle());
+    final SwerveModuleState frontRightState = getState(m_frontRightModule.getDriveVelocity(), m_frontRightModule.getSteerAngle());
+    final SwerveModuleState backLeftState = getState(m_backLeftModule.getDriveVelocity(), m_backLeftModule.getSteerAngle());
+    final SwerveModuleState backRightState = getState(m_backRightModule.getDriveVelocity(), m_backRightModule.getSteerAngle());
+
+    odometer.update(getGyroscopeRotation(), frontLeftState, frontRightState, backLeftState, backRightState);
+
     m_frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
     m_frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
     m_backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
     m_backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
+
   }
 }

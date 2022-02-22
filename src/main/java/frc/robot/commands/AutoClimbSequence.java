@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DIOSub;
 import frc.robot.subsystems.Pneumatics;
@@ -24,8 +23,7 @@ public class AutoClimbSequence extends SequentialCommandGroup {
     this.climber = climber;
     this.pneumatics = pneumatics;
     this.dioSub = dioSub;
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
+    
     addRequirements(climber, pneumatics, dioSub);
     addCommands(new AutoClimbStep1(climber, pneumatics, dioSub),
                 new DoubleLatchRelease(climber, pneumatics), 

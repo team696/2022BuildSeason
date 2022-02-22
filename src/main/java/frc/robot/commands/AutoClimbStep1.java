@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DIOSub;
 import frc.robot.subsystems.Pneumatics;
@@ -14,7 +13,7 @@ import frc.robot.subsystems.Pneumatics.LatchStates;
 
 public class AutoClimbStep1 extends CommandBase {
   Climber climber;
-  Pneumatics pneumatics;
+  Pneumatics pneumatics; 
   DIOSub dioSub;
   boolean[] sensor;
 

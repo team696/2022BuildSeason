@@ -10,9 +10,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 // import com.fasterxml.jackson.annotation.JacksonInject.Value;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
 public class Climber extends SubsystemBase {
   //  private RobotContainer robotContainer;
@@ -62,25 +60,12 @@ public class Climber extends SubsystemBase {
   public  double getClimberVoltage(){
     return lClimberMotor.getSupplyCurrent();
   }
-  // public boolean[] getSensorStates(){
-
-  //   boolean out_array[]=new boolean[6];
-    
-  //   out_array[0] = DH_L_B.get();
-  //   out_array[1] = DH_L_T.get();
-  //   out_array[2] = DH_R_B.get();
-  //   out_array[3] = DH_L_B.get();
-  //   out_array[4] = DH_L_B.get();
-  //   out_array[5] = DH_L_B.get();
-
-  //   return out_array;
-
-  // }
+  
   
 
   public void moveClimber(double percent){
-    System.out.println("Left: " + percent);
-    System.out.println("Right: " + (-percent));
+    // System.out.println("Left: " + percent);
+    // System.out.println("Right: " + (-percent));
     lClimberMotor.set(TalonFXControlMode.PercentOutput, percent);
     rClimberMotor.set(TalonFXControlMode.PercentOutput, -percent);
 

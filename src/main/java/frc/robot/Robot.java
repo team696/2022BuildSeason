@@ -26,6 +26,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
@@ -49,6 +50,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("DIO 4 (SH L)", dioPort[4]);
     SmartDashboard.putBoolean("DIO 3 (SH R)", dioPort[5]);
     SmartDashboard.putNumber("Climber Stick ", RobotContainer.controlPanel.getRawAxis(0));
+    SmartDashboard.putNumber("Shooter Speed", m_robotContainer.shooter.getShooterRPM());
+    SmartDashboard.putNumber("Hood Axis", Math.round(m_robotContainer.controlPanel.getRawAxis(1)*128));
+    SmartDashboard.putNumber("HOOD ANGLE ", m_robotContainer.shooterHood.servoPosition());
+
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -80,6 +85,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    m_robotContainer.shooterHood.rightActuator.setAngle(0);
+    m_robotContainer.shooterHood.leftActuator.setAngle(0);
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
