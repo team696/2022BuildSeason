@@ -48,7 +48,9 @@ public class AutoClimbSequenceNew extends CommandBase {
             stage = 1; //moves to stage 1
           }
         case 1:
-          if (Math.abs(arm_ground_angle - climb_target_angle) < 10){
+          climber.rClimberMotor.configOpenloopRamp(0.25); //Enables ramping to smooth transitions between powe
+
+          if (Math.abs(arm_ground_angle - climb_target_angle) < 10){ //Changes to a slower speed once the bar is within 10 degrees
             climber.moveClimber(Constants.Climber.CLIMB_APPROACH_SPEED);
           }
           else{
@@ -56,6 +58,7 @@ public class AutoClimbSequenceNew extends CommandBase {
           }
 
           if (DIOSub.SH_L || DIOSub.SH_R){ //wait until any of the single hands detect a bar
+            climber.rClimberMotor.configOpenloopRamp(0);
             pneumatics.autoPneumatics(LatchStates.DOUBLE_LATCHES, Value.kReverse); //immediately release the double hand hooks on mid bar
             stage = 2; //moves to stage 2, etc
           }
@@ -69,12 +72,14 @@ public class AutoClimbSequenceNew extends CommandBase {
             counter++;
           }
         case 3:
+          climber.rClimberMotor.configOpenloopRamp(0.25);
           climber.moveClimber(Constants.Climber.CLIMB_SPEED); //continue towards traverse climb
           if (DIOSub.DH_L_B || DIOSub.DH_R_B || DIOSub.DH_L_T || DIOSub.DH_R_T){
             pneumatics.autoPneumatics(LatchStates.DOUBLE_LATCHES, Value.kForward); //immediately command latches on traverse bar once a bar has been detected
             stage = 4;
           }
         case 4:
+          climber.rClimberMotor.configOpenloopRamp(0);
           climber.moveClimber(Constants.Climber.HOLD_SPEED); //hold the robot on the traverse while the double latches extend for 400ms
           if (counter > 20){ //approx 400ms
             stage = 5;
