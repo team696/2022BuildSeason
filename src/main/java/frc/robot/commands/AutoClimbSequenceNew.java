@@ -11,6 +11,7 @@ import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.Pneumatics.LatchStates;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.shuffleboard.*;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -24,6 +25,8 @@ public class AutoClimbSequenceNew extends CommandBase {
   double climb_target_angle = 23.0; //This should never be changed. This angle represents the angle between the climbing bars
   private final AHRS m_navx = new AHRS();
   int stage = 0; //State 0 is init, 1 is latched and climbing to high, 2 is waiting for mid bar successful release, 3 is high to travese climb, 4 is waiting for traverse latch, 5 is release + hold, 6 is complete climb
+
+  ShuffleboardTab tab = Shuffleboard.getTab("Climber");
   
   /** Creates a new AutoClimbeSequence. */
   public AutoClimbSequenceNew(Climber climber, Pneumatics pneumatics, DIOSub dioSub) {
@@ -40,6 +43,8 @@ public class AutoClimbSequenceNew extends CommandBase {
     public void execute() {
       double climber_angle = 0; //TODO: Needs to be changed to pull live values from Climber.java
       double arm_ground_angle = climber_angle - m_navx.getPitch();
+
+      tab.add("Climber Arm Angle", arm_ground_angle);
 
       switch (stage){
         case 0: //initialize robot for climbing
@@ -107,6 +112,8 @@ public class AutoClimbSequenceNew extends CommandBase {
         climber.moveClimber(0);
 
       }
+
+      Shuffleboard.update();
 
     }
 
