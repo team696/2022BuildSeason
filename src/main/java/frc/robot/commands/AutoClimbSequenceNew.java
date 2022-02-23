@@ -104,7 +104,7 @@ public class AutoClimbSequenceNew extends CommandBase {
 
     @Override
     public boolean isFinished() {
-      return false;
+      return (stage == 6);
     }
     
 }
