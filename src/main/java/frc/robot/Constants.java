@@ -18,6 +18,7 @@ public final class Constants {
     public static final class Climber {
         public static final double CLIMB_SPEED = -0.55;
         public static final double HOLD_SPEED = -0.25; //motor power at which to hold the climber in rough position
+        public static final double CLIMB_APPROACH_SPEED = -0.35;
     }
     public static final double DEADBAND_VALUE = 0.03; //controller deadband value
     public static final int TRANSLATE_X_AXIS = 4; //controller deadband value

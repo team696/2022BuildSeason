@@ -3,9 +3,8 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
-
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DIOSub;
 import frc.robot.subsystems.Pneumatics;
@@ -22,6 +21,8 @@ public class AutoClimbSequenceNew extends CommandBase {
   DIOSub dioSub;
   boolean[] sensor;
   int counter = 0;
+  double climb_target_angle = 23.0; //This should never be changed. This angle represents the angle between the climbing bars
+  private final AHRS m_navx = new AHRS();
   int stage = 0; //State 0 is init, 1 is latched and climbing to high, 2 is waiting for mid bar successful release, 3 is high to travese climb, 4 is waiting for traverse latch, 5 is release + hold, 6 is complete climb
   
   /** Creates a new AutoClimbeSequence. */
@@ -37,6 +38,8 @@ public class AutoClimbSequenceNew extends CommandBase {
     
     @Override
     public void execute() {
+      double climber_angle = 0; //TODO: Needs to be changed to pull live values from Climber.java
+      double arm_ground_angle = climber_angle - m_navx.getPitch();
 
       switch (stage){
         case 0: //initialize robot for climbing
@@ -45,7 +48,13 @@ public class AutoClimbSequenceNew extends CommandBase {
             stage = 1; //moves to stage 1
           }
         case 1:
-          climber.moveClimber(Constants.Climber.CLIMB_SPEED); //Begin climbing towards high
+          if (Math.abs(arm_ground_angle - climb_target_angle) < 10){
+            climber.moveClimber(Constants.Climber.CLIMB_APPROACH_SPEED);
+          }
+          else{
+            climber.moveClimber(Constants.Climber.CLIMB_SPEED); //Begin climbing towards high
+          }
+
           if (DIOSub.SH_L || DIOSub.SH_R){ //wait until any of the single hands detect a bar
             pneumatics.autoPneumatics(LatchStates.DOUBLE_LATCHES, Value.kReverse); //immediately release the double hand hooks on mid bar
             stage = 2; //moves to stage 2, etc
