@@ -20,6 +20,13 @@ public class ShooterHood extends SubsystemBase {
   }
 
   public void moveActuators(double position){
+    // if(position<0){
+    //   position = 0;
+    // }
+    // if(position>360){
+    //   position = 360;
+    // }
+
     leftActuator.setAngle(position);
     rightActuator.setAngle(position);
     System.out.println("Imhere" + position);

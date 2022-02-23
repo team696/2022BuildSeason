@@ -14,18 +14,10 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AutoClimbSequence;
 import frc.robot.commands.ClimbCommand;
-<<<<<<< HEAD
-<<<<<<< HEAD
-import frc.robot.commands.DefaultDriveCommand;
+
 import frc.robot.commands.IntakeCommand;
-=======
 import frc.robot.commands.DIOTest;
 import frc.robot.commands.JoystickDriveCommand;
->>>>>>> 39d8b9a12f0953440ccf71f46f8f677533ab9824
-=======
-import frc.robot.commands.DIOTest;
-import frc.robot.commands.JoystickDriveCommand;
->>>>>>> 39d8b9a12f0953440ccf71f46f8f677533ab9824
 import frc.robot.commands.PneumaticsCommand1;
 import frc.robot.commands.PneumaticsCommand2;
 import frc.robot.commands.SerializerCommand;
@@ -50,7 +42,7 @@ import frc.robot.subsystems.ShooterHood;
 public class RobotContainer {
 
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
-  private final Serializer serializer = new Serializer();
+  public final Serializer serializer = new Serializer();
   private final Climber climber = new Climber();
   private final Pneumatics pneumatics = new Pneumatics();
   public final Shooter shooter = new Shooter();
@@ -67,8 +59,10 @@ public class RobotContainer {
   private final JoystickButton serializerForButton = new JoystickButton(controlPanel, 12);
   private final JoystickButton serializerRevButton = new JoystickButton(controlPanel, 17);
   private final JoystickButton shooterSpinup = new JoystickButton(controlPanel, 16);
-  private final JoystickButton shooterHoodUp = new JoystickButton(controlPanel, 13);
+  private final JoystickButton shooterHoodUp = new JoystickButton(controlPanel, 9);
   private final JoystickButton shooterHoodDown = new JoystickButton(controlPanel, 18);
+  static public boolean isShooting = false;
+
 
 
 
@@ -77,6 +71,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
     climber.setDefaultCommand(new ClimbCommand(climber));
+    // shooterHood.setDefaultCommand(new ShooterHoodCommand(shooterHood, 10));
     // shooterHood.setDefaultCommand(new ShooterHoodCommand(shooterHood));
     // pneumatics.setDefaultCommand(new DIOTest(pneumatics, dioSub));
 
@@ -105,12 +100,16 @@ public class RobotContainer {
   private void configureButtonBindings() {
 /* ================================= SERIALIZER ================================= */
 
-    serializerForButton.whenPressed(new SerializerCommand(serializer, 0.6, -0.6).alongWith(new IntakeCommand(intake, 0.2, Value.kForward)));
+    serializerForButton.whenPressed(new SerializerCommand(serializer, 0.2, -0.6).alongWith(new IntakeCommand(intake, -0.5, Value.kForward)));
     serializerForButton.whenReleased(new SerializerCommand(serializer, 0, 0).alongWith(new IntakeCommand(intake, 0, Value.kReverse)));
 
-    serializerRevButton.whenPressed(new SerializerCommand(serializer, -0.6, 0.6).alongWith(new IntakeCommand(intake, -0.2, Value.kForward)));
+    serializerRevButton.whenPressed(new SerializerCommand(serializer, -0.2, 0.6).alongWith(new IntakeCommand(intake, 0.5, Value.kForward)));
     serializerRevButton.whenReleased(new SerializerCommand(serializer, 0, 0).alongWith(new IntakeCommand(intake, 0, Value.kReverse)));
-
+    
+    
+ 
+  
+    
 /* ================================= DRIVE ================================= */
 
     leftStickButton.whenPressed(m_drivetrainSubsystem::zeroGyroscope); //Zero's the gyro to the robot's current direction
@@ -128,12 +127,13 @@ public class RobotContainer {
     autoClimbButton.whenPressed(new AutoClimbSequence(climber, pneumatics, dioSub));
 
 /* ================================= SHOOTER ================================= */
-    shooterSpinup.whenPressed(new ShootCommand(shooter, 0.4));
-    shooterSpinup.whenReleased(new ShootCommand(shooter, 0));
+    shooterSpinup.whileHeld(new ShootCommand(shooter, 0.2, true));
+    shooterSpinup.whenReleased(new ShootCommand(shooter, 0, false));
 
-    shooterHoodUp.whenPressed(new ShooterHoodCommand(shooterHood, 50), true);
+    shooterHoodUp.whileHeld(new ShooterHoodCommand(shooterHood, 100), true);
+    shooterHoodUp.whenReleased(new ShooterHoodCommand(shooterHood, 50), true);
 
-    shooterHoodDown.whenPressed(new ShooterHoodCommand(shooterHood, 10), true);
+    // shooterHoodDown.whenPressed(new ShooterHoodCommand(shooterHood, 10), true);
     // shooterHoodUp.whenReleased(new ShooterHoodCommand(shooterHood, 30), true);
 
     // shooterHoodDown.whenPressed(new ShooterHoodCommand(shooterHood, -0.3));

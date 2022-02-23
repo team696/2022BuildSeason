@@ -53,6 +53,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Shooter Speed", m_robotContainer.shooter.getShooterRPM());
     SmartDashboard.putNumber("Hood Axis", Math.round(m_robotContainer.controlPanel.getRawAxis(1)*128));
     SmartDashboard.putNumber("HOOD ANGLE ", m_robotContainer.shooterHood.servoPosition());
+    SmartDashboard.putBoolean("DIO 6 BEAM BREAK ", m_robotContainer.serializer.beamBreak.get());
 
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
@@ -85,8 +86,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    m_robotContainer.shooterHood.rightActuator.setAngle(0);
-    m_robotContainer.shooterHood.leftActuator.setAngle(0);
+    // m_robotContainer.shooterHood.rightActuator.setAngle(0);
+    // m_robotContainer.shooterHood.leftActuator.setAngle(0);
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

@@ -11,7 +11,7 @@ import frc.robot.subsystems.ShooterHood;
 public class ShooterHoodCommand extends CommandBase {
   ShooterHood shooterHood;
   double   position;
-  double timer;
+  // double timer;
   /** Creates a new ShooterHoodCommand. */
   public ShooterHoodCommand(ShooterHood shooterHood, double  position) {
     this.shooterHood = shooterHood;
@@ -23,14 +23,14 @@ public class ShooterHoodCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    timer = 0;
+    // timer = 0;
 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    timer++;
+    // timer++;
     shooterHood.moveActuators(position);
 
     // double hood_axis = RobotContainer.controlPanel.getRawAxis(1)*128*1.5;
@@ -49,6 +49,6 @@ public class ShooterHoodCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return timer > 150;
+    return false;
   }
 }

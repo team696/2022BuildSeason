@@ -5,13 +5,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Shooter;
 
 public class ShootCommand extends CommandBase {
   Shooter shooter;
   double rpm;
+  boolean isRunning;
   /** Creates a new ShootCommand. */
-  public ShootCommand(Shooter shooter, double rpm) {
+  public ShootCommand(Shooter shooter, double rpm, boolean isRunning) {
+    this.isRunning = isRunning;
     this.shooter = shooter;
     this.rpm = rpm;
     addRequirements(shooter);
@@ -21,18 +24,21 @@ public class ShootCommand extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    RobotContainer.isShooting = isRunning;
 
     shooter.setShooter(shooter.rpmToTalonFX(rpm));
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override

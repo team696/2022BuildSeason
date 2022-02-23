@@ -8,15 +8,18 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SerializerConstants;
 
 public class Serializer extends SubsystemBase {
   TalonFX leftSerMotor;
   TalonFX rightSerMotor;
+  public DigitalInput beamBreak;
 
   /** Creates a new Serializer. */
   public Serializer() {
+    beamBreak = new DigitalInput(6);
     leftSerMotor = new TalonFX(SerializerConstants.leftSerMotorport);
     rightSerMotor = new TalonFX(SerializerConstants.rightSerMotor);
     

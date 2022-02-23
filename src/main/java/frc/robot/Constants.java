@@ -56,6 +56,11 @@ public final class Constants {
     public static final double CLIMBER_MAX_VOLTAGE = 12;
     public static final int CLIMBER_AUTO_BUTTON = 11;
 
+
+    // Serializer Constants
+    public static final double serializer_intake_speed = 0.2;
+    public static final double serializer_shoot_speed = 0.6;
+
     //DIO Pins on the RIO for climber sensors
     public static final int DOUBLEHAND_L_BOTTOM = 0;
     public static final int DOUBLEHAND_L_TOP = 1;
