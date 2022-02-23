@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;
@@ -46,7 +48,8 @@ public class AutoClimbStep1 extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    
+    climber.lClimberMotor.setNeutralMode(NeutralMode.Brake);
+    climber.rClimberMotor.setNeutralMode(NeutralMode.Brake);
     // pneumatics.autoPneumatics(LatchStates.DOUBLE_LATCHES, Value.kReverse);
     climber.moveClimber(0);
   }
