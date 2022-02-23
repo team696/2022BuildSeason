@@ -9,24 +9,34 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class DIOSub extends SubsystemBase {
-  DigitalInput DH_L_B = new DigitalInput(Constants.DOUBLEHAND_L_BOTTOM);
-  DigitalInput DH_L_T = new DigitalInput(Constants.DOUBLEHAND_L_TOP);
-  DigitalInput DH_R_B = new DigitalInput(Constants.DOUBLEHAND_R_BOTTOM);
-  DigitalInput DH_R_T = new DigitalInput(Constants.DOUBLEHAND_R_TOP);
-  DigitalInput SH_L = new DigitalInput(Constants.SINGLEHAND_L);
-  DigitalInput SH_R = new DigitalInput(Constants.SINGLEHAND_R);
+  DigitalInput sensor_DH_L_B = new DigitalInput(Constants.DOUBLEHAND_L_BOTTOM);
+  DigitalInput sensor_DH_L_T = new DigitalInput(Constants.DOUBLEHAND_L_TOP);
+  DigitalInput sensor_DH_R_B = new DigitalInput(Constants.DOUBLEHAND_R_BOTTOM);
+  DigitalInput sensor_DH_R_T = new DigitalInput(Constants.DOUBLEHAND_R_TOP);
+  DigitalInput sensor_SH_L = new DigitalInput(Constants.SINGLEHAND_L);
+  DigitalInput sensor_SH_R = new DigitalInput(Constants.SINGLEHAND_R);
+
+  public static boolean DH_L_B = false;
+  public static boolean DH_L_T = false;
+  public static boolean DH_R_B = false;
+  public static boolean DH_R_T = false;
+  public static boolean SH_L = false;
+  public static boolean SH_R = false;
   /** Creates a new DIO. */
   public DIOSub() {}
+
   public boolean[] getSensorStates(){
 
     boolean out_array[]=new boolean[6];
+
+
     
-    out_array[0] = DH_L_B.get();
-    out_array[1] = DH_L_T.get();
-    out_array[2] = DH_R_B.get();
-    out_array[3] = DH_R_T.get();
-    out_array[4] = SH_L.get();
-    out_array[5] = SH_R.get();
+    out_array[0] = sensor_DH_L_B.get();
+    out_array[1] = sensor_DH_L_T.get();
+    out_array[2] = sensor_DH_R_B.get();
+    out_array[3] = sensor_DH_R_T.get();
+    out_array[4] = sensor_SH_L.get();
+    out_array[5] = sensor_SH_R.get();
 
     return out_array;
 
@@ -35,5 +45,11 @@ public class DIOSub extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-  }
+    DH_L_B = sensor_DH_L_B.get();
+    DH_L_T = sensor_DH_L_B.get();
+    DH_R_B = sensor_DH_L_B.get();
+    DH_R_T = sensor_DH_L_B.get();
+    SH_L = sensor_DH_L_B.get();
+    SH_R = sensor_DH_L_B.get();
+    }
 }

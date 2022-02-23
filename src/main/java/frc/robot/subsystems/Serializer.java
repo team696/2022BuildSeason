@@ -10,7 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.SerializerConstants;
+import frc.robot.Constants;
 
 public class Serializer extends SubsystemBase {
   TalonFX leftSerMotor;
@@ -20,25 +20,25 @@ public class Serializer extends SubsystemBase {
   /** Creates a new Serializer. */
   public Serializer() {
     beamBreak = new DigitalInput(6);
-    leftSerMotor = new TalonFX(SerializerConstants.leftSerMotorport);
-    rightSerMotor = new TalonFX(SerializerConstants.rightSerMotor);
+    leftSerMotor = new TalonFX(Constants.Serializer.leftSerMotorport);
+    rightSerMotor = new TalonFX(Constants.Serializer.rightSerMotor);
     
     leftSerMotor.configFactoryDefault();
-    leftSerMotor.setSensorPhase(SerializerConstants.serializerMotorSensorPhase);
-    leftSerMotor.setInverted(SerializerConstants.serializerMotorInverted);
+    leftSerMotor.setSensorPhase(Constants.Serializer.serializerMotorSensorPhase);
+    leftSerMotor.setInverted(Constants.Serializer.serializerMotorInverted);
     leftSerMotor.setNeutralMode(NeutralMode.Brake);
-    leftSerMotor.configPeakOutputForward(SerializerConstants.peakOutput);
-    leftSerMotor.configPeakOutputReverse(-SerializerConstants.peakOutput);
+    leftSerMotor.configPeakOutputForward(Constants.Serializer.peakOutput);
+    leftSerMotor.configPeakOutputReverse(-Constants.Serializer.peakOutput);
     leftSerMotor.configForwardSoftLimitEnable(false);
     leftSerMotor.configReverseSoftLimitEnable(false);
     
 
     rightSerMotor.configFactoryDefault();
-    rightSerMotor.setSensorPhase(SerializerConstants.serializerMotorSensorPhase);
-    rightSerMotor.setInverted(SerializerConstants.serializerMotorInverted);
+    rightSerMotor.setSensorPhase(Constants.Serializer.serializerMotorSensorPhase);
+    rightSerMotor.setInverted(Constants.Serializer.serializerMotorInverted);
     rightSerMotor.setNeutralMode(NeutralMode.Brake);
-    rightSerMotor.configPeakOutputForward(SerializerConstants.peakOutput);
-    rightSerMotor.configPeakOutputReverse(-SerializerConstants.peakOutput);
+    rightSerMotor.configPeakOutputForward(Constants.Serializer.peakOutput);
+    rightSerMotor.configPeakOutputReverse(-Constants.Serializer.peakOutput);
     rightSerMotor.configForwardSoftLimitEnable(false);
     rightSerMotor.configReverseSoftLimitEnable(false);
   }

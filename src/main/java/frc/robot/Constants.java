@@ -14,8 +14,11 @@ package frc.robot;
  */
 
 public final class Constants {
-
     //==================== Drivetrain Constants ====================
+    public static final class Climber {
+        public static final double CLIMB_SPEED = -0.55;
+        public static final double HOLD_SPEED = -0.25; //motor power at which to hold the climber in rough position
+    }
     public static final double DEADBAND_VALUE = 0.03; //controller deadband value
     public static final int TRANSLATE_X_AXIS = 4; //controller deadband value
     public static final int TRANSALTE_Y_AXIS = 1; //controller deadband value
@@ -57,10 +60,6 @@ public final class Constants {
     public static final int CLIMBER_AUTO_BUTTON = 11;
 
 
-    // Serializer Constants
-    public static final double serializer_intake_speed = 0.2;
-    public static final double serializer_shoot_speed = 0.6;
-
     //DIO Pins on the RIO for climber sensors
     public static final int DOUBLEHAND_L_BOTTOM = 0;
     public static final int DOUBLEHAND_L_TOP = 1;
@@ -69,7 +68,7 @@ public final class Constants {
     public static final int SINGLEHAND_L = 4;
     public static final int SINGLEHAND_R = 3;
     
-    public static final class SerializerConstants {
+    public static final class Serializer {
         public static final boolean serializerMotorInverted = false;
         public static final boolean serializerMotorSensorPhase = true;
         public static final int leftSerMotorport = 30;
@@ -78,6 +77,8 @@ public final class Constants {
         public static final double kP = 1.00;
         public static final double kI = 1.00;
         public static final double kD = 1.00;
+        public static final double INTAKE_SPEED = 0.2;
+        public static final double SHOOT_SPEED = 0.6;
     }
 
 }   
