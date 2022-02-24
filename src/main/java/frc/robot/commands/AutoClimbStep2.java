@@ -39,7 +39,7 @@ public class AutoClimbStep2 extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    current_climber_pos = -((climber.getClimberPos() / 130.66666666) - init_climber_pos -.25) * 360;
+    current_climber_pos = -( (climber.getClimberPos() - init_climber_pos) / 130.66666666) -.25;
     SmartDashboard.putNumber("DinoCliomber", current_climber_pos);
 
     climber.moveClimber(-0.4);

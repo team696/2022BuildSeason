@@ -48,7 +48,6 @@ public class Climber extends SubsystemBase {
     lClimberMotor.configFactoryDefault();
     lClimberMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 1, 30);
     lClimberMotor.setNeutralMode(NeutralMode.Coast );
-    lClimberMotor.setSelectedSensorPosition(0);
     // lClimberMotor.setSensorPhase(true);
     // lClimberMotor.setInverted(true);
     // lClimberMotor.config_kF(1, 1.0, 30);
@@ -63,9 +62,17 @@ public class Climber extends SubsystemBase {
   public  double getClimberVoltage(){
     return lClimberMotor.getSupplyCurrent();
   }
+
+
+  /**
+	 * Get the current climber's position in degrees from zero, which should be set to 0 when the robot is enabled.
+	 *
+	 * @return Position of climber (in degrees).
+   * @apiNote Uses the left climber Talon FX encoder to retrieve position, which is set 0 during teleopPeriodic().
+	 */
   public double getClimberPos(){
     // return lClimberMotor.getSelectedSensorPosition() / 2048.0;
-    return lClimberMotor.getSelectedSensorPosition() / 2048.0;
+    return lClimberMotor.getSelectedSensorPosition() / 2048.0 * 360;
   }
   
   // public double climberPos(){
@@ -77,6 +84,10 @@ public class Climber extends SubsystemBase {
     // System.out.println("Right: " + (-percent));
     lClimberMotor.set(TalonFXControlMode.PercentOutput, percent);
     rClimberMotor.set(TalonFXControlMode.PercentOutput, -percent);
+
+  }
+  public void initialize(){
+    lClimberMotor.setSelectedSensorPosition(0);
 
   }
 
