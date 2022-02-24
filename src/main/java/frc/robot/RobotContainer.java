@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AutoClimbSequence;
+import frc.robot.commands.AutoClimbSequenceNew;
 import frc.robot.commands.ClimbCommand;
 
 import frc.robot.commands.IntakeCommand;
@@ -63,6 +64,7 @@ public class RobotContainer {
   private final JoystickButton shooterSpinup = new JoystickButton(controlPanel, 16);
   private final JoystickButton shooterHoodUp = new JoystickButton(controlPanel, 9);
   private final JoystickButton shooterHoodDown = new JoystickButton(controlPanel, 18);
+  private final JoystickButton lockOnSwitch = new JoystickButton(controlPanel, 30);
   static public boolean isShooting = false;
 
 
@@ -116,6 +118,21 @@ public class RobotContainer {
 
     leftStickButton.whenPressed(m_drivetrainSubsystem::zeroGyroscope); //Zero's the gyro to the robot's current direction
 
+    lockOnSwitch.whileHeld(new JoystickDriveCommand(
+      m_drivetrainSubsystem,
+      () -> -modifyAxis(m_controller.getRawAxis(Constants.TRANSLATE_X_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+      () -> -modifyAxis(-m_controller.getRawAxis(Constants.TRANSALTE_Y_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+      () -> -modifyAxis(m_drivetrainSubsystem.limelightOffset()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+));
+    lockOnSwitch.whenReleased(new JoystickDriveCommand(
+      m_drivetrainSubsystem,
+      () -> -modifyAxis(m_controller.getRawAxis(Constants.TRANSLATE_X_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+      () -> -modifyAxis(-m_controller.getRawAxis(Constants.TRANSALTE_Y_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+      () -> -modifyAxis(-m_controller.getRawAxis(Constants.ROTATE_AXIS)) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+));
+
+
+
 /* ================================= CLIMBER ================================= */
     //Actuation of the climber's pneumatic components via switches
     climbPneuButton1.whenPressed(new PneumaticsCommand1(pneumatics, Value.kForward));
@@ -126,7 +143,8 @@ public class RobotContainer {
     climbPneuButton2.whenPressed(new SingleLatchRelease(climber, pneumatics));
     climbPneuButton2.whenReleased(new ClimbCommand(climber));
 
-    autoClimbButton.whenPressed(new AutoClimbSequence(climber, pneumatics, dioSub));
+    // autoClimbButton.whenPressed(new AutoClimbSequence(climber, pneumatics, dioSub));
+    autoClimbButton.whenPressed(new AutoClimbSequenceNew(climber, pneumatics, dioSub));
 
 /* ================================= SHOOTER ================================= */
     shooterSpinup.whileHeld(new ShootCommand(shooter, 0.2, true));
