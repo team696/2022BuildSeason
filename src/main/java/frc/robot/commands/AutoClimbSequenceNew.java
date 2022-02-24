@@ -55,11 +55,11 @@ public class AutoClimbSequenceNew extends CommandBase {
         case 1:
           climber.rClimberMotor.configOpenloopRamp(0.25); //Enables ramping to smooth transitions between powe
 
-          if (Math.abs(arm_ground_angle - climb_target_angle) < 10){ //Changes to a slower speed once the bar is within 10 degrees
-            climber.moveClimber(Constants.Climber.CLIMB_APPROACH_SPEED);
+          if (Math.abs(arm_ground_angle - climb_target_angle) > 10){ //Changes to a slower speed once the bar is within 10 degrees
+            climber.moveClimber(Constants.Climber.CLIMB_SPEED);
           }
           else{
-            climber.moveClimber(Constants.Climber.CLIMB_SPEED); //Begin climbing towards high
+            climber.moveClimber(Constants.Climber.CLIMB_APPROACH_SPEED); //Begin climbing towards high
           }
 
           if (DIOSub.SH_L || DIOSub.SH_R){ //wait until any of the single hands detect a bar
