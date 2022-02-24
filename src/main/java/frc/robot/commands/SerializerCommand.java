@@ -52,7 +52,7 @@ public class SerializerCommand extends CommandBase {
   }
   else{
     if (percent1 != 0){
-      serializer.runSerMotors(Constants.Serializer.INTAKE_SPEED, -Constants.Serializer.SHOOT_SPEED);
+      serializer.runSerMotors(Constants.Serializer.SHOOT_SPEED, -Constants.Serializer.SHOOT_SPEED);
     }
   }
   }

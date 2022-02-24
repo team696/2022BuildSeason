@@ -36,7 +36,7 @@ public class SingleLatchRelease extends CommandBase {
   public void execute() {
     climber.lClimberMotor.setNeutralMode(NeutralMode.Brake);
     climber.rClimberMotor.setNeutralMode(NeutralMode.Brake);
-    climber.moveClimber(0.1);
+    climber.moveClimber(0.3);
     pneumatics.movePneumatics2(Value.kReverse);
     timer++;
   }

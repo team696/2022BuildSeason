@@ -46,7 +46,7 @@ public class RobotContainer {
 
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   public final Serializer serializer = new Serializer();
-  private final Climber climber = new Climber();
+  public final Climber climber = new Climber();
   private final Pneumatics pneumatics = new Pneumatics();
   public final Shooter shooter = new Shooter();
   public final DIOSub dioSub = new DIOSub();
@@ -143,8 +143,8 @@ public class RobotContainer {
     climbPneuButton2.whenPressed(new SingleLatchRelease(climber, pneumatics));
     climbPneuButton2.whenReleased(new ClimbCommand(climber));
 
-    // autoClimbButton.whenPressed(new AutoClimbSequence(climber, pneumatics, dioSub));
-    autoClimbButton.whenPressed(new AutoClimbSequenceNew(climber, pneumatics, dioSub));
+    autoClimbButton.whenPressed(new AutoClimbSequence(climber, pneumatics, dioSub));
+    // autoClimbButton.whenPressed(new AutoClimbSequenceNew(climber, pneumatics, dioSub));
 
 /* ================================= SHOOTER ================================= */
     shooterSpinup.whileHeld(new ShootCommand(shooter, 0.2, true));

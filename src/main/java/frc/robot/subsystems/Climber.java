@@ -17,6 +17,7 @@ public class Climber extends SubsystemBase {
   //  private RobotContainer robotContainer;
   public WPI_TalonFX lClimberMotor;
   public WPI_TalonFX rClimberMotor;
+  final int kUnitsPerRevolution = 2048;
   // DigitalInput DH_L_B = new DigitalInput(Constants.DOUBLEHAND_L_BOTOTM);
   // DigitalInput DH_L_T = new DigitalInput(Constants.DOUBLEHAND_L_TOP);
   // DigitalInput DH_R_B = new DigitalInput(Constants.DOUBLEHAND_R_BOTTOM);
@@ -47,6 +48,7 @@ public class Climber extends SubsystemBase {
     lClimberMotor.configFactoryDefault();
     lClimberMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 1, 30);
     lClimberMotor.setNeutralMode(NeutralMode.Coast );
+    lClimberMotor.setSelectedSensorPosition(0);
     // lClimberMotor.setSensorPhase(true);
     // lClimberMotor.setInverted(true);
     // lClimberMotor.config_kF(1, 1.0, 30);
@@ -62,7 +64,8 @@ public class Climber extends SubsystemBase {
     return lClimberMotor.getSupplyCurrent();
   }
   public double getClimberPos(){
-    return lClimberMotor.getSelectedSensorPosition();
+    // return lClimberMotor.getSelectedSensorPosition() / 2048.0;
+    return lClimberMotor.getSelectedSensorPosition() / 2048.0;
   }
   
   // public double climberPos(){
