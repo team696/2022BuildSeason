@@ -10,6 +10,7 @@ import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -25,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.*;
 
 public class DrivetrainSubsystem extends SubsystemBase {
+        Limelight limelight = new Limelight();
   /**
    * The maximum voltage that will be delivered to the drive motors.
    * <p>
@@ -73,7 +75,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
+  public PIDController rotatePID;
+
+
   public DrivetrainSubsystem() {
+        rotatePID = new PIDController(0.05, 0.00, 0.01);
+
+        
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
     // By default we will use Falcon 500s in standard configuration. But if you use a different configuration or motors
@@ -133,6 +141,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
             BACK_RIGHT_MODULE_STEER_OFFSET
     );
   }
+
+  public double limelightOffset(){
+        return rotatePID.calculate(limelight.tx(), 0);
+}
 
   /**
    * Sets the gyroscope angle to zero. This can be used to set the direction the robot is currently facing to the

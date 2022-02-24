@@ -65,7 +65,9 @@ public class Climber extends SubsystemBase {
     return lClimberMotor.getSelectedSensorPosition();
   }
   
-  
+  // public double climberPos(){
+  //   // return lClimberMotor.getSelectedSensorPosition()/
+  // }
 
   public void moveClimber(double percent){
     // System.out.println("Left: " + percent);
