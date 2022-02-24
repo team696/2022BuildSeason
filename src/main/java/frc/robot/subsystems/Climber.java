@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 // import com.fasterxml.jackson.annotation.JacksonInject.Value;
 
@@ -44,7 +45,7 @@ public class Climber extends SubsystemBase {
     // rClimberMotor.config_kD(1, 0, 30);
 
     lClimberMotor.configFactoryDefault();
-    // lClimberMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 1, 30);
+    lClimberMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 1, 30);
     lClimberMotor.setNeutralMode(NeutralMode.Coast );
     // lClimberMotor.setSensorPhase(true);
     // lClimberMotor.setInverted(true);
@@ -59,6 +60,9 @@ public class Climber extends SubsystemBase {
 
   public  double getClimberVoltage(){
     return lClimberMotor.getSupplyCurrent();
+  }
+  public double getClimberPos(){
+    return lClimberMotor.getSelectedSensorPosition();
   }
   
   
