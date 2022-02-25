@@ -147,7 +147,7 @@ public class RobotContainer {
     autoClimbButton.whenPressed(new AutoClimbSequenceNew(climber, pneumatics, dioSub));
 
 /* ================================= SHOOTER ================================= */
-    shooterSpinup.whileHeld(new ShootCommand(shooter, 0.2, true));
+    shooterSpinup.whileHeld(new ShootCommand(shooter, 4000, true));
     shooterSpinup.whenReleased(new ShootCommand(shooter, 0, false));
 
     shooterHoodUp.whileHeld(new ShooterHoodCommand(shooterHood, 100), true);

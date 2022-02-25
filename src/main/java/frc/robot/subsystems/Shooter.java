@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,33 +23,39 @@ public class Shooter extends SubsystemBase {
     rightShooterMotor = new WPI_TalonFX(41);
 
     leftShooterMotor.configFactoryDefault();
+    leftShooterMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 1, 30);
     leftShooterMotor.setSensorPhase(true );
     leftShooterMotor.setInverted(false);
     leftShooterMotor.setNeutralMode(NeutralMode.Coast);
     leftShooterMotor.configPeakOutputForward(1);
     leftShooterMotor.configPeakOutputReverse(-1);
+    leftShooterMotor.configNominalOutputForward(0);
+    leftShooterMotor.configNominalOutputReverse(0);
     
-    leftShooterMotor.config_kP(1, 1.0);
+    leftShooterMotor.config_kP(1, 0.6);
     leftShooterMotor.config_kI(1, 0);
     leftShooterMotor.config_kD(1, 0);
-    leftShooterMotor.config_kF(1, 1);
+    leftShooterMotor.config_kF(1, 0.06);
     
     rightShooterMotor.configFactoryDefault();
     rightShooterMotor.follow(leftShooterMotor);
+    rightShooterMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 1, 30);
     rightShooterMotor.setSensorPhase(true );
     rightShooterMotor.setInverted(true );
     rightShooterMotor.setNeutralMode(NeutralMode.Coast);
     rightShooterMotor.configPeakOutputForward(1);
     rightShooterMotor.configPeakOutputReverse(-1);
+    rightShooterMotor.configNominalOutputForward(0);
+    rightShooterMotor.configNominalOutputReverse(0);
     
-    rightShooterMotor.config_kP(1, 1.0);
+    rightShooterMotor.config_kP(1, 0.6);
     rightShooterMotor.config_kI(1, 0);
     rightShooterMotor.config_kD(1, 0);
-    rightShooterMotor.config_kF(1, 1);
+    rightShooterMotor.config_kF(1, 0.06);
   }
 
   public double rpmToTalonFX(double rpm){
-    double retval = ((rpm/600)*(2048/0.66));
+    double retval = ((rpm/600)*(2048/1.5));
     return retval;
   }
 
@@ -68,7 +75,7 @@ public class Shooter extends SubsystemBase {
 
 
   public void setShooter(double speed){
-    leftShooterMotor.set(TalonFXControlMode.PercentOutput, speed);
+    leftShooterMotor.set(TalonFXControlMode.Velocity, speed);
   }
 
   @Override
