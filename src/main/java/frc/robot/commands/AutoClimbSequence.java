@@ -27,9 +27,10 @@ public class AutoClimbSequence extends SequentialCommandGroup {
     addRequirements(climber, pneumatics, dioSub);
     addCommands(new AutoClimbStep1(climber, pneumatics, dioSub),
                 new DoubleLatchRelease(climber, pneumatics), 
-                new WaitCommand(1), 
+                new WaitCommand(0.125), 
                 new AutoClimbStep2(climber, pneumatics, dioSub), 
-                new WaitCommand(1),
+                new AutoClimbStep3(climber, pneumatics, dioSub), 
+                new WaitCommand(0.2),
                 new SingleLatchRelease(climber, pneumatics)
                 
                 );

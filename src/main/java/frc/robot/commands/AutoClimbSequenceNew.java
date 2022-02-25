@@ -12,6 +12,7 @@ import frc.robot.subsystems.Pneumatics.LatchStates;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.shuffleboard.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -22,7 +23,8 @@ public class AutoClimbSequenceNew extends CommandBase {
   DIOSub dioSub;
   boolean[] sensor;
   int counter = 0;
-  double climb_target_angle = 23.0; //This should never be changed. This angle represents the angle between the climbing bars
+  double climber_pos_offset;
+  double climb_target_angle = 32.645; //This should never be changed. This angle represents the angle between the climbing bars
   private final AHRS m_navx = new AHRS();
   int stage = 0; //State 0 is init, 1 is latched and climbing to high, 2 is waiting for mid bar successful release, 3 is high to travese climb, 4 is waiting for traverse latch, 5 is release + hold, 6 is complete climb
 
@@ -37,29 +39,32 @@ public class AutoClimbSequenceNew extends CommandBase {
   }
     @Override
     public void initialize() {
+      climber_pos_offset = climber.getClimberPos() / 130.66666666;
     }
     
     @Override
     public void execute() {
-      double climber_angle = 0; //TODO: Needs to be changed to pull live values from Climber.java
+      double climber_angle = (climber.getClimberPos() / 130.66666666) - climber_pos_offset; // Rotations times the gear ratio of the climber
+      SmartDashboard.putNumber("Climber Angle", climber_angle); 
       double arm_ground_angle = climber_angle - m_navx.getPitch();
 
-      tab.add("Climber Arm Angle", arm_ground_angle);
+      // tab.add("Climber Arm Angle", arm_ground_angle);
 
+      System.out.println(stage);
       switch (stage){
         case 0: //initialize robot for climbing
-          if ((DIOSub.DH_L_B && DIOSub.DH_R_B) || (DIOSub.DH_L_T && DIOSub.DH_R_T)){ //Either top or bottom must be fully seated on the bar 
+          if ((!DIOSub.DH_L_B && !DIOSub.DH_R_B)){ //Either top or bottom must be fully seated on the bar 
             pneumatics.autoPneumatics(LatchStates.DOUBLE_LATCHES, Value.kForward); //Ensures the latches are closed on the bar
             stage = 1; //moves to stage 1
           }
         case 1:
           climber.rClimberMotor.configOpenloopRamp(0.25); //Enables ramping to smooth transitions between powe
 
-          if (Math.abs(arm_ground_angle - climb_target_angle) < 10){ //Changes to a slower speed once the bar is within 10 degrees
-            climber.moveClimber(Constants.Climber.CLIMB_APPROACH_SPEED);
+          if (Math.abs(arm_ground_angle - climb_target_angle) > 10){ //Changes to a slower speed once the bar is within 10 degrees
+            climber.moveClimber(Constants.Climber.CLIMB_SPEED);
           }
           else{
-            climber.moveClimber(Constants.Climber.CLIMB_SPEED); //Begin climbing towards high
+            climber.moveClimber(Constants.Climber.CLIMB_APPROACH_SPEED); //Begin climbing towards high
           }
 
           if (DIOSub.SH_L || DIOSub.SH_R){ //wait until any of the single hands detect a bar

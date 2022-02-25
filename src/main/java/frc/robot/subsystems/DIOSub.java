@@ -16,12 +16,12 @@ public class DIOSub extends SubsystemBase {
   DigitalInput sensor_SH_L = new DigitalInput(Constants.SINGLEHAND_L);
   DigitalInput sensor_SH_R = new DigitalInput(Constants.SINGLEHAND_R);
 
-  public static boolean DH_L_B = false;
-  public static boolean DH_L_T = false;
-  public static boolean DH_R_B = false;
-  public static boolean DH_R_T = false;
-  public static boolean SH_L = false;
-  public static boolean SH_R = false;
+  public static boolean DH_L_B;
+  public static boolean DH_L_T;
+  public static boolean DH_R_B;
+  public static boolean DH_R_T;
+  public static boolean SH_L;
+  public static boolean SH_R;
   /** Creates a new DIO. */
   public DIOSub() {}
 
@@ -46,10 +46,10 @@ public class DIOSub extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     DH_L_B = sensor_DH_L_B.get();
-    DH_L_T = sensor_DH_L_B.get();
-    DH_R_B = sensor_DH_L_B.get();
-    DH_R_T = sensor_DH_L_B.get();
-    SH_L = sensor_DH_L_B.get();
-    SH_R = sensor_DH_L_B.get();
+    DH_L_T = sensor_DH_L_T.get();
+    DH_R_B = sensor_DH_R_B.get();
+    DH_R_T = sensor_DH_R_T.get();
+    SH_L = sensor_SH_L.get();
+    SH_R = sensor_SH_R.get();
     }
 }

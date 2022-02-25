@@ -62,8 +62,8 @@ public final class Constants {
 
 
     //DIO Pins on the RIO for climber sensors
-    public static final int DOUBLEHAND_L_BOTTOM = 0;
-    public static final int DOUBLEHAND_L_TOP = 1;
+    public static final int DOUBLEHAND_L_BOTTOM = 1;
+    public static final int DOUBLEHAND_L_TOP = 0;
     public static final int DOUBLEHAND_R_BOTTOM = 2;
     public static final int DOUBLEHAND_R_TOP = 5;
     public static final int SINGLEHAND_L = 4;
@@ -79,7 +79,7 @@ public final class Constants {
         public static final double kI = 1.00;
         public static final double kD = 1.00;
         public static final double INTAKE_SPEED = 0.2;
-        public static final double SHOOT_SPEED = 0.6;
+        public static final double SHOOT_SPEED = 0.9;
     }
 
 }   

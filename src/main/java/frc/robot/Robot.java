@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.DIOSub;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -42,18 +43,18 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    boolean[] dioPort = m_robotContainer.dioSub.getSensorStates();
-    SmartDashboard.putBoolean("DIO 0 (DH L B)", dioPort[0]);
-    SmartDashboard.putBoolean("DIO 1 (DH L T)", dioPort[1]);
-    SmartDashboard.putBoolean("DIO 2 (DH R B)", dioPort[2]);
-    SmartDashboard.putBoolean("DIO 5 (DH R T)", dioPort[3]);
-    SmartDashboard.putBoolean("DIO 4 (SH L)", dioPort[4]);
-    SmartDashboard.putBoolean("DIO 3 (SH R)", dioPort[5]);
+    SmartDashboard.putBoolean("DIO 0 (DH L B)", DIOSub.DH_L_B);
+    SmartDashboard.putBoolean("DIO 1 (DH L T)", DIOSub.DH_L_T);
+    SmartDashboard.putBoolean("DIO 2 (DH R B)", DIOSub.DH_R_B);
+    SmartDashboard.putBoolean("DIO 5 (DH R T)", DIOSub.DH_R_T);
+    SmartDashboard.putBoolean("DIO 4 (SH L)", DIOSub.SH_L);
+    SmartDashboard.putBoolean("DIO 3 (SH R)", DIOSub.SH_R);
     SmartDashboard.putNumber("Climber Stick ", RobotContainer.controlPanel.getRawAxis(0));
     SmartDashboard.putNumber("Shooter Speed", m_robotContainer.shooter.getShooterRPM());
     SmartDashboard.putNumber("Hood Axis", Math.round(m_robotContainer.controlPanel.getRawAxis(1)*128));
     SmartDashboard.putNumber("HOOD ANGLE ", m_robotContainer.shooterHood.servoPosition());
     SmartDashboard.putBoolean("DIO 6 BEAM BREAK ", m_robotContainer.serializer.beamBreak.get());
+    SmartDashboard.putNumber("Climber Angle", m_robotContainer.climber.getClimberPos() / 130.666); 
 
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
@@ -100,6 +101,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    
     // new ClimbCommand(climber, m_robotContainer.controlPanel.getRawAxis(0), true , true);
   }
 
