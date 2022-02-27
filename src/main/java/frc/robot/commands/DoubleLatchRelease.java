@@ -35,7 +35,7 @@ public class DoubleLatchRelease extends CommandBase {
   public void execute() {
     climber.lClimberMotor.setNeutralMode(NeutralMode.Brake);
     climber.rClimberMotor.setNeutralMode(NeutralMode.Brake);
-    climber.moveClimber(0.1);
+    climber.moveClimber(-0.1);
     pneumatics.autoPneumatics(LatchStates.DOUBLE_LATCHES, Value.kReverse);;
     timer++;
 
@@ -52,6 +52,6 @@ public class DoubleLatchRelease extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return timer > 30;
+    return timer > 15;
   }
 }

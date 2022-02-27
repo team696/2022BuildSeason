@@ -5,23 +5,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.Robot;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.Serializer;
-import frc.robot.subsystems.Shooter;
 
-public class SerializerCommand extends CommandBase {
+public class SerializerRevCommand extends CommandBase {
   Serializer serializer;
   double percent1;
   double percent2;
-  boolean stoppable;
-  /** Creates a new SerializerCommand. */
-  public SerializerCommand(Serializer serializer, double  percent1, double  percent2) {
+
+  /** Creates a new SerializerRevCommand. */
+  public SerializerRevCommand(Serializer serializer, double percent1, double percent2) {
     this.serializer = serializer;
     this.percent1 = percent1;
     this.percent2 = percent2;
-    
     addRequirements(serializer);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -33,36 +28,12 @@ public class SerializerCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-  if(RobotContainer.isShooting ){
-    stoppable = false;
-  }
-
-  else{
-    stoppable = true;
-  }
-  if(stoppable){
-    boolean broken = serializer.beamBreak.get();
-    if(broken){
-      serializer.runSerMotors(percent1, percent2);
-    }
-    else{
-
-      serializer.runSerMotors(0, 0);
-    }
-  }
-  else{
-    if (percent1 != 0){
-      serializer.runSerMotors(Constants.Serializer.SHOOT_SPEED, -Constants.Serializer.SHOOT_SPEED);
-    }
-  }
+    serializer.runSerMotors(percent1, percent2);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    // serializer.runSerMotors(0, 0);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

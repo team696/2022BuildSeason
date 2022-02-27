@@ -40,7 +40,7 @@ public class AutoClimbStep1 extends CommandBase {
     sensor = dioSub.getSensorStates();
 
     // while(climber.getClimberVoltage() < Constants.CLIMBER_MAX_VOLTAGE){
-      climber.moveClimber(-0.4);
+      climber.moveClimber(1);
     // }
     
   }

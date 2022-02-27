@@ -55,6 +55,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("HOOD ANGLE ", m_robotContainer.shooterHood.servoPosition());
     SmartDashboard.putBoolean("DIO 6 BEAM BREAK ", m_robotContainer.serializer.beamBreak.get());
     SmartDashboard.putNumber("Climber Angle", m_robotContainer.climber.getClimberPos() / 130.666); 
+    SmartDashboard.putNumber("Pressure ", m_robotContainer.pneumatics.getPressure());
+    
 
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,

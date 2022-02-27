@@ -18,6 +18,7 @@ public class AutoClimbStep2 extends CommandBase {
   DIOSub dioSub;
   double init_climber_pos;
   double current_climber_pos;
+  int counter = 0;
   static double target_climber_pos = 32 + 180;
   boolean[] sensor;
   /** Creates a new AutoClimbStep2. */
@@ -39,23 +40,35 @@ public class AutoClimbStep2 extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    current_climber_pos = -( (climber.getClimberPos() - init_climber_pos) / 130.66666666) -.25;
-    SmartDashboard.putNumber("DinoCliomber", current_climber_pos);
+    sensor = dioSub.getSensorStates();
 
-    climber.moveClimber(-0.4);
+
+    climber.moveClimber(1);
+    pneumatics.autoPneumatics(LatchStates.DOUBLE_LATCHES, Value.kForward);
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    climber.moveClimber(0);
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Math.abs(current_climber_pos - target_climber_pos) <= 20){
+    // if(Math.abs(current_climber_pos - target_climber_pos) <= 20){
+    //   return true;
+    // } 
+    // else{
+    //   return false;
+    // }
+
+    if (!sensor[0] || !sensor[1] || !sensor[2] || !sensor[3]){
       return true;
-    } 
+
+    }
     else{
       return false;
     }

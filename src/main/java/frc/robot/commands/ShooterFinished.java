@@ -4,34 +4,31 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.RobotContainer;
+import frc.robot.subsystems.Shooter;
 
-public class IntakeCommand extends CommandBase {
-  Intake intake;
-  double power;
-  boolean state;
-  /** Creates a new IntakeCommand. */
-  public IntakeCommand(Intake intake, double power, boolean state ) {
-    this.intake = intake;
-    this.power = power;
-    this.state = state;
-    addRequirements(intake);
+public class ShooterFinished extends CommandBase {
+  Shooter shooter;
+  /** Creates a new ShooterFinished. */
+  public ShooterFinished(Shooter shooter) {
+    this.shooter = shooter;
+    addRequirements(shooter);
+    
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    
-    intake.runIntake(power);
-    intake.deployIntake(state);
+    RobotContainer.isShooting = false;
+    shooter.shooterOff();
   }
 
   // Called once the command ends or is interrupted.

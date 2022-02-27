@@ -29,6 +29,10 @@ public class Pneumatics extends SubsystemBase {
     compressor.enableAnalog(90, 120);
   }
 
+  public double getPressure(){
+    return compressor.getPressure();
+  }
+
 
   public void autoPneumatics(LatchStates state, Value value){
     switch(state) {

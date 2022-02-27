@@ -9,20 +9,21 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
   WPI_TalonFX intakeMotor;
 
-  DoubleSolenoid intakeSolenoid;
+  Solenoid intakeSolenoid;
 
   /** Creates a new Intake. */
   public Intake() {
 
     intakeMotor = new WPI_TalonFX(50);
 
-    intakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 4, 5);
+    intakeSolenoid = new Solenoid(PneumaticsModuleType.REVPH, 4);
 
 
   }
@@ -31,8 +32,8 @@ public class Intake extends SubsystemBase {
     intakeMotor.set(TalonFXControlMode.PercentOutput, power);
   }
 
-  public void deployIntake(Value value){
-    intakeSolenoid.set(value);
+  public void deployIntake(boolean state){
+    intakeSolenoid.set(state);
   }
 
 

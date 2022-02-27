@@ -29,7 +29,6 @@ public class AutoClimbSequence extends SequentialCommandGroup {
                 new DoubleLatchRelease(climber, pneumatics), 
                 new WaitCommand(0.125), 
                 new AutoClimbStep2(climber, pneumatics, dioSub), 
-                new AutoClimbStep3(climber, pneumatics, dioSub), 
                 new WaitCommand(0.2),
                 new SingleLatchRelease(climber, pneumatics)
                 

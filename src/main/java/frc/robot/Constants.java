@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -49,6 +51,25 @@ public final class Constants {
     public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 9;
     public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(192.25);
 
+    public static final class AutoConstants {
+        public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
+
+        public static final double kMaxSpeedMetersPerSecond = 5 / 4;
+        public static final double kMaxAngularSpeedRadiansPerSecond = //
+                kPhysicalMaxAngularSpeedRadiansPerSecond / 10;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+        public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI / 4;
+        public static final double kPXController = 1.5;
+        public static final double kPYController = 1.5;
+        public static final double kPThetaController = 3;
+
+        public static final TrapezoidProfile.Constraints kThetaControllerConstraints = //
+                new TrapezoidProfile.Constraints(
+                        kMaxAngularSpeedRadiansPerSecond,
+                        kMaxAngularAccelerationRadiansPerSecondSquared);
+    }
+    // kMaxAngularSpeedRadiansPerSecond
+    // kMaxAngularAccelerationRadiansPerSecondSquared
     //==================== Climber Constants ====================
 
     public static final double CLIMBER_SENSOR_TIMEOUT_LOOPS = 10;
@@ -79,7 +100,7 @@ public final class Constants {
         public static final double kI = 1.00;
         public static final double kD = 1.00;
         public static final double INTAKE_SPEED = 0.2;
-        public static final double SHOOT_SPEED = 0.9;
+        public static final double SHOOT_SPEED = 0.8;
     }
 
 }   
