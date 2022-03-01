@@ -31,7 +31,7 @@ public class Shooter extends SubsystemBase {
     leftShooterMotor.configPeakOutputReverse(-0.9);
     leftShooterMotor.configNominalOutputForward(0);
     leftShooterMotor.configNominalOutputReverse(0);
-    leftShooterMotor.configClosedloopRamp(1);
+    leftShooterMotor.configClosedloopRamp(0.5);
     leftShooterMotor.config_kP(0, 0.1);
     leftShooterMotor.config_kI(0, 0.0);
     leftShooterMotor.config_kD(0, 0.0);
@@ -58,7 +58,7 @@ public class Shooter extends SubsystemBase {
     // leftShooterMotor.config_kD(1, 0.1);
     // leftShooterMotor.config_kF(1, .5);
   }
-
+  
   public double rpmToTalonFX(double rpm){
     double retval = rpm / 0.667 / 60 / 10 * 2048;
     return retval;
@@ -73,6 +73,10 @@ public class Shooter extends SubsystemBase {
   public double getShooterRPM(){
     return talonFXtoRPM(leftShooterMotor.getSelectedSensorVelocity());
 
+  }
+
+  public void setShooterPercent(double percent){
+    leftShooterMotor.set(TalonFXControlMode.PercentOutput, percent);
   }
 
   

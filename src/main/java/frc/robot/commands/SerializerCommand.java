@@ -43,7 +43,7 @@ public class SerializerCommand extends CommandBase {
   }
   if(stoppable){
     boolean broken = serializer.beamBreak.get();
-    if(broken){
+    if(broken){ 
       serializer.runSerMotors(percent1, percent2);
     }
     else{

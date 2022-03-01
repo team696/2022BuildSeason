@@ -33,6 +33,7 @@ import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.DIOTest;
 import frc.robot.commands.JoystickDriveCommand;
+import frc.robot.commands.LimelightLEDs;
 import frc.robot.commands.PneumaticsCommand1;
 import frc.robot.commands.PneumaticsCommand2;
 import frc.robot.commands.SerializerCommand;
@@ -41,10 +42,12 @@ import frc.robot.commands.ShootCommand;
 import frc.robot.commands.ShooterFinished;
 import frc.robot.commands.ShooterHoodCommand;
 import frc.robot.commands.SingleLatchRelease;
+import frc.robot.commands.SpitTopBall;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DIOSub;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.Serializer;
 import frc.robot.subsystems.Shooter;
@@ -66,6 +69,7 @@ public class RobotContainer {
   public final DIOSub dioSub = new DIOSub();
   public final ShooterHood shooterHood = new ShooterHood();
   public final Intake intake = new Intake();
+  public final Limelight limelight = new Limelight();
   private final XboxController m_controller = new XboxController(0);
   public  static final Joystick controlPanel = new Joystick(2);
   private final JoystickButton leftStickButton = new JoystickButton(m_controller,  Constants.GYRO_RECALIBRATE_BUTTON) ;
@@ -77,8 +81,9 @@ public class RobotContainer {
   private final JoystickButton serializerRevButton = new JoystickButton(controlPanel, 17);
   private final JoystickButton shooterSpinup = new JoystickButton(controlPanel, 16);
   private final JoystickButton shooterHoodUp = new JoystickButton(controlPanel, 9);
-  private final JoystickButton shooterHoodDown = new JoystickButton(controlPanel, 18);
+  private final JoystickButton spitBallButton = new JoystickButton(controlPanel, 18);
   private final JoystickButton lockOnSwitch = new JoystickButton(controlPanel, 14);
+  private final JoystickButton fireButton = new JoystickButton(controlPanel, 8);
   static public boolean isShooting = false;
 
 
@@ -116,7 +121,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-/* ================================= SERIALIZER ================================= */
+/* ================================= SERIALIZER/INTAKE ================================= */
 
     serializerForButton.whenPressed(new SerializerCommand(serializer, 0.2, -0.6).alongWith(new IntakeCommand(intake, -0.5, true)));
     serializerForButton.whenReleased(new SerializerCommand(serializer, 0, 0).alongWith(new IntakeCommand(intake, 0, false)));
@@ -124,8 +129,14 @@ public class RobotContainer {
     // serializerRevButton.whenPressed(new SerializerCommand(serializer, -0.2, 0.6).alongWith(new IntakeCommand(intake, 0.5, true)));
     // serializerRevButton.whenReleased(new SerializerCommand(serializer, 0, 0).alongWith(new IntakeCommand(intake, 0, false)));
     
-    serializerRevButton.whenPressed(new SerializerRevCommand(serializer, -0.2, 0.6).alongWith(new IntakeCommand(intake, 0.5, true)));
+    serializerRevButton.whenPressed(new SerializerRevCommand(serializer, 0.0, 0.3).alongWith(new IntakeCommand(intake, 0.5, true)));
     serializerRevButton.whenReleased(new SerializerRevCommand(serializer, 0, 0).alongWith(new IntakeCommand(intake, 0, false)));
+
+    fireButton.whileHeld(new SerializerCommand(serializer, 0.5, -0.5));
+    fireButton.whenReleased(new SerializerCommand(serializer, 0, 0));
+
+    spitBallButton.whenPressed(new SpitTopBall(serializer, shooter));
+
     
  
   
@@ -139,13 +150,13 @@ public class RobotContainer {
       () -> -modifyAxis(m_controller.getRawAxis(Constants.TRANSLATE_X_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
       () -> -modifyAxis(-m_controller.getRawAxis(Constants.TRANSALTE_Y_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
       () -> -modifyAxis(-m_drivetrainSubsystem.limelightOffset()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-));
+).alongWith(new LimelightLEDs(limelight, 3)));
     lockOnSwitch.whenReleased(new JoystickDriveCommand(
       m_drivetrainSubsystem,
       () -> -modifyAxis(m_controller.getRawAxis(Constants.TRANSLATE_X_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
       () -> -modifyAxis(-m_controller.getRawAxis(Constants.TRANSALTE_Y_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
       () -> -modifyAxis(-m_controller.getRawAxis(Constants.ROTATE_AXIS)) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-));
+).alongWith(new LimelightLEDs(limelight, 1)));
 
 
 
@@ -163,7 +174,7 @@ public class RobotContainer {
     // autoClimbButton.whenPressed(new AutoClimbSequenceNew(climber, pneumatics, dioSub));
 
 /* ================================= SHOOTER ================================= */
-    shooterSpinup.whenPressed(new ShootCommand(shooter, 5000, true));
+    shooterSpinup.whenPressed(new ShootCommand(shooter, 3500, true));
     shooterSpinup.whenReleased(new ShooterFinished(shooter));
 
     shooterHoodUp.whileHeld(new ShooterHoodCommand(shooterHood, 100), true);
@@ -195,16 +206,18 @@ public class RobotContainer {
     Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
       new Pose2d(0, 0 , new Rotation2d(0)),
       List.of(
-               new Translation2d(1, 0),
-               new Translation2d(1, -1)
+               new Translation2d(3, 0),
+               new Translation2d(3, -0.1),
+               new Translation2d(0, -0.1)
+               
                ),
-      new Pose2d(1, -2, Rotation2d.fromDegrees(180)), 
+      new Pose2d(0, 0, Rotation2d.fromDegrees(90)), 
       trajectoryConfig
       );
 
-    PIDController xController = new PIDController(5.3, 0, 0);
-    PIDController yController = new PIDController(5.3, 0, 0);
-    ProfiledPIDController thetaController = new ProfiledPIDController(1, 0.01, 0, AutoConstants.kThetaControllerConstraints);
+    PIDController xController = new PIDController(1.92, 0.0, 0);
+    PIDController yController = new PIDController(1.92, 0.0, 0);
+    ProfiledPIDController thetaController = new ProfiledPIDController(2.5, 0.15, 0, AutoConstants.kThetaControllerConstraints);
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
     SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
@@ -218,9 +231,10 @@ public class RobotContainer {
            m_drivetrainSubsystem);
 
     return new SequentialCommandGroup(
+
       new InstantCommand(()-> m_drivetrainSubsystem.resetOdometry(trajectory.getInitialPose())),
-      swerveControllerCommand,
-      new InstantCommand(()-> m_drivetrainSubsystem.stop())
+      swerveControllerCommand.deadlineWith(  new IntakeCommand(intake, 0.2, true)),
+      new InstantCommand(()-> m_drivetrainSubsystem.stop()).deadlineWith(new IntakeCommand(intake, 0, false))
     );
 
     

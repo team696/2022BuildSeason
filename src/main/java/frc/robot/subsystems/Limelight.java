@@ -13,7 +13,7 @@ public class Limelight extends SubsystemBase {
   NetworkTableEntry camTran = NetworkTableInstance.getDefault().getTable("limelight").getEntry("camtran");
   
   public static double[] camTranArray = {0.0,0.0,0.0,0.0,0.0,0.0};
-  public static void setLights(int lightMode){
+  public  void setLights(int lightMode){
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(lightMode);
 
   }
