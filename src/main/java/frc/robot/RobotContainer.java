@@ -70,8 +70,10 @@ public class RobotContainer {
   public final ShooterHood shooterHood = new ShooterHood();
   public final Intake intake = new Intake();
   public final Limelight limelight = new Limelight();
+
   private final XboxController m_controller = new XboxController(0);
   public  static final Joystick controlPanel = new Joystick(2);
+
   private final JoystickButton leftStickButton = new JoystickButton(m_controller,  Constants.GYRO_RECALIBRATE_BUTTON) ;
   private final JoystickButton climbPneuButton1 = new JoystickButton(controlPanel, Constants.CLIMBER_DOUBLE_HAND_BUTTON);
   private final JoystickButton climbPneuButton2 = new JoystickButton(controlPanel, Constants.CLIMBER_SINGLE_HAND_BUTTON);
@@ -84,6 +86,7 @@ public class RobotContainer {
   private final JoystickButton spitBallButton = new JoystickButton(controlPanel, 18);
   private final JoystickButton lockOnSwitch = new JoystickButton(controlPanel, 14);
   private final JoystickButton fireButton = new JoystickButton(controlPanel, 8);
+
   static public boolean isShooting = false;
 
 
@@ -94,11 +97,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
     climber.setDefaultCommand(new ClimbCommand(climber));
-    // shooterHood.setDefaultCommand(new ShooterHoodCommand(shooterHood, 10));
-    // shooterHood.setDefaultCommand(new ShooterHoodCommand(shooterHood));
-    // pneumatics.setDefaultCommand(new DIOTest(pneumatics, dioSub));
-
-    
+   
     // Set up the default command for the drivetrain.
     // The controls are for field-oriented driving:
     // Left stick Y axis -> forward and backwards movement
@@ -126,9 +125,6 @@ public class RobotContainer {
     serializerForButton.whenPressed(new SerializerCommand(serializer, 0.2, -0.6).alongWith(new IntakeCommand(intake, -0.5, true)));
     serializerForButton.whenReleased(new SerializerCommand(serializer, 0, 0).alongWith(new IntakeCommand(intake, 0, false)));
 
-    // serializerRevButton.whenPressed(new SerializerCommand(serializer, -0.2, 0.6).alongWith(new IntakeCommand(intake, 0.5, true)));
-    // serializerRevButton.whenReleased(new SerializerCommand(serializer, 0, 0).alongWith(new IntakeCommand(intake, 0, false)));
-    
     serializerRevButton.whenPressed(new SerializerRevCommand(serializer, 0.0, 0.3).alongWith(new IntakeCommand(intake, 0.5, true)));
     serializerRevButton.whenReleased(new SerializerRevCommand(serializer, 0, 0).alongWith(new IntakeCommand(intake, 0, false)));
 
@@ -171,7 +167,6 @@ public class RobotContainer {
     climbPneuButton2.whenReleased(new ClimbCommand(climber));
 
     autoClimbButton.whenPressed(new AutoClimbSequence(climber, pneumatics, dioSub));
-    // autoClimbButton.whenPressed(new AutoClimbSequenceNew(climber, pneumatics, dioSub));
 
 /* ================================= SHOOTER ================================= */
     shooterSpinup.whenPressed(new ShootCommand(shooter, 3500, true));
@@ -180,12 +175,7 @@ public class RobotContainer {
     shooterHoodUp.whileHeld(new ShooterHoodCommand(shooterHood, 100), true);
     shooterHoodUp.whenReleased(new ShooterHoodCommand(shooterHood, 50), true);
 
-    // shooterHoodDown.whenPressed(new ShooterHoodCommand(shooterHood, 10), true);
-    // shooterHoodUp.whenReleased(new ShooterHoodCommand(shooterHood, 30), true);
-
-    // shooterHoodDown.whenPressed(new ShooterHoodCommand(shooterHood, -0.3));
-    // shooterHoodDown.whenReleased(new ShooterHoodCommand(shooterHood, 0), true);
-
+   
 
 
     
@@ -211,13 +201,13 @@ public class RobotContainer {
                new Translation2d(0, -0.1)
                
                ),
-      new Pose2d(0, 0, Rotation2d.fromDegrees(90)), 
+      new Pose2d(0, 0, Rotation2d.fromDegrees(0)), 
       trajectoryConfig
       );
 
-    PIDController xController = new PIDController(1.92, 0.0, 0);
-    PIDController yController = new PIDController(1.92, 0.0, 0);
-    ProfiledPIDController thetaController = new ProfiledPIDController(2.5, 0.15, 0, AutoConstants.kThetaControllerConstraints);
+    PIDController xController = new PIDController(10.0, 0.0, 0);
+    PIDController yController = new PIDController(10.0, 0.0, 0);
+    ProfiledPIDController thetaController = new ProfiledPIDController(0.0, 0, 0, AutoConstants.kThetaControllerConstraints);
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
     SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
@@ -233,7 +223,7 @@ public class RobotContainer {
     return new SequentialCommandGroup(
 
       new InstantCommand(()-> m_drivetrainSubsystem.resetOdometry(trajectory.getInitialPose())),
-      swerveControllerCommand.deadlineWith(  new IntakeCommand(intake, 0.2, true)),
+      swerveControllerCommand,
       new InstantCommand(()-> m_drivetrainSubsystem.stop()).deadlineWith(new IntakeCommand(intake, 0, false))
     );
 
