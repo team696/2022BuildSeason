@@ -34,8 +34,16 @@ public class JoystickDriveCommand extends CommandBase {
                         m_translationYSupplier.getAsDouble(),
                         m_rotationSupplier.getAsDouble(),
                         m_drivetrainSubsystem.getGyroscopeRotation()
+
+
+
+
+                        
                 )
         );
+
+       m_drivetrainSubsystem.setModuleStates(m_drivetrainSubsystem.m_kinematics.toSwerveModuleStates(m_drivetrainSubsystem.m_chassisSpeeds));
+
     }
 
     @Override
