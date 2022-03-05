@@ -84,8 +84,8 @@ public class Shooter extends SubsystemBase {
 
 
   public void setShooter(double speed){
-    System.out.println("speed: " + speed);
     leftShooterMotor.set(TalonFXControlMode.Velocity, speed);
+    // leftShooterMotor.set(1);
   }
   public void shooterOff(){
     leftShooterMotor.disable();

@@ -80,7 +80,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public DrivetrainSubsystem() {
         rotatePID = new PIDController(0.03, 0.03, 0.00);
-        rotatePID.setTolerance(1);
+        rotatePID.setTolerance(5);
 
         
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
@@ -192,6 +192,23 @@ public class DrivetrainSubsystem extends SubsystemBase {
         // SwerveModuleState[]  states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
     
+        // final SwerveModuleState frontLeftState = getState(m_frontLeftModule.getDriveVelocity(), m_frontLeftModule.getSteerAngle());
+        // final SwerveModuleState frontRightState = getState(m_frontRightModule.getDriveVelocity(), m_frontRightModule.getSteerAngle());
+        // final SwerveModuleState backLeftState = getState(m_backLeftModule.getDriveVelocity(), m_backLeftModule.getSteerAngle());
+        // final SwerveModuleState backRightState = getState(m_backRightModule.getDriveVelocity(), m_backRightModule.getSteerAngle());
+    
+        // odometer.update(getGyroscopeRotation(), frontLeftState, frontRightState, backLeftState, backRightState);
+    
+        m_frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
+        m_frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
+        m_backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
+        m_backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
+        
+  }
+
+
+  @Override
+  public void periodic() {
         final SwerveModuleState frontLeftState = getState(m_frontLeftModule.getDriveVelocity(), m_frontLeftModule.getSteerAngle());
         final SwerveModuleState frontRightState = getState(m_frontRightModule.getDriveVelocity(), m_frontRightModule.getSteerAngle());
         final SwerveModuleState backLeftState = getState(m_backLeftModule.getDriveVelocity(), m_backLeftModule.getSteerAngle());
@@ -199,17 +216,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     
         odometer.update(getGyroscopeRotation(), frontLeftState, frontRightState, backLeftState, backRightState);
     
-        m_frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
-        m_frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
-        m_backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
-        m_backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
-    
-  }
-
-
-  @Override
-  public void periodic() {
-
 //     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
 //     SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
 

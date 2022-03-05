@@ -68,8 +68,8 @@ public final class Constants {
                         kMaxAngularAccelerationRadiansPerSecondSquared); */
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints = //
                 new TrapezoidProfile.Constraints(
-                        0,
-                        0);
+                        kMaxAngularSpeedRadiansPerSecond,
+                        kMaxAngularAccelerationRadiansPerSecondSquared);
     }
     // kMaxAngularSpeedRadiansPerSecond
     // kMaxAngularAccelerationRadiansPerSecondSquared
@@ -79,19 +79,19 @@ public final class Constants {
 
     public static final int CLIMBER_MANUAL_ROTATION_AXIS = 0;
     public static final int CLIMBER_DOUBLE_HAND_BUTTON = 3;
-    public static final int CLIMBER_SINGLE_HAND_BUTTON = 1;
-    public static final int CLIMBER_SINGLE_RELOCK_BUTTON = 7;
+    public static final int CLIMBER_SINGLE_HAND_BUTTON = 18;
+    public static final int CLIMBER_SINGLE_RELOCK_BUTTON = 13;
     public static final double CLIMBER_MAX_VOLTAGE = 12;
     public static final int CLIMBER_AUTO_BUTTON = 11;
 
 
     //DIO Pins on the RIO for climber sensors
-    public static final int DOUBLEHAND_L_BOTTOM = 1;
-    public static final int DOUBLEHAND_L_TOP = 0;
-    public static final int DOUBLEHAND_R_BOTTOM = 2;
-    public static final int DOUBLEHAND_R_TOP = 5;
-    public static final int SINGLEHAND_L = 4;
-    public static final int SINGLEHAND_R = 3;
+    public static final int DOUBLEHAND_L_BOTTOM = 3; /* 1 */
+    public static final int DOUBLEHAND_L_TOP = 1; /* 0 */
+    public static final int DOUBLEHAND_R_BOTTOM = 5; /* 2 */
+    public static final int DOUBLEHAND_R_TOP = 2; /* 5 */
+    public static final int SINGLEHAND_L = 0; /* 4 */
+    public static final int SINGLEHAND_R = 4;/* 3 */
     
     public static final class Serializer {
         public static final boolean serializerMotorInverted = false;
@@ -105,5 +105,18 @@ public final class Constants {
         public static final double INTAKE_SPEED = 0.2;
         public static final double SHOOT_SPEED = 0.8;
     }
+    public static final class LimelightConstants{
+                                                                /*  NO IDEA WHY IT SAYS VERTICAL HERE  V */
+        public static final double limelightDegrees = 10;  /* TODO  how many degrees back is your limelight rotated from perfectly vertical? */
+        public static final double limelightHeight = 10; /* TODO  Height of limelight lens to the floor in inches */
+        public static final double goalHeight = 104; /* TODO Height of goal in inches  */
 
-}   
+    }
+
+   /* TODO Transfer all constant values from other subs into constants */
+
+public static final class Shooter {
+        public static final int hoodAutoButton = 9;
+        public static final int hoodAxis = 1;
+    }
+}

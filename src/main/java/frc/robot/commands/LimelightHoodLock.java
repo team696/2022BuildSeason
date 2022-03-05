@@ -6,15 +6,21 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.ShooterHood;
+import frc.robot.subsystems.TrajectoryTable;
 
-public class LimelightLEDs extends CommandBase {
+public class LimelightHoodLock extends CommandBase {
   Limelight limelight;
+  TrajectoryTable trajectoryTable;
+  ShooterHood shooterHood;
   int mode;
   /** Creates a new LimelightLEDs. */
-  public LimelightLEDs(Limelight limelight, int mode) {
+  public LimelightHoodLock(Limelight limelight, TrajectoryTable trajectoryTable,ShooterHood shooterHood, int mode) {
     this.limelight = limelight;
+    this.trajectoryTable = trajectoryTable;
+    this.shooterHood = shooterHood;
     this.mode = mode;
-    addRequirements(limelight);
+    addRequirements(limelight, trajectoryTable, shooterHood);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -25,7 +31,14 @@ public class LimelightLEDs extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    int distance;
+    double limelightDistance;
+    double angle;
+    limelightDistance = limelight.getDistance();
+    distance = (int)Math.round(limelightDistance);
+    angle  = trajectoryTable.distanceToHoodAngle[distance];
     limelight.setLights(mode);
+    shooterHood.moveActuators(angle);
   }
 
   // Called once the command ends or is interrupted.

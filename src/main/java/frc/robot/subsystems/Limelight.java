@@ -8,6 +8,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Limelight extends SubsystemBase {
   NetworkTableEntry camTran = NetworkTableInstance.getDefault().getTable("limelight").getEntry("camtran");
@@ -85,6 +86,13 @@ public class Limelight extends SubsystemBase {
     else{
       return false;
     }
+  }
+
+  public double getDistance(){
+    double targetOffsetAngle = ty();
+    double angleToGoalDegrees = Constants.LimelightConstants.limelightDegrees + targetOffsetAngle;
+    double angleToGoalRadians = angleToGoalDegrees * (3.14159 / 180.0); /* THIS IS THE MATH LIMELIGHT USES, NOT SURE IF NEEDS TO BE CHANGED */
+    return (Constants.LimelightConstants.goalHeight - Constants.LimelightConstants.limelightHeight)/Math.tan(angleToGoalRadians);
   }
   /** Creates a new Limelight. */
   // public Limelight() {}

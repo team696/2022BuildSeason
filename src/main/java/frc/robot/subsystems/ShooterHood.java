@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class ShooterHood extends SubsystemBase {
   public Servo leftActuator;
  public  Servo rightActuator;
+
   /** Creates a new ShooterHood. */
   public ShooterHood() {
     leftActuator = new Servo(6);
@@ -31,6 +32,8 @@ public class ShooterHood extends SubsystemBase {
     rightActuator.setAngle(position);
     System.out.println("Imhere" + position);
   }
+
+  
 
   public double servoPosition(){
 return leftActuator.getAngle();

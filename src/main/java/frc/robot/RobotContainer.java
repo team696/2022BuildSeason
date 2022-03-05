@@ -33,7 +33,7 @@ import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.DIOTest;
 import frc.robot.commands.JoystickDriveCommand;
-import frc.robot.commands.LimelightLEDs;
+import frc.robot.commands.LimelightHoodLock;
 import frc.robot.commands.PneumaticsCommand1;
 import frc.robot.commands.PneumaticsCommand2;
 import frc.robot.commands.SerializerCommand;
@@ -52,6 +52,7 @@ import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.Serializer;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterHood;
+import frc.robot.subsystems.TrajectoryTable;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -70,6 +71,7 @@ public class RobotContainer {
   public final ShooterHood shooterHood = new ShooterHood();
   public final Intake intake = new Intake();
   public final Limelight limelight = new Limelight();
+  public final TrajectoryTable trajectoryTable = new TrajectoryTable();
 
   private final XboxController m_controller = new XboxController(0);
   public  static final Joystick controlPanel = new Joystick(2);
@@ -79,12 +81,12 @@ public class RobotContainer {
   private final JoystickButton climbPneuButton2 = new JoystickButton(controlPanel, Constants.CLIMBER_SINGLE_HAND_BUTTON);
   private final JoystickButton singleRelockButton = new JoystickButton(controlPanel , Constants.CLIMBER_SINGLE_RELOCK_BUTTON);
   private final JoystickButton autoClimbButton = new JoystickButton(controlPanel, Constants.CLIMBER_AUTO_BUTTON);
-  private final JoystickButton serializerForButton = new JoystickButton(controlPanel, 12);
-  private final JoystickButton serializerRevButton = new JoystickButton(controlPanel, 17);
+  private final JoystickButton serializerForButton = new JoystickButton(controlPanel, 7);
+  private final JoystickButton serializerRevButton = new JoystickButton(controlPanel, 1);
   private final JoystickButton shooterSpinup = new JoystickButton(controlPanel, 16);
   private final JoystickButton shooterHoodUp = new JoystickButton(controlPanel, 9);
-  private final JoystickButton spitBallButton = new JoystickButton(controlPanel, 18);
-  private final JoystickButton lockOnSwitch = new JoystickButton(controlPanel, 14);
+  private final JoystickButton spitBallButton = new JoystickButton(controlPanel, 14);
+  private final JoystickButton lockOnSwitch = new JoystickButton(m_controller, 4);
   private final JoystickButton fireButton = new JoystickButton(controlPanel, 8);
 
   static public boolean isShooting = false;
@@ -97,6 +99,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
     climber.setDefaultCommand(new ClimbCommand(climber));
+    shooterHood.setDefaultCommand(new ShooterHoodCommand(shooterHood));
    
     // Set up the default command for the drivetrain.
     // The controls are for field-oriented driving:
@@ -146,13 +149,13 @@ public class RobotContainer {
       () -> -modifyAxis(m_controller.getRawAxis(Constants.TRANSLATE_X_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
       () -> -modifyAxis(-m_controller.getRawAxis(Constants.TRANSALTE_Y_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
       () -> -modifyAxis(-m_drivetrainSubsystem.limelightOffset()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-).alongWith(new LimelightLEDs(limelight, 3)));
+).alongWith(new LimelightHoodLock(limelight,trajectoryTable,shooterHood, 3)));
     lockOnSwitch.whenReleased(new JoystickDriveCommand(
       m_drivetrainSubsystem,
       () -> -modifyAxis(m_controller.getRawAxis(Constants.TRANSLATE_X_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
       () -> -modifyAxis(-m_controller.getRawAxis(Constants.TRANSALTE_Y_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
       () -> -modifyAxis(-m_controller.getRawAxis(Constants.ROTATE_AXIS)) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-).alongWith(new LimelightLEDs(limelight, 1)));
+).alongWith(new LimelightHoodLock(limelight, trajectoryTable, shooterHood, 1)));
 
 
 
@@ -169,11 +172,11 @@ public class RobotContainer {
     autoClimbButton.whenPressed(new AutoClimbSequence(climber, pneumatics, dioSub));
 
 /* ================================= SHOOTER ================================= */
-    shooterSpinup.whenPressed(new ShootCommand(shooter, 3500, true));
+    shooterSpinup.whenPressed(new ShootCommand(shooter, 2600, true));
     shooterSpinup.whenReleased(new ShooterFinished(shooter));
 
-    shooterHoodUp.whileHeld(new ShooterHoodCommand(shooterHood, 100), true);
-    shooterHoodUp.whenReleased(new ShooterHoodCommand(shooterHood, 50), true);
+    // shooterHoodUp.whileHeld(new ShooterHoodCommand(shooterHood), true);
+    // shooterHoodUp.whenReleased(new ShooterHoodCommand(shooterHood), true);
 
    
 
