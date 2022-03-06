@@ -46,7 +46,7 @@ public class ShooterHoodCommand extends CommandBase {
     
       SmartDashboard.putNumber("Hood Axis", Math.round(RobotContainer.controlPanel.getRawAxis(Constants.Shooter.hoodAxis)*128*0.5));
 
-      if (delta + shooterHood.servoPosition() <= 100 && delta + shooterHood.servoPosition() >= 51){
+      if (delta + shooterHood.servoPosition() <= 150 && delta + shooterHood.servoPosition() >= 51){
         shooterHood.moveActuators(shooterHood.servoPosition() + delta);
       
        

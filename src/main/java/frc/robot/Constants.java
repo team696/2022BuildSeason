@@ -107,8 +107,8 @@ public final class Constants {
     }
     public static final class LimelightConstants{
                                                                 /*  NO IDEA WHY IT SAYS VERTICAL HERE  V */
-        public static final double limelightDegrees = 10;  /* TODO  how many degrees back is your limelight rotated from perfectly vertical? */
-        public static final double limelightHeight = 10; /* TODO  Height of limelight lens to the floor in inches */
+        public static final double limelightDegrees = 36.8;  /* TODO  how many degrees back is your limelight rotated from perfectly vertical? */
+        public static final double limelightHeight = 24; /* TODO  Height of limelight lens to the floor in inches */
         public static final double goalHeight = 104; /* TODO Height of goal in inches  */
 
     }

@@ -90,6 +90,7 @@ public class RobotContainer {
   private final JoystickButton fireButton = new JoystickButton(controlPanel, 8);
 
   static public boolean isShooting = false;
+  public static  double shootSpeed = 3000;
 
 
 
@@ -172,7 +173,7 @@ public class RobotContainer {
     autoClimbButton.whenPressed(new AutoClimbSequence(climber, pneumatics, dioSub));
 
 /* ================================= SHOOTER ================================= */
-    shooterSpinup.whenPressed(new ShootCommand(shooter, 2600, true));
+    shooterSpinup.whenPressed(new ShootCommand(shooter, shootSpeed, true));
     shooterSpinup.whenReleased(new ShooterFinished(shooter));
 
     // shooterHoodUp.whileHeld(new ShooterHoodCommand(shooterHood), true);

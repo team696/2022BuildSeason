@@ -79,8 +79,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
 
   public DrivetrainSubsystem() {
-        rotatePID = new PIDController(0.03, 0.03, 0.00);
-        rotatePID.setTolerance(5);
+        rotatePID = new PIDController(0.04, 0.04, 0.0015);
+        rotatePID.setTolerance(10);
 
         
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");

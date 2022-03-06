@@ -94,6 +94,7 @@ public class Limelight extends SubsystemBase {
     double angleToGoalRadians = angleToGoalDegrees * (3.14159 / 180.0); /* THIS IS THE MATH LIMELIGHT USES, NOT SURE IF NEEDS TO BE CHANGED */
     return (Constants.LimelightConstants.goalHeight - Constants.LimelightConstants.limelightHeight)/Math.tan(angleToGoalRadians);
   }
+  
   /** Creates a new Limelight. */
   // public Limelight() {}
 

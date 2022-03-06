@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.ShooterHood;
 import frc.robot.subsystems.TrajectoryTable;
@@ -34,11 +35,21 @@ public class LimelightHoodLock extends CommandBase {
     int distance;
     double limelightDistance;
     double angle;
-    limelightDistance = limelight.getDistance();
+    // double speed;
+    limelightDistance = limelight.getDistance()/12;
     distance = (int)Math.round(limelightDistance);
+
+    if(distance <21){
     angle  = trajectoryTable.distanceToHoodAngle[distance];
+    // speed = trajectoryTable.distanceToShooterSpeed[distance];
     limelight.setLights(mode);
     shooterHood.moveActuators(angle);
+    }
+    // else{
+      // speed = 3000;
+    // }
+    // RobotContainer.shootSpeed = speed;
+
   }
 
   // Called once the command ends or is interrupted.
