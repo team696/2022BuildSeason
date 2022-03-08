@@ -73,7 +73,7 @@ public class Limelight extends SubsystemBase {
     return NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").getDouble(0);
   }
 
-  public static double hasTarget(){
+  public  double hasTarget(){
     return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
  
   }
@@ -81,13 +81,14 @@ public class Limelight extends SubsystemBase {
   public boolean crosshairOnTarget(){
     if(hasTarget()==1){
       //need to adjust this threshold. maybe can change depending on distance from target
-      return tx()<1;
+      return tx()<2;
     }
     else{
       return false;
     }
   }
 
+  
   public double getDistance(){
     double targetOffsetAngle = ty();
     double angleToGoalDegrees = Constants.LimelightConstants.limelightDegrees + targetOffsetAngle;

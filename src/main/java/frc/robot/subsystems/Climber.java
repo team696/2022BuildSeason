@@ -35,35 +35,26 @@ public class Climber extends SubsystemBase {
     rClimberMotor = new WPI_TalonFX(20);
 
      rClimberMotor.configFactoryDefault();
-    // rClimberMotor.follow(lClimberMotor);
-    // rClimberMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 1, 30);
+   
      rClimberMotor.setNeutralMode(NeutralMode.Coast);
-    // rClimberMotor.setSensorPhase(true);
-    // // rClimberMotor.setInverted(true);
-    // rClimberMotor.config_kF(1, 1.0, 30);
-    // rClimberMotor.config_kP(1, 1.0, 30);
-    // rClimberMotor.config_kI(1, 0, 30);
-    // rClimberMotor.config_kD(1, 0, 30);
+    
 
     lClimberMotor.configFactoryDefault();
     lClimberMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 1, 30);
     lClimberMotor.setNeutralMode(NeutralMode.Coast );
-    // lClimberMotor.setSensorPhase(true);
-    // lClimberMotor.setInverted(true);
-    // lClimberMotor.config_kF(1, 1.0, 30);
-    // lClimberMotor.config_kP(1, 1.0, 30);
-    // lClimberMotor.config_kI(1, 0, 30);
-    // lClimberMotor.config_kD(1, 0, 30);
+ 
 
    
 
   }
-
+/** Get the voltage from the climber
+ * @return  The voltage as a double
+  */ 
   public  double getClimberVoltage(){
     return lClimberMotor.getSupplyCurrent();
   }
 
-
+ /* how tf is our code more documented than the fucking sds code */
   /**
 	 * Get the current climber's position in degrees from zero, which should be set to 0 when the robot is enabled.
 	 *
@@ -75,13 +66,13 @@ public class Climber extends SubsystemBase {
     return lClimberMotor.getSelectedSensorPosition() / 2048.0 * 360;
   }
   
-  // public double climberPos(){
-  //   // return lClimberMotor.getSelectedSensorPosition()/
-  // }
+  
 
+  /** Moves the climber by percent output 
+   * @param percent output
+   * */  
   public void moveClimber(double percent){
-    // System.out.println("Left: " + percent);
-    // System.out.println("Right: " + (-percent));
+  
     lClimberMotor.set(TalonFXControlMode.PercentOutput, percent);
     rClimberMotor.set(TalonFXControlMode.PercentOutput, -percent);
 

@@ -57,6 +57,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Climber Angle", m_robotContainer.climber.getClimberPos() / 130.666); 
     SmartDashboard.putNumber("Pressure ", m_robotContainer.pneumatics.getPressure());
     SmartDashboard.putNumber("DISTANCE TO TARGET", m_robotContainer.limelight.getDistance()/12);
+    SmartDashboard.putNumber("LL TX", m_robotContainer.limelight.tx());
+    SmartDashboard.putBoolean("LOCKED ", m_robotContainer.limelight.crosshairOnTarget());
     
 
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
@@ -90,8 +92,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    // m_robotContainer.shooterHood.rightActuator.setAngle(0);
-    // m_robotContainer.shooterHood.leftActuator.setAngle(0);
+   
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

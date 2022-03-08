@@ -41,7 +41,6 @@ public class Shooter extends SubsystemBase {
     leftShooterMotor.config_kD(0, 0.0);
     leftShooterMotor.config_kF(0, 0.06);
     leftShooterMotor.configAllowableClosedloopError(0, 10);
-        // leftShooterMotor.setInverted(false);
 
     rightShooterMotor.configFactoryDefault();
     rightShooterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 10);
@@ -53,15 +52,7 @@ public class Shooter extends SubsystemBase {
     rightShooterMotor.configNominalOutputForward(0);
     rightShooterMotor.configNominalOutputReverse(0);
     rightShooterMotor.follow(leftShooterMotor);
-    // rightShooterMotor.config_kP(1, 0.6);
-    // rightShooterMotor.config_kI(1, 0.1);
-    // rightShooterMotor.config_kD(1, 0.1);
-    // rightShooterMotor.config_kF(1, .5);
-
-    // leftShooterMotor.config_kP(1, 0.6);
-    // leftShooterMotor.config_kI(1, 0.1);
-    // leftShooterMotor.config_kD(1, 0.1);
-    // leftShooterMotor.config_kF(1, .5);
+   
   }
   
   public double rpmToTalonFX(double rpm){
@@ -89,19 +80,21 @@ public class Shooter extends SubsystemBase {
     int distance;
     double limelightDistance;
     double speed;
+    double last_speed = 2000;
     // double speed;
     limelightDistance = limelight.getDistance()/12;
     distance = (int)Math.round(limelightDistance);
 
     if(distance <21){
     speed  = trajectoryTable.distanceToShooterSpeed[distance];
+    last_speed = speed;
     // speed = trajectoryTable.distanceToShooterSpeed[distance];
     // limelight.setLights(mode);
     // shooterHood.moveActuators(angle);
     return speed;
     }
     else{
-      return 3000;
+      return last_speed;
     }
     
   }

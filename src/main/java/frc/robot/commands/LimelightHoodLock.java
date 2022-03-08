@@ -15,6 +15,8 @@ public class LimelightHoodLock extends CommandBase {
   TrajectoryTable trajectoryTable;
   ShooterHood shooterHood;
   int mode;
+  double last_angle;
+
   /** Creates a new LimelightLEDs. */
   public LimelightHoodLock(Limelight limelight, TrajectoryTable trajectoryTable,ShooterHood shooterHood, int mode) {
     this.limelight = limelight;
@@ -27,34 +29,46 @@ public class LimelightHoodLock extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    last_angle = 50;
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+   
     int distance;
     double limelightDistance;
     double angle;
-    // double speed;
     limelightDistance = limelight.getDistance()/12;
     distance = (int)Math.round(limelightDistance);
 
+ if(limelightDistance < 5.5){
+      limelight.pipeline(0);
+    }
+    else{
+      limelight.pipeline(1);
+    }
     if(distance <21){
     angle  = trajectoryTable.distanceToHoodAngle[distance];
-    // speed = trajectoryTable.distanceToShooterSpeed[distance];
     limelight.setLights(mode);
     shooterHood.moveActuators(angle);
+      last_angle = angle;
     }
-    // else{
-      // speed = 3000;
-    // }
-    // RobotContainer.shootSpeed = speed;
-
+    else{
+      shooterHood.moveActuators(last_angle);
+    }
+   
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+
+    limelight.setLights(1);
+  }
 
   // Returns true when the command should end.
   @Override

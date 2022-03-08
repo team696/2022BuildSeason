@@ -16,9 +16,13 @@ public class Serializer extends SubsystemBase {
   TalonFX leftSerMotor;
   TalonFX rightSerMotor;
   public DigitalInput beamBreak;
+  Limelight limelight;
+  TrajectoryTable trajectoryTable;
 
   /** Creates a new Serializer. */
   public Serializer() {
+    limelight = new Limelight();
+    trajectoryTable = new TrajectoryTable();
     beamBreak = new DigitalInput(6);
     leftSerMotor = new TalonFX(Constants.Serializer.leftSerMotorport);
     rightSerMotor = new TalonFX(Constants.Serializer.rightSerMotor);
@@ -46,6 +50,28 @@ public class Serializer extends SubsystemBase {
       leftSerMotor.set(TalonFXControlMode.PercentOutput, percent);
       rightSerMotor.set(TalonFXControlMode.PercentOutput, percent2);
     }
+
+    
+  public double getRequiredShootSpeed(){
+    int distance;
+    double limelightDistance;
+    double speed;
+    // double speed;
+    limelightDistance = limelight.getDistance()/12;
+    distance = (int)Math.round(limelightDistance);
+
+    if(distance <21){
+    speed  = trajectoryTable.distanceToShooterSpeed[distance];
+    // speed = trajectoryTable.distanceToShooterSpeed[distance];
+    // limelight.setLights(mode);
+    // shooterHood.moveActuators(angle);
+    return speed + 100;
+    }
+    else{
+      return 3100;
+    }
+    
+  }
 
   }
   

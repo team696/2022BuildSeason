@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 import static frc.robot.Constants.*;
 
@@ -79,8 +80,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
 
   public DrivetrainSubsystem() {
-        rotatePID = new PIDController(0.04, 0.04, 0.0015);
-        rotatePID.setTolerance(10);
+        rotatePID = new PIDController(
+                Constants.rotatePid_P,
+                Constants.rotatePid_I,
+                Constants.rotatePid_D);
+        rotatePID.setTolerance(Constants.rotatePid_Tol);
 
         
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
@@ -144,7 +148,23 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public double limelightOffset(){
+          if(limelight.tx() > ((limelight.getDistance()/12) * Constants.limelightDeadbandCoefficient) ||
+             limelight.tx() <  -((limelight.getDistance()/12) * Constants.limelightDeadbandCoefficient)){
         return rotatePID.calculate(limelight.tx(), 0);
+          }
+          else {
+          return 0;
+          }
+}
+
+public double joyControlUntilLock(double joystick){
+
+        if(limelight.hasTarget() == 1){
+                return limelightOffset();
+        }
+        else {
+                return joystick;
+        }
 }
 
   /**

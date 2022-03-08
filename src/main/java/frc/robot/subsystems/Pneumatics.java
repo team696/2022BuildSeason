@@ -26,7 +26,7 @@ public class Pneumatics extends SubsystemBase {
     sol1 = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 2);
     compressor = new Compressor(1, PneumaticsModuleType.REVPH);
 
-    compressor.enableAnalog(90, 120);
+    compressor.enableAnalog(90, 100);
   }
 
   public double getPressure(){

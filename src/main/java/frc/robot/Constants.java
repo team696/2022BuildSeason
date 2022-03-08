@@ -51,6 +51,13 @@ public final class Constants {
     public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 9;
     public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(192.25);
 
+    public static final double limelightDeadbandCoefficient = 0.07;
+
+    public static final double rotatePid_P = 0.04;
+    public static final double rotatePid_I = 0.04;
+    public static final double rotatePid_D = 0.0015;
+    public static final double rotatePid_Tol = 30;
+
     public static final class AutoConstants {
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
 
@@ -106,10 +113,10 @@ public final class Constants {
         public static final double SHOOT_SPEED = 0.8;
     }
     public static final class LimelightConstants{
-                                                                /*  NO IDEA WHY IT SAYS VERTICAL HERE  V */
-        public static final double limelightDegrees = 36.8;  /* TODO  how many degrees back is your limelight rotated from perfectly vertical? */
-        public static final double limelightHeight = 24; /* TODO  Height of limelight lens to the floor in inches */
-        public static final double goalHeight = 104; /* TODO Height of goal in inches  */
+                                                               
+        public static final double limelightDegrees = 36.8;  
+        public static final double limelightHeight = 24; 
+        public static final double goalHeight = 104; 
 
     }
 

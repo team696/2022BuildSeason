@@ -10,13 +10,13 @@ import frc.robot.subsystems.Shooter;
 
 public class ShootCommand extends CommandBase {
   Shooter shooter;
-  double rpm;
+  // double rpm;
   boolean isRunning;
   /** Creates a new ShootCommand. */
-  public ShootCommand(Shooter shooter, double rpm, boolean isRunning) {
+  public ShootCommand(Shooter shooter, /*  double rpm,*/ boolean isRunning) {
     this.isRunning = isRunning;
     this.shooter = shooter;
-    this.rpm = rpm;
+    // this.rpm = rpm;
     addRequirements(shooter);
 
     // Use addRequirements() here to declare subsystem dependencies.
