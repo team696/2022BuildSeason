@@ -24,7 +24,10 @@ public class DIOSub extends SubsystemBase {
   public static boolean SH_R;
   /** Creates a new DIO. */
   public DIOSub() {}
-
+/**
+ * Uses an array to return the values from all 6 DIO ports
+ * @return A boolean based off of which port used in the array 
+ */
   public boolean[] getSensorStates(){
 
     boolean out_array[]=new boolean[6];

@@ -27,11 +27,16 @@ public class Intake extends SubsystemBase {
 
 
   }
-
+/** Runs the intake motors off percent output
+ *  @param power double for the speed of the motor
+ * */ 
   public void runIntake(double power){
     intakeMotor.set(TalonFXControlMode.PercentOutput, power);
   }
 
+  /** Deploys the intake pneumatics
+    @param state boolean for deployed or stowed
+    */
   public void deployIntake(boolean state){
     intakeSolenoid.set(state);
   }

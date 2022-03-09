@@ -46,6 +46,12 @@ public class Serializer extends SubsystemBase {
     rightSerMotor.configForwardSoftLimitEnable(false);
     rightSerMotor.configReverseSoftLimitEnable(false);
   }
+
+  /**
+   * Method for running the serializer motors.
+   * @param percent percent output for the bottom motor (?)
+   * @param percent2 percent output for the top motor (?)
+   */
     public void runSerMotors(double percent, double percent2){
       leftSerMotor.set(TalonFXControlMode.PercentOutput, percent);
       rightSerMotor.set(TalonFXControlMode.PercentOutput, percent2);

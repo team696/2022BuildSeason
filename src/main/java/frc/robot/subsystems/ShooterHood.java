@@ -19,7 +19,10 @@ public class ShooterHood extends SubsystemBase {
     // leftActuator.setAngle(0);
     // rightActuator.setAngle(0);
   }
-
+/**
+ * Method used for controlling the linear actuators.
+ * @param position Desired position in angle (about 50 - 130).
+ */
   public void moveActuators(double position){
     // if(position<0){
     //   position = 0;
@@ -34,7 +37,10 @@ public class ShooterHood extends SubsystemBase {
   }
 
   
-
+/**
+ * 
+ * @return the position of the linear actuators in angle.
+ */
   public double servoPosition(){
 return leftActuator.getAngle();
   }

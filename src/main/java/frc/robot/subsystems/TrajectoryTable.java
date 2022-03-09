@@ -11,6 +11,9 @@ public class TrajectoryTable extends SubsystemBase {
   public TrajectoryTable() {}
 
   /* IDK IF THIS WILL WORK IM BAD WITH ARRAYS */
+  /**
+   * An array for what hood angles correspond to each distance in feet.
+   */
    public  double distanceToHoodAngle[] = {
      50,  /* 0 */
      53,  /* 1 */
@@ -34,7 +37,9 @@ public class TrajectoryTable extends SubsystemBase {
      107, /* 19 */
      110  /* 20 */
    };
-
+/**
+ * An array for what shooter speeds corresponds to each distance in feet.
+ */
    public double distanceToShooterSpeed[] = {
      2000,    /* 0 */
      2100,    /* 1 */

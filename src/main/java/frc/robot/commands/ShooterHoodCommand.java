@@ -32,7 +32,9 @@ public class ShooterHoodCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // timer++;
+    // timer++;  
+        double hood_axis = -Math.round(RobotContainer.controlPanel.getRawAxis(Constants.Shooter.hoodAxis)*128*1.5*0.5);
+
     if(RobotContainer.controlPanel.getRawButton(Constants.Shooter.hoodAutoButton)){
       shooterHood.moveActuators(100);
 
@@ -40,18 +42,18 @@ public class ShooterHoodCommand extends CommandBase {
 
     }
     else{
-      double hood_axis = -Math.round(RobotContainer.controlPanel.getRawAxis(Constants.Shooter.hoodAxis)*128*1.5*0.5);
+              shooterHood.moveActuators(/* shooterHood.servoPosition() + */ hood_axis + 100);
 
-      double delta = hood_axis - last_hood_axis;
+
+      // double delta = hood_axis - last_hood_axis;
     
-      SmartDashboard.putNumber("Hood Axis", Math.round(RobotContainer.controlPanel.getRawAxis(Constants.Shooter.hoodAxis)*128*0.5));
+      // SmartDashboard.putNumber("Hood Axis", Math.round(RobotContainer.controlPanel.getRawAxis(Constants.Shooter.hoodAxis)*128*0.5));
 
-      if (delta + shooterHood.servoPosition() <= 150 && delta + shooterHood.servoPosition() >= 51){
-        shooterHood.moveActuators(shooterHood.servoPosition() + delta);
+      // if (delta + shooterHood.servoPosition() <= 150 && delta + shooterHood.servoPosition() >= 51){
       
        
-      }
-      last_hood_axis = hood_axis;
+      // }
+      // last_hood_axis = hood_axis;
   }
   }
 

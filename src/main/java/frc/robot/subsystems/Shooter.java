@@ -55,27 +55,50 @@ public class Shooter extends SubsystemBase {
    
   }
   
+
+  /**
+   * Method used to convert RPM  to TalonFX sensor units.
+   * (Inverse of talonFXtoRPM)
+   * @param rpm  The RPM you want to convert.
+   * @return the TalonFX sensor units.
+   */
   public double rpmToTalonFX(double rpm){
     double retval = rpm / 0.667 / 60 / 10 * 2048;
     return retval;
   }
 
+  /**
+   * Method used to convert TalonFX units into RPM.
+   * (Inverse of rpmToTalonFX)
+   * @param speed TalonFX sensor units you want to convert \.
+   * @return The RPM equivalent of the TalonFX sensor units.
+   */
   public double talonFXtoRPM(double speed){     // talonFX = encoder ticks per 100ms
     double rpm = speed/2048 * 10 * 60 * 0.667;  //  (rotations per 1/10s) * encoder updates per second * rps to rpm * gear ratio
     return rpm;
   }
 
-
+/**
+ * 
+ * @return the RPM of the shooter in TalonFX sensor units.
+ */
   public double getShooterRPM(){
     return talonFXtoRPM(leftShooterMotor.getSelectedSensorVelocity());
 
   }
 
+  /**
+   * Method for controlling the shooter wheels using percent output.
+   * @param percent output of the motor from -1 to 1.
+   */
   public void setShooterPercent(double percent){
     leftShooterMotor.set(TalonFXControlMode.PercentOutput, percent);
   }
 
-
+/**
+ * Uses the limelight and the trajectory table 
+ * @return the required shooter wheel speed using the distance from the target.
+ */
   public double getRequiredShootSpeed(){
     int distance;
     double limelightDistance;
@@ -102,11 +125,18 @@ public class Shooter extends SubsystemBase {
   
 
 
-
+/**
+ * Method for controlling the shooter wheels using velocity control.
+ * @param speed The desired speed of the shooter wheel in RPM.
+ */
   public void setShooter(double speed){
     leftShooterMotor.set(TalonFXControlMode.Velocity, speed);
     // leftShooterMotor.set(1);
   }
+
+  /**
+   * Disables the shooter.
+   */
   public void shooterOff(){
     leftShooterMotor.disable();
   }

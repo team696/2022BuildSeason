@@ -85,11 +85,11 @@ public final class Constants {
     public static final double CLIMBER_SENSOR_TIMEOUT_LOOPS = 10;
 
     public static final int CLIMBER_MANUAL_ROTATION_AXIS = 0;
-    public static final int CLIMBER_DOUBLE_HAND_BUTTON = 3;
-    public static final int CLIMBER_SINGLE_HAND_BUTTON = 18;
+    public static final int CLIMBER_DOUBLE_HAND_BUTTON = 7;
+    public static final int CLIMBER_SINGLE_HAND_BUTTON = 8;
     public static final int CLIMBER_SINGLE_RELOCK_BUTTON = 13;
     public static final double CLIMBER_MAX_VOLTAGE = 12;
-    public static final int CLIMBER_AUTO_BUTTON = 11;
+    public static final int CLIMBER_AUTO_BUTTON = 6;
 
 
     //DIO Pins on the RIO for climber sensors

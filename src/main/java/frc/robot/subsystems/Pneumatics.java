@@ -28,12 +28,15 @@ public class Pneumatics extends SubsystemBase {
 
     compressor.enableAnalog(90, 100);
   }
-
+/** Returns the pressure reading of the compressor in PSI */
   public double getPressure(){
     return compressor.getPressure();
   }
 
-
+/** Method used to control the climber pneumatics
+ * @param state which latches you want to move
+ * @param value which direction you want to move them
+ * */ 
   public void autoPneumatics(LatchStates state, Value value){
     switch(state) {
 

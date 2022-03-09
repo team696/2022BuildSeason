@@ -72,23 +72,28 @@ public class Limelight extends SubsystemBase {
 
     return NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").getDouble(0);
   }
-
+/** 
+ * @return if there is a target on screen*/ 
   public  double hasTarget(){
     return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
  
   }
-
+/** 
+ * @return wether or not the robot is aligned with the target
+ * */ 
   public boolean crosshairOnTarget(){
     if(hasTarget()==1){
       //need to adjust this threshold. maybe can change depending on distance from target
-      return tx()<2;
+      return tx()<3;
     }
     else{
       return false;
     }
   }
 
-  
+  /** Uses trig to get the distance from the limelight to the target
+   * @return The distance from the limelight to the target in inches
+   * */  
   public double getDistance(){
     double targetOffsetAngle = ty();
     double angleToGoalDegrees = Constants.LimelightConstants.limelightDegrees + targetOffsetAngle;
