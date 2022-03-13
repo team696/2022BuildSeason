@@ -6,58 +6,54 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.DIOSub;
+import frc.robot.subsystems.Pneumatics;
+import frc.robot.subsystems.Pneumatics.LatchStates;
 
-public class IntakeCommand extends CommandBase {
-  Intake intake;
-  double power;
-  boolean state;
-  double timer;
-  /** Runs both the intake pneumatics and motors.
-   * 
-   * 
-   * @param power power of the intake motors.
-   * @param state the state of the intake pneumatics.
-   */
-  public IntakeCommand(Intake intake, double power, boolean state ) {
-    this.intake = intake;
-    this.power = power;
-    this.state = state;
-    addRequirements(intake);
+public class AutoDoubleLatch extends CommandBase {
+  Pneumatics pneumatics;
+  DIOSub dioSub;
+  boolean[] sensor;
+
+
+  /** Creates a new AutoDoubleLatch. */
+  public AutoDoubleLatch(Pneumatics pneumatics, DIOSub dioSub) {
+    this.dioSub = dioSub;
+    this.pneumatics = pneumatics;
+    addRequirements(pneumatics, dioSub);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    timer = 0;
+    pneumatics.autoPneumatics(LatchStates.DOUBLE_LATCHES, Value.kForward);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    timer++;
-    intake.deployIntake(state);
+    sensor = dioSub.getSensorStates();
 
-    if(timer > 8){
-    intake.runIntake(power);
-    }
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    
+    pneumatics.autoPneumatics(LatchStates.DOUBLE_LATCHES, Value.kReverse);
 
-    intake.runIntake(0);
-    intake.deployIntake(false);
-    
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
-  }
+    if(!sensor[1] && !sensor[3]){
+      return true;
+    } 
+    else{
+      return false;
+      
+    }  }
 }

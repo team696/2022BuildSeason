@@ -31,7 +31,7 @@ public class AutoClimbStep1 extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    pneumatics.autoPneumatics(LatchStates.DOUBLE_LATCHES, Value.kForward);
+    pneumatics.autoPneumatics(LatchStates.DOUBLE_LATCHES, Value.kReverse);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -40,7 +40,7 @@ public class AutoClimbStep1 extends CommandBase {
     sensor = dioSub.getSensorStates();
 
     // while(climber.getClimberVoltage() < Constants.CLIMBER_MAX_VOLTAGE){
-      climber.moveClimber(1);
+      climber.moveClimber(1); /* 1 */
     // }
     
   }

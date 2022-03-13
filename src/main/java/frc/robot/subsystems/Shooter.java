@@ -24,8 +24,8 @@ public class Shooter extends SubsystemBase {
     limelight = new Limelight();
     trajectoryTable = new TrajectoryTable();
 
-    leftShooterMotor = new WPI_TalonFX(40);
-    rightShooterMotor = new WPI_TalonFX(41);
+    leftShooterMotor = new WPI_TalonFX(41);
+    rightShooterMotor = new WPI_TalonFX(40);
 
     leftShooterMotor.configFactoryDefault();
     leftShooterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);

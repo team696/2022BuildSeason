@@ -16,7 +16,7 @@ public class SingleLatchRelease extends CommandBase {
   Climber climber;
   Pneumatics pneumatics;
   double timer;
-  /** Creates a new SingleLatchRelease. */
+  /** Releases the single latches and applies a force to the bar to prevent buckling. */
   public SingleLatchRelease(Climber climber, Pneumatics pneumatics) {
     this.climber = climber;
     this.pneumatics = pneumatics;

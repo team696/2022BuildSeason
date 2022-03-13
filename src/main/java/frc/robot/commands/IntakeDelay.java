@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 
-public class IntakeCommand extends CommandBase {
+public class IntakeDelay extends CommandBase {
   Intake intake;
   double power;
   boolean state;
@@ -19,7 +19,7 @@ public class IntakeCommand extends CommandBase {
    * @param power power of the intake motors.
    * @param state the state of the intake pneumatics.
    */
-  public IntakeCommand(Intake intake, double power, boolean state ) {
+  public IntakeDelay(Intake intake, double power, boolean state ) {
     this.intake = intake;
     this.power = power;
     this.state = state;
@@ -39,7 +39,7 @@ public class IntakeCommand extends CommandBase {
     timer++;
     intake.deployIntake(state);
 
-    if(timer > 8){
+    if(timer > 40){
     intake.runIntake(power);
     }
 

@@ -10,7 +10,7 @@ import frc.robot.subsystems.Shooter;
 
 public class ShooterFinished extends CommandBase {
   Shooter shooter;
-  /** Creates a new ShooterFinished. */
+  /** Disables shooter motors and sets isShooting to false in order for SerializerCommand to work properly. */
   public ShooterFinished(Shooter shooter) {
     this.shooter = shooter;
     addRequirements(shooter);

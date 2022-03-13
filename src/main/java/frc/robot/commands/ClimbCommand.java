@@ -15,7 +15,7 @@ public class ClimbCommand extends CommandBase {
   // double percent;
   // boolean leftDir;
   // boolean rightDir;
-  /** Creates a new ClimbCommand1. */
+  /** Open loop limber control. */
   public ClimbCommand(Climber climber) {
     this.climber = climber;
 

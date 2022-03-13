@@ -22,11 +22,11 @@ public final class Constants {
         public static final double HOLD_SPEED = -0.25; //motor power at which to hold the climber in rough position
         public static final double CLIMB_APPROACH_SPEED = -0.35;
     }
-    public static final double DEADBAND_VALUE = 0.03; //controller deadband value
-    public static final int TRANSLATE_X_AXIS = 4; //controller deadband value
-    public static final int TRANSALTE_Y_AXIS = 1; //controller deadband value
-    public static final int ROTATE_AXIS = 3; //controller deadband value
-    public static final int GYRO_RECALIBRATE_BUTTON = 3; //recalibrate button on joysticks
+    public static final double DEADBAND_VALUE = 0.07; //controller deadband value
+    public static final int TRANSLATE_X_AXIS = 1; //controller deadband value
+    public static final int TRANSALTE_Y_AXIS = 4; //controller deadband value
+    public static final int ROTATE_AXIS = 2; //controller deadband value
+    public static final int GYRO_RECALIBRATE_BUTTON = 8; //recalibrate button on joysticks
 
     public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.521; // The left-to-right distance between the drivetrain wheels, measured center-to-center
     public static final double DRIVETRAIN_WHEELBASE_METERS = 0.622; // The front-to-back distance between the drivetrain wheels, measured center-to-center
@@ -34,22 +34,22 @@ public final class Constants {
     public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 2;                           //Swerve FL Drive CAN ID
     public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 1;                          //Swerve FL Steer CAN ID
     public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 3;                         //Swerve FL CANCoder ID
-    public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(346.72); // Steering offset. Measure as described on SDS Github
+    public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(141.2); // Steering offset. Measure as described on SDS Github
 
     public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 11;
     public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 10; 
     public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 12; 
-    public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(127.6); 
+    public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(81); 
 
     public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 5;
     public static final int BACK_LEFT_MODULE_STEER_MOTOR = 4;
     public static final int BACK_LEFT_MODULE_STEER_ENCODER = 6;
-    public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(240.38);
+    public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(74.1);
 
     public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 8;
     public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 7;
     public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 9;
-    public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(192.25);
+    public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(152.3);
 
     public static final double limelightDeadbandCoefficient = 0.07;
 
@@ -80,8 +80,8 @@ public final class Constants {
     }
     // kMaxAngularSpeedRadiansPerSecond
     // kMaxAngularAccelerationRadiansPerSecondSquared
-    //==================== Climber Constants ====================
-
+   
+ //==================== Operator Constants ====================
     public static final double CLIMBER_SENSOR_TIMEOUT_LOOPS = 10;
 
     public static final int CLIMBER_MANUAL_ROTATION_AXIS = 0;
@@ -90,15 +90,26 @@ public final class Constants {
     public static final int CLIMBER_SINGLE_RELOCK_BUTTON = 13;
     public static final double CLIMBER_MAX_VOLTAGE = 12;
     public static final int CLIMBER_AUTO_BUTTON = 6;
+    public static final int INTAKE_DEPLOY_BUTTON = 11;
+    public static final int SPINUP_SWITCH = 1;
+    public static final int SPIT_BALL_BUTTON = 9;
+    public static final int DROP_BALL_BUTTON = 12;
+    public static final int JOYSTICK_RIGHT_BUTTON = 7;
+    public static final int FIRE_BUTTON = 3;
+    public static final int HOOD_CONTROL_SWITCH = 10;
+    public static final int EMERGENCY_CLIMB_SWITCH = 2;
+    public static final int INTAKE_SWITCH_UP = 13;
+    public static final int INTAKE_SWITCH_DOWN = 14;
 
 
+ //==================== Climber Constants ====================
     //DIO Pins on the RIO for climber sensors
-    public static final int DOUBLEHAND_L_BOTTOM = 3; /* 1 */
-    public static final int DOUBLEHAND_L_TOP = 1; /* 0 */
-    public static final int DOUBLEHAND_R_BOTTOM = 5; /* 2 */
-    public static final int DOUBLEHAND_R_TOP = 2; /* 5 */
-    public static final int SINGLEHAND_L = 0; /* 4 */
-    public static final int SINGLEHAND_R = 4;/* 3 */
+    public static final int DOUBLEHAND_L_BOTTOM = 0; /* 2 */
+    public static final int DOUBLEHAND_L_TOP = 2;  /* 0 */
+    public static final int DOUBLEHAND_R_BOTTOM = 5; /* 4 */
+    public static final int DOUBLEHAND_R_TOP = 4; /* 5 */
+    public static final int SINGLEHAND_L = 1; /* 2 */
+    public static final int SINGLEHAND_R = 3; /* 3 */
     
     public static final class Serializer {
         public static final boolean serializerMotorInverted = false;
@@ -114,7 +125,7 @@ public final class Constants {
     }
     public static final class LimelightConstants{
                                                                
-        public static final double limelightDegrees = 36.8;  
+        public static final double limelightDegrees = 39;  
         public static final double limelightHeight = 24; 
         public static final double goalHeight = 104; 
 

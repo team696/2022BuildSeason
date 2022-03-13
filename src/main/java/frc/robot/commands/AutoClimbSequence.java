@@ -18,7 +18,7 @@ public class AutoClimbSequence extends SequentialCommandGroup {
   Pneumatics pneumatics;
   DIOSub dioSub;
   
-  /** Creates a new AutoClimbeSequence. */
+  /** The full sequence to automatically climb when the robot is latched onto the mid bar. */
   public AutoClimbSequence(Climber climber, Pneumatics pneumatics, DIOSub dioSub) {
     this.climber = climber;
     this.pneumatics = pneumatics;

@@ -17,7 +17,7 @@ public class LimelightHoodLock extends CommandBase {
   int mode;
   double last_angle;
 
-  /** Creates a new LimelightLEDs. */
+  /** Moves the hood based on the distance gotten from the limelight. */
   public LimelightHoodLock(Limelight limelight, TrajectoryTable trajectoryTable,ShooterHood shooterHood, int mode) {
     this.limelight = limelight;
     this.trajectoryTable = trajectoryTable;

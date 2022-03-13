@@ -34,13 +34,13 @@ public class AutoClimbStep3 extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climber.moveClimber(0.4);
+    climber.moveClimber(0.4); /* 0.4 */
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    pneumatics.autoPneumatics(LatchStates.DOUBLE_LATCHES, Value.kForward);
+    pneumatics.autoPneumatics(LatchStates.DOUBLE_LATCHES, Value.kReverse);
     climber.moveClimber(0.2);
   }
 

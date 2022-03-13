@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
@@ -37,10 +38,12 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.commands.AutoClimbSequence;
 import frc.robot.commands.AutoClimbSequenceNew;
+import frc.robot.commands.AutoDoubleLatch;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.ClimbCommand;
-
+import frc.robot.commands.ClimbCommand2;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.IntakeDelay;
 import frc.robot.commands.DIOTest;
 import frc.robot.commands.FireCommand;
 import frc.robot.commands.JoystickDriveCommand;
@@ -88,23 +91,34 @@ public class RobotContainer {
   public  static final Joystick controlPanel = new Joystick(2);
   public static final Joystick singleController = new Joystick(3);
 
-  private final JoystickButton leftStickButton = new JoystickButton(m_controller,  Constants.GYRO_RECALIBRATE_BUTTON) ;
+  /**Button on the left driver station joystick. */
+  private final JoystickButton leftStickButton = new JoystickButton(m_controller,   Constants.GYRO_RECALIBRATE_BUTTON  );
+  /**Button labeled "LATCHES" on the operator panel.*/
   private final JoystickButton climbPneuButton1 = new JoystickButton(controlPanel, Constants.CLIMBER_DOUBLE_HAND_BUTTON);
+  /**Button labeled "HOOKS" on the operator panel. */
   private final JoystickButton climbPneuButton2 = new JoystickButton(controlPanel, Constants.CLIMBER_SINGLE_HAND_BUTTON);
   private final JoystickButton singleRelockButton = new JoystickButton(controlPanel , Constants.CLIMBER_SINGLE_RELOCK_BUTTON);
+  /** Switch labeled "CLIMB" on the operator panel when it is in the up position. */
   private final JoystickButton autoClimbButton = new JoystickButton(controlPanel, Constants.CLIMBER_AUTO_BUTTON);
-  private final JoystickButton serializerForButton = new JoystickButton(controlPanel, 11 );
+  /**Button labeled "DEPLOY" on the operator panel. */
+  private final JoystickButton serializerForButton = new JoystickButton(controlPanel, Constants.INTAKE_DEPLOY_BUTTON );
   private final JoystickButton serializerRevButton = new JoystickButton(controlPanel, 20);
-  private final JoystickButton shooterSpinup = new JoystickButton(controlPanel, 1);
+  /**Button labeled "SPIN UP" on the operator panel. */
+  private final JoystickButton shooterSpinup = new JoystickButton(controlPanel, Constants.SPINUP_SWITCH);
   private final JoystickButton shooterHoodUp = new JoystickButton(controlPanel, 0);
-  private final JoystickButton spitBallButton = new JoystickButton(controlPanel, 9);
-  private final JoystickButton dropBallButton = new JoystickButton(controlPanel, 12);
-  private final JoystickButton lockOnSwitch = new JoystickButton(m_controller, 4);
-  private final JoystickButton fireButton = new JoystickButton(controlPanel, 3);
-  private final JoystickButton hoodControlButton = new JoystickButton(controlPanel, 10);
-  private final JoystickButton emergencyClimbManual = new JoystickButton(controlPanel, 2);
-  private final JoystickButton intakeButtonUp = new JoystickButton(controlPanel, 13);
-  private final JoystickButton intakeButtonDown = new JoystickButton(controlPanel, 14);
+  /**Second unlabeled button to the left of the "DEPLOY" button on the operator panel. */
+  private final JoystickButton spitBallButton = new JoystickButton(controlPanel, Constants.SPIT_BALL_BUTTON);
+  /** First unlabeled button to the left of the "DEPLOY" button on the operator panel.   */
+  private final JoystickButton dropBallButton = new JoystickButton(controlPanel, Constants.DROP_BALL_BUTTON);
+  private final JoystickButton lockOnSwitch = new JoystickButton(m_controller, Constants.JOYSTICK_RIGHT_BUTTON);
+  private final JoystickButton fireButton = new JoystickButton(controlPanel, Constants.FIRE_BUTTON);
+  private final JoystickButton hoodControlButton = new JoystickButton(controlPanel, Constants.HOOD_CONTROL_SWITCH);
+  private final JoystickButton emergencyClimbManual = new JoystickButton(controlPanel, Constants.EMERGENCY_CLIMB_SWITCH);
+  private final JoystickButton intakeButtonUp = new JoystickButton(controlPanel, Constants.INTAKE_SWITCH_UP);
+  private final JoystickButton intakeButtonDown = new JoystickButton(controlPanel, Constants.INTAKE_SWITCH_DOWN);
+  private final JoystickButton flashbangButton = new JoystickButton(controlPanel, 30);
+  private final JoystickButton testButton  = new JoystickButton(controlPanel, 15);
+  private final JoystickButton armButton = new JoystickButton(controlPanel, 4);
   
 
 
@@ -141,7 +155,7 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    // climber.setDefaultCommand(new ClimbCommand(climber));
+    climber.setDefaultCommand(new ClimbCommand(climber));
     shooterHood.setDefaultCommand(new ShooterHoodCommand(shooterHood));
    /* TODO SWITCH FOR DRIVERSTATION  */
     // Set up the default command for the drivetrain.
@@ -151,9 +165,9 @@ public class RobotContainer {
     // Right stick X axis -> rotation
     m_drivetrainSubsystem.setDefaultCommand(new JoystickDriveCommand(
             m_drivetrainSubsystem,
-            () -> -modifyAxis(m_controller.getRawAxis(Constants.TRANSLATE_X_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(-m_controller.getRawAxis(Constants.TRANSALTE_Y_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(-m_controller.getRawAxis(Constants.ROTATE_AXIS)) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+            () -> -modifyAxis(m_controller.getRawAxis( Constants.TRANSLATE_X_AXIS )) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(-m_controller.getRawAxis( Constants.TRANSALTE_Y_AXIS )) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(-m_controller.getRawAxis( Constants.ROTATE_AXIS )) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     )); 
 //     m_drivetrainSubsystem.setDefaultCommand(new JoystickDriveCommand(
 //       m_drivetrainSubsystem,
@@ -176,9 +190,9 @@ public class RobotContainer {
   private void configureButtonBindings() {
 /* ================================= SERIALIZER/INTAKE ================================= */
 
-    serializerForButton.whenHeld(new SerializerCommand(serializer, 0.2, -0.6).alongWith(new IntakeCommand(intake, -0.5, true)));
+    serializerForButton.whenHeld(new SerializerCommand(serializer, 0.2, -0.6).alongWith(new IntakeCommand(intake, -0.6, true)));
 
-    dropBallButton.whenHeld(new SerializerRevCommand(serializer, 0.0, 0.3).alongWith(new IntakeCommand(intake, 0.5, true)));
+    dropBallButton.whenHeld(new SerializerRevCommand(serializer, 0.0, 0.3).alongWith(new IntakeCommand(intake, 0.8, true)));
 
 
     spitBallButton.whenPressed(new SpitTopBall(serializer, shooter));
@@ -221,11 +235,27 @@ hoodControlButton.whenReleased(new ShooterHoodCommand(shooterHood));
     climbPneuButton2.whenPressed(new SingleLatchRelease(climber, pneumatics));
     climbPneuButton2.whenReleased(new ClimbCommand(climber));
 
-    if(!emergencyClimbManual.get()){
-    autoClimbButton.whenHeld(new AutoClimbSequence(climber, pneumatics, dioSub));
-    }
 
-    emergencyClimbManual.whenHeld(new ClimbCommand(climber));
+
+    // if(!emergencyClimbManual.get()){
+    autoClimbButton.whenPressed(new AutoClimbSequence(climber, pneumatics, dioSub));
+    autoClimbButton.whenReleased(new ClimbCommand(climber));
+
+    armButton.whenPressed(new AutoDoubleLatch(pneumatics, dioSub).deadlineWith(new ClimbCommand2(climber).alongWith(new JoystickDriveCommand(
+      m_drivetrainSubsystem,
+      () -> -modifyAxis(m_controller.getRawAxis(Constants.TRANSLATE_X_AXIS)/3) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+      () -> -modifyAxis(-m_controller.getRawAxis(Constants.TRANSALTE_Y_AXIS)/3) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+      () -> -modifyAxis(-m_controller.getRawAxis(Constants.ROTATE_AXIS)/3) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+))),true);
+      armButton.whenReleased(new ClimbCommand2(climber).alongWith(new JoystickDriveCommand(
+        m_drivetrainSubsystem,
+        () -> -modifyAxis(m_controller.getRawAxis(Constants.TRANSLATE_X_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+        () -> -modifyAxis(-m_controller.getRawAxis(Constants.TRANSALTE_Y_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+        () -> -modifyAxis(-m_controller.getRawAxis(Constants.ROTATE_AXIS)) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+  )), true);
+    
+
+    // emergencyClimbManual.whenHeld(new ClimbCommand(climber));
 
 /* ================================= SHOOTER ================================= */
     shooterSpinup.whenPressed(new ShootCommand(shooter, /* shootSpeed, */ true));
@@ -233,8 +263,7 @@ hoodControlButton.whenReleased(new ShooterHoodCommand(shooterHood));
 
     
 
-    // shooterHoodUp.whileHeld(new ShooterHoodCommand(shooterHood), true);
-    // shooterHoodUp.whenReleased(new ShooterHoodCommand(shooterHood), true);
+    
 
 /* ================================= SINGLE CONTROLLER ================================= */
 /* TODO REMOVE FOR DRIVERSTATION  */
@@ -326,9 +355,9 @@ hoodControlButton.whenReleased(new ShooterHoodCommand(shooterHood));
     Trajectory trajectoryDos= TrajectoryGenerator.generateTrajectory(
       new Pose2d(0, 0 , new Rotation2d(0)),
       List.of(
-              new Translation2d(1.5, 0.01)      
+              new Translation2d(1.8, 0.01)      
               ),
-      new Pose2d(1, 0, Rotation2d.fromDegrees(0)), 
+      new Pose2d(1.8, 0, Rotation2d.fromDegrees(0)), 
       trajectoryConfig
       );
 
@@ -352,8 +381,8 @@ hoodControlButton.whenReleased(new ShooterHoodCommand(shooterHood));
     trajectory,
      m_drivetrainSubsystem::getOdometryPose,
       m_drivetrainSubsystem.m_kinematics,
-       new PIDController(5, 0, 0),
-        new PIDController(5, 0, 0),
+       new PIDController(1.5, 0, 0),
+        new PIDController(1.5, 0, 0),
          thetaController,
           m_drivetrainSubsystem::setModuleStates2,
            m_drivetrainSubsystem);
@@ -363,8 +392,8 @@ hoodControlButton.whenReleased(new ShooterHoodCommand(shooterHood));
             trajectoryDos,
              m_drivetrainSubsystem::getOdometryPose,
               m_drivetrainSubsystem.m_kinematics,
-               new PIDController(2, 0, 0),
-                new PIDController(2, 0, 0),
+               new PIDController(1.5, 0, 0),
+                new PIDController(1.5, 0, 0),
                  thetaController,
                   m_drivetrainSubsystem::setModuleStates2,
                    m_drivetrainSubsystem);
@@ -373,24 +402,24 @@ hoodControlButton.whenReleased(new ShooterHoodCommand(shooterHood));
             trajectoryTres,
              m_drivetrainSubsystem::getOdometryPose,
               m_drivetrainSubsystem.m_kinematics,
-               new PIDController(4, 0, 0),
-                new PIDController(4, 0, 0),
+               new PIDController(1.5, 0, 0),
+                new PIDController(1.5, 0, 0),
                  thetaController,
                   m_drivetrainSubsystem::setModuleStates2,
                    m_drivetrainSubsystem);
     
 
-    return new SequentialCommandGroup(  /* AUTO SHIT ACTUALLY GOES HERE  also TODO MAYBE MAKE INDIVIDUAL COMMAND GROUPS FOR EACH FIELD POSITION */
+    return new SequentialCommandGroup(  /* AUTO SHIT ACTUALLY GOES HERE  also TODO MAYBE MAKE INDIVIDUAL COMMAND GROUPS FOR EACH FIELD POSITION AND USE A CASE SWITCH*/
       
        new InstantCommand(()-> m_drivetrainSubsystem.resetOdometry(trajectory.getInitialPose())),
-         swerveControllerCommand2.deadlineWith(new IntakeCommand(intake, -0.5, true)),
+         swerveControllerCommand2.deadlineWith(new IntakeDelay(intake, -0.8, true)),
           new InstantCommand(()-> m_drivetrainSubsystem.stop()).deadlineWith(new IntakeCommand(intake, 0, false)) ,
-            lockAndShoot2,
-              swerveControllerCommand.deadlineWith(new IntakeCommand(intake, -0.5, true)),
-               new InstantCommand(()-> m_drivetrainSubsystem.stop()).deadlineWith(new IntakeCommand(intake, -0.5, true)) ,
-                lockAndShoot,
-                  swerveControllerCommand3.deadlineWith(new IntakeCommand(intake, -0.5, true)),
-                    lockAndShoot3.deadlineWith(new IntakeCommand(intake, -0.5, true ))
+            lockAndShoot2
+              // swerveControllerCommand.deadlineWith(new IntakeCommand(intake, -0.8, true)),
+              //  new InstantCommand(()-> m_drivetrainSubsystem.stop()).deadlineWith(new IntakeCommand(intake, -0.5, true)) ,
+              //   lockAndShoot
+                  // swerveControllerCommand3.deadlineWith(new IntakeCommand(intake, -0.5, true)),
+                  //   lockAndShoot3.deadlineWith(new IntakeCommand(intake, -0.5, true ))
     );
 
     

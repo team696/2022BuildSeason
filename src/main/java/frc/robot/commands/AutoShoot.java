@@ -24,10 +24,11 @@ public class AutoShoot extends CommandBase {
   boolean done;
   double timer;
   double overallTimer;
+  double shootTimer;
   double speed;
   double last_angle;
 
-  /** Creates a new AutoShoot. */
+  /** Sets the angle and speed of the shooter for the distance, then fires 2 balls after a delay. */
   public AutoShoot(Limelight limelight, Shooter shooter, Serializer serializer, ShooterHood shooterHood, TrajectoryTable trajectoryTable) {
     this.limelight = limelight;
     this.shooter = shooter;
@@ -42,6 +43,7 @@ public class AutoShoot extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    shootTimer = 0;
     overallTimer = 0;
     done = false;
     step = 0;
@@ -63,7 +65,8 @@ public class AutoShoot extends CommandBase {
     overallTimer++;
     locked = limelight.crosshairOnTarget();
     speed = shooter.getRequiredShootSpeed();
-// if(overallTimer < 100){
+       /* ====================== SETS SHOOTER AND HOOD ======================*/
+
         shooter.setShooter(shooter.rpmToTalonFX(speed));
 
         if(distance <21){
@@ -75,13 +78,14 @@ public class AutoShoot extends CommandBase {
           else{
             shooterHood.moveActuators(last_angle);
           }
-         
+          shootTimer++;
+        /* ====================== FIRE COMMAND ======================*/
 
-  if(locked){
+  if(shootTimer > 100){
 
       
    
-    if( shooter.getShooterRPM() > (speed )){
+    // if( shooter.getShooterRPM() > (speed )){
       switch(step){
         case 0:
         serializer.runSerMotors(0.4, -0.5);
@@ -112,7 +116,7 @@ public class AutoShoot extends CommandBase {
         case 2:
         timer++;
         if(timer <5){
-        serializer.runSerMotors(0.0, 0.0);
+        serializer.runSerMotors(0.0, -0.3);
         }
         else{
           timer = 0;
@@ -127,23 +131,23 @@ public class AutoShoot extends CommandBase {
           serializer.runSerMotors(0.4, -0.6);
         }
         else{
-          serializer.runSerMotors(0, 0);
+          serializer.runSerMotors(0, -0.3);
           done = true;
         }
       } 
-        // finished = true;
      }
      else{
        serializer.runSerMotors(0, 0);
      }
+
+      /* ====================== TIMER ======================*/
+
      if (overallTimer > 300){
        done = true;
      }
 
-    //  int distance;
-    //  double limelightDistance;
-    //  limelightDistance = limelight.getDistance()/12;
-    //  distance = (int)Math.round(limelightDistance);
+      /* ====================== SWITCHES PIPELINES ======================*/
+
  
   if(limelightDistance < 5.5){
        limelight.pipeline(0);
@@ -153,10 +157,8 @@ public class AutoShoot extends CommandBase {
      }
     
 }
-// else{
-//   done = true;
-// }
-}
+
+
 
     
 

@@ -16,7 +16,7 @@ public class DoubleLatchRelease extends CommandBase {
   Climber climber;
   Pneumatics pneumatics;
   double timer;
-  /** Creates a new DoubleLatchRelease. */
+  /** Releases the double latches while putting pressure on the bar in order to prevent the latches from locking up. */
   public DoubleLatchRelease(Climber climber, Pneumatics pneumatics) {
     this.climber = climber;
     this.pneumatics = pneumatics;
@@ -36,7 +36,7 @@ public class DoubleLatchRelease extends CommandBase {
     climber.lClimberMotor.setNeutralMode(NeutralMode.Brake);
     climber.rClimberMotor.setNeutralMode(NeutralMode.Brake);
     climber.moveClimber(-0.1);
-    pneumatics.autoPneumatics(LatchStates.DOUBLE_LATCHES, Value.kReverse);;
+    pneumatics.autoPneumatics(LatchStates.DOUBLE_LATCHES, Value.kForward);;
     timer++;
 
   }

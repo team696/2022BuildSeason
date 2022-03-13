@@ -43,8 +43,8 @@ public class AutoClimbStep2 extends CommandBase {
     sensor = dioSub.getSensorStates();
 
 
-    climber.moveClimber(1);
-    pneumatics.autoPneumatics(LatchStates.DOUBLE_LATCHES, Value.kForward);
+    climber.moveClimber(1); /* 1 */
+    pneumatics.autoPneumatics(LatchStates.DOUBLE_LATCHES, Value.kReverse);
 
   }
 

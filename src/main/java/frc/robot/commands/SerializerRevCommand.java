@@ -12,7 +12,12 @@ public class SerializerRevCommand extends CommandBase {
   double percent1;
   double percent2;
 
-  /** Creates a new SerializerRevCommand. */
+  /** Runs the serializer in reverse. Functonally the same to SerializerCommand, but ignores beam break.
+   * 
+   * 
+   * @param percent1 Percent output of top motor.
+   * @param percent2 Percent output of bottom motor.
+   */
   public SerializerRevCommand(Serializer serializer, double percent1, double percent2) {
     this.serializer = serializer;
     this.percent1 = percent1;

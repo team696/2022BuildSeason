@@ -31,8 +31,8 @@ public class Climber extends SubsystemBase {
   /** Creates a new Climber. */
   public Climber() {
     
-    lClimberMotor = new WPI_TalonFX(21);
-    rClimberMotor = new WPI_TalonFX(20);
+    lClimberMotor = new WPI_TalonFX(20);
+    rClimberMotor = new WPI_TalonFX(21);
 
      rClimberMotor.configFactoryDefault();
    
@@ -52,6 +52,17 @@ public class Climber extends SubsystemBase {
   */ 
   public  double getClimberVoltage(){
     return lClimberMotor.getSupplyCurrent();
+  }
+
+  public void setNeutralBrake(){
+    rClimberMotor.setNeutralMode(NeutralMode.Brake);
+    lClimberMotor.setNeutralMode(NeutralMode.Brake);
+  }
+
+  public void setNetralCoast(){
+
+    rClimberMotor.setNeutralMode(NeutralMode.Coast);
+    lClimberMotor.setNeutralMode(NeutralMode.Coast);
   }
 
  /* how tf is our code more documented than the fucking sds code */

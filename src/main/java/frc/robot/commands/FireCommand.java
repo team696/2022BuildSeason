@@ -12,7 +12,7 @@ public class FireCommand extends CommandBase {
   int step;
   boolean done;
   double timer;
-  /** Creates a new FireCommand. */
+  /** Fires one ball and then uses the beam break to delay the second ball. */
   public FireCommand(Serializer serializer ) {
     this.serializer = serializer;
     addRequirements(serializer );

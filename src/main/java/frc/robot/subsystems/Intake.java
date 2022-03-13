@@ -22,6 +22,7 @@ public class Intake extends SubsystemBase {
   public Intake() {
 
     intakeMotor = new WPI_TalonFX(50);
+    intakeMotor.configFactoryDefault();
 
     intakeSolenoid = new Solenoid(PneumaticsModuleType.REVPH, 4);
 

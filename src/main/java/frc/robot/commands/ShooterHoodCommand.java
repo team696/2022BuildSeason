@@ -15,7 +15,7 @@ public class ShooterHoodCommand extends CommandBase {
   double   position;
   double last_hood_axis;
   // double timer;
-  /** Creates a new ShooterHoodCommand. */
+  /** Open loop hood control. */
   public ShooterHoodCommand(ShooterHood shooterHood) {
     this.shooterHood = shooterHood;
     addRequirements(shooterHood);

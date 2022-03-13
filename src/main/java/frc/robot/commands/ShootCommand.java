@@ -12,7 +12,7 @@ public class ShootCommand extends CommandBase {
   Shooter shooter;
   // double rpm;
   boolean isRunning;
-  /** Creates a new ShootCommand. */
+  /** Runs the shooter motors based off of the distance from the limelight. */
   public ShootCommand(Shooter shooter, /*  double rpm,*/ boolean isRunning) {
     this.isRunning = isRunning;
     this.shooter = shooter;

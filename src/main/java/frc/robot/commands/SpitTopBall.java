@@ -14,7 +14,7 @@ public class SpitTopBall extends CommandBase {
   int step;
   boolean done;
   double timer;
-  /** Creates a new SpitTopBall. */
+  /** Runs the shooter at a low speed, spits out the top ball in the serializer and serializes the bottom ball up to the beam break. */
   public SpitTopBall(Serializer serializer, Shooter shooter) {
     this.serializer = serializer;
     this.shooter = shooter;

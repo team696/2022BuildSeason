@@ -16,7 +16,12 @@ public class SerializerCommand extends CommandBase {
   double percent1;
   double percent2;
   boolean stoppable;
-  /** Creates a new SerializerCommand. */
+  /** Runs the serializer motors. Will not move the ball past the beam break unless shooting.
+   * 
+   * 
+   * @param percent1 percent output for top motor.
+   * @param percent2 percent outup for bottom motor.
+   */
   public SerializerCommand(Serializer serializer, double  percent1, double  percent2) {
     this.serializer = serializer;
     this.percent1 = percent1;
