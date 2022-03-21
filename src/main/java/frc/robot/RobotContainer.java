@@ -102,14 +102,21 @@ public class RobotContainer {
   private final JoystickButton spitBallButton = new JoystickButton(controlPanel, Constants.SPIT_BALL_BUTTON);
   /** First unlabeled button to the left of the "DEPLOY" button on the operator panel.   */
   private final JoystickButton dropBallButton = new JoystickButton(controlPanel, Constants.DROP_BALL_BUTTON);
+  /** Button on the right driver station joystick. */
   private final JoystickButton lockOnSwitch = new JoystickButton(m_controller, Constants.JOYSTICK_RIGHT_BUTTON);
+  /** Button labeled "SHOOT" on the operator panel. */
   private final JoystickButton fireButton = new JoystickButton(controlPanel, Constants.FIRE_BUTTON);
+  /** Silver switch labeled "MAN" and "AUTO" on the operator panel. */
   private final JoystickButton hoodControlButton = new JoystickButton(controlPanel, Constants.HOOD_CONTROL_SWITCH);
+  /** Covered switch on the operator panel. */
   private final JoystickButton emergencyClimbManual = new JoystickButton(controlPanel, Constants.EMERGENCY_CLIMB_SWITCH);
+  /** Switch labeled "INTAKE" when it is set to the up position(toggle switch). */
   private final JoystickButton intakeButtonUp = new JoystickButton(controlPanel, Constants.INTAKE_SWITCH_UP);
+  /**Switch labeled "INTAKE" when it is set to the down position (momentary switch). */
   private final JoystickButton intakeButtonDown = new JoystickButton(controlPanel, Constants.INTAKE_SWITCH_DOWN);
   private final JoystickButton flashbangButton = new JoystickButton(controlPanel, 30);
   private final JoystickButton testButton  = new JoystickButton(controlPanel, 15);
+  /** Silver switch labeled "ARM" (???????).*/
   private final JoystickButton armButton = new JoystickButton(controlPanel, 4);
   
 
@@ -182,7 +189,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
 /* ================================= SERIALIZER/INTAKE ================================= */
 
-    serializerForButton.whenHeld(new SerializerCommand(serializer, 0.2, -0.6).alongWith(new IntakeCommand(intake, -0.6, true)));
+    serializerForButton.whenHeld(new SerializerCommand(serializer, 0.2, -0.6).alongWith(new IntakeCommand(intake, -0.4, true)));
 
     dropBallButton.whenHeld(new SerializerRevCommand(serializer, 0.0, 0.3).alongWith(new IntakeCommand(intake, 0.8, true)));
 
@@ -200,7 +207,6 @@ public class RobotContainer {
 /* ================================= DRIVE ================================= */
  /* TODO ADD BACK FOR DRIVERSTATION  */
     leftStickButton.whenPressed(m_drivetrainSubsystem::zeroGyroscope); 
-// if(hoodControlButton.getAsBoolean()){
     lockOnSwitch.whileHeld(new JoystickDriveCommand(
       m_drivetrainSubsystem,
       () -> -modifyAxis(m_controller.getRawAxis(Constants.TRANSLATE_X_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
@@ -213,13 +219,11 @@ public class RobotContainer {
       () -> -modifyAxis(-m_controller.getRawAxis(Constants.TRANSALTE_Y_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
       () -> -modifyAxis(-m_controller.getRawAxis(Constants.ROTATE_AXIS)) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
 ).alongWith(new LimelightHoodLock(limelight, trajectoryTable, shooterHood, 1)));
-// }
   hoodControlButton.cancelWhenActive(new ShooterHoodCommand(shooterHood));
 hoodControlButton.whenReleased(new ShooterHoodCommand(shooterHood));
  
 
 /* ================================= CLIMBER ================================= */
-    //Actuation of the climber's pneumatic components via switches
     climbPneuButton1.toggleWhenPressed(new PneumaticsCommand1(pneumatics, Value.kForward));
 
     
@@ -229,7 +233,6 @@ hoodControlButton.whenReleased(new ShooterHoodCommand(shooterHood));
 
 
 
-    // if(!emergencyClimbManual.get()){
     autoClimbButton.whenPressed(new AutoClimbSequence(climber, pneumatics, dioSub));
     autoClimbButton.whenReleased(new ClimbCommand(climber));
 
@@ -247,7 +250,6 @@ hoodControlButton.whenReleased(new ShooterHoodCommand(shooterHood));
   )), true);
     
 
-    // emergencyClimbManual.whenHeld(new ClimbCommand(climber));
 
 /* ================================= SHOOTER ================================= */
     shooterSpinup.whenPressed(new ShootCommand(shooter, /* shootSpeed, */ true));

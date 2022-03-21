@@ -136,5 +136,15 @@ public final class Constants {
 public static final class Shooter {
         public static final int hoodAutoButton = 9;
         public static final int hoodAxis = 1;
+        public static final double hoodPeakOutput = 1;
+        public static final double hoodLimitFor = 400;
+        public static final double hoodLimitRev = -400;
+        public static final boolean hoodSoftLimitForward = true;
+        public static final boolean hoodSoftLimitReverse = true;
+        public static final double kP = 1.0;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0;
+        public static final double kTolerance = 0.1;
+        public static final int hoodMotorPort = 60;
     }
 }
