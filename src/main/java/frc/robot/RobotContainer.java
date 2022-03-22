@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.AutoConstants;
+import frc.robot.autos.TwoBallAuto;
 import frc.robot.commands.AutoClimbSequence;
 import frc.robot.commands.AutoDoubleLatch;
 import frc.robot.commands.AutoShoot;
@@ -38,8 +39,8 @@ import frc.robot.commands.ClimbCommand2;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeDelay;
 import frc.robot.commands.FireCommand;
-import frc.robot.commands.JoystickDriveCommand;
 import frc.robot.commands.LimelightHoodLock;
+import frc.robot.commands.LimelightLockSwerve;
 import frc.robot.commands.PneumaticsCommand1;
 import frc.robot.commands.PneumaticsCommand2;
 import frc.robot.commands.SerializerCommand;
@@ -49,15 +50,17 @@ import frc.robot.commands.ShooterFinished;
 import frc.robot.commands.ShooterHoodCommand;
 import frc.robot.commands.SingleLatchRelease;
 import frc.robot.commands.SpitTopBall;
+import frc.robot.commands.TeleopSwerve;
+import frc.robot.commands.TeleopSwerveSlow;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DIOSub;
-import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.Serializer;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterHood;
+import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.TrajectoryTable;
 
 /**
@@ -68,7 +71,6 @@ import frc.robot.subsystems.TrajectoryTable;
  */
 public class RobotContainer {
 
-  private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   public final Serializer serializer = new Serializer();
   public final Climber climber = new Climber();
   public  final Pneumatics pneumatics = new Pneumatics();
@@ -78,44 +80,63 @@ public class RobotContainer {
   public final Intake intake = new Intake();
   public final Limelight limelight = new Limelight();
   public final TrajectoryTable trajectoryTable = new TrajectoryTable();
-
-  private final XboxController m_controller = new XboxController(0);
+  private final Swerve s_Swerve = new Swerve();
+  private final Joystick m_controller = new Joystick(0);
   public  static final Joystick controlPanel = new Joystick(2);
   public static final Joystick singleController = new Joystick(3);
 
   /**Button on the left driver station joystick. */
   private final JoystickButton leftStickButton = new JoystickButton(m_controller,   Constants.GYRO_RECALIBRATE_BUTTON  );
+
   /**Button labeled "LATCHES" on the operator panel.*/
   private final JoystickButton climbPneuButton1 = new JoystickButton(controlPanel, Constants.CLIMBER_DOUBLE_HAND_BUTTON);
+
   /**Button labeled "HOOKS" on the operator panel. */
   private final JoystickButton climbPneuButton2 = new JoystickButton(controlPanel, Constants.CLIMBER_SINGLE_HAND_BUTTON);
+
   private final JoystickButton singleRelockButton = new JoystickButton(controlPanel , Constants.CLIMBER_SINGLE_RELOCK_BUTTON);
+
   /** Switch labeled "CLIMB" on the operator panel when it is in the up position. */
   private final JoystickButton autoClimbButton = new JoystickButton(controlPanel, Constants.CLIMBER_AUTO_BUTTON);
+
   /**Button labeled "DEPLOY" on the operator panel. */
   private final JoystickButton serializerForButton = new JoystickButton(controlPanel, Constants.INTAKE_DEPLOY_BUTTON );
+
   private final JoystickButton serializerRevButton = new JoystickButton(controlPanel, 20);
+
   /**Button labeled "SPIN UP" on the operator panel. */
   private final JoystickButton shooterSpinup = new JoystickButton(controlPanel, Constants.SPINUP_SWITCH);
+
   private final JoystickButton shooterHoodUp = new JoystickButton(controlPanel, 0);
+
   /**Second unlabeled button to the left of the "DEPLOY" button on the operator panel. */
   private final JoystickButton spitBallButton = new JoystickButton(controlPanel, Constants.SPIT_BALL_BUTTON);
+
   /** First unlabeled button to the left of the "DEPLOY" button on the operator panel.   */
   private final JoystickButton dropBallButton = new JoystickButton(controlPanel, Constants.DROP_BALL_BUTTON);
+
   /** Button on the right driver station joystick. */
   private final JoystickButton lockOnSwitch = new JoystickButton(m_controller, Constants.JOYSTICK_RIGHT_BUTTON);
+
   /** Button labeled "SHOOT" on the operator panel. */
   private final JoystickButton fireButton = new JoystickButton(controlPanel, Constants.FIRE_BUTTON);
+
   /** Silver switch labeled "MAN" and "AUTO" on the operator panel. */
   private final JoystickButton hoodControlButton = new JoystickButton(controlPanel, Constants.HOOD_CONTROL_SWITCH);
+
   /** Covered switch on the operator panel. */
   private final JoystickButton emergencyClimbManual = new JoystickButton(controlPanel, Constants.EMERGENCY_CLIMB_SWITCH);
+
   /** Switch labeled "INTAKE" when it is set to the up position(toggle switch). */
   private final JoystickButton intakeButtonUp = new JoystickButton(controlPanel, Constants.INTAKE_SWITCH_UP);
+
   /**Switch labeled "INTAKE" when it is set to the down position (momentary switch). */
   private final JoystickButton intakeButtonDown = new JoystickButton(controlPanel, Constants.INTAKE_SWITCH_DOWN);
+
   private final JoystickButton flashbangButton = new JoystickButton(controlPanel, 30);
+
   private final JoystickButton testButton  = new JoystickButton(controlPanel, 15);
+
   /** Silver switch labeled "ARM" (???????).*/
   private final JoystickButton armButton = new JoystickButton(controlPanel, 4);
   
@@ -138,10 +159,19 @@ public class RobotContainer {
 
 
 
-
+     boolean fieldRelative = true;
+    boolean openLoop = true;
   
   static public boolean isShooting = false;
   public static  double shootSpeed = 3000;
+
+  private final int translationAxis = 1;
+  private final int strafeAxis =  4;
+  private final int rotationAxis = 2;
+
+ 
+  /* Subsystems */
+
 
 
 
@@ -154,26 +184,12 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+ 
+    s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, m_controller, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
+
     climber.setDefaultCommand(new ClimbCommand(climber));
     shooterHood.setDefaultCommand(new ShooterHoodCommand(shooterHood));
-   /* TODO SWITCH FOR DRIVERSTATION  */
-    // Set up the default command for the drivetrain.
-    // The controls are for field-oriented driving:
-    // Left stick Y axis -> forward and backwards movement
-    // Left stick X axis -> left and right movement
-    // Right stick X axis -> rotation
-    m_drivetrainSubsystem.setDefaultCommand(new JoystickDriveCommand(
-            m_drivetrainSubsystem,
-            () -> -modifyAxis(m_controller.getRawAxis( Constants.TRANSLATE_X_AXIS )) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(-m_controller.getRawAxis( Constants.TRANSALTE_Y_AXIS )) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(-m_controller.getRawAxis( Constants.ROTATE_AXIS )) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-    )); 
-//     m_drivetrainSubsystem.setDefaultCommand(new JoystickDriveCommand(
-//       m_drivetrainSubsystem,
-//       () -> -modifyAxis(singleController.getRawAxis(1)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-//       () -> -modifyAxis(singleController.getRawAxis(0)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-//       () -> -modifyAxis(singleController.getRawAxis(4)) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-// ));
+  
 
 
 
@@ -189,7 +205,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
 /* ================================= SERIALIZER/INTAKE ================================= */
 
-    serializerForButton.whenHeld(new SerializerCommand(serializer, 0.2, -0.6).alongWith(new IntakeCommand(intake, -0.4, true)));
+    serializerForButton.whenHeld(new SerializerCommand(serializer, 0.2, -0.6).alongWith(new IntakeCommand(intake, -0.6, true)));
 
     dropBallButton.whenHeld(new SerializerRevCommand(serializer, 0.0, 0.3).alongWith(new IntakeCommand(intake, 0.8, true)));
 
@@ -205,20 +221,12 @@ public class RobotContainer {
   
     
 /* ================================= DRIVE ================================= */
- /* TODO ADD BACK FOR DRIVERSTATION  */
-    leftStickButton.whenPressed(m_drivetrainSubsystem::zeroGyroscope); 
-    lockOnSwitch.whileHeld(new JoystickDriveCommand(
-      m_drivetrainSubsystem,
-      () -> -modifyAxis(m_controller.getRawAxis(Constants.TRANSLATE_X_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-      () -> -modifyAxis(-m_controller.getRawAxis(Constants.TRANSALTE_Y_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-      () -> -modifyAxis( -m_drivetrainSubsystem.joyControlUntilLock(m_controller.getRawAxis(Constants.ROTATE_AXIS))) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-).alongWith(new LimelightHoodLock(limelight,trajectoryTable,shooterHood, 3)));
-    lockOnSwitch.whenReleased(new JoystickDriveCommand(
-      m_drivetrainSubsystem,
-      () -> -modifyAxis(m_controller.getRawAxis(Constants.TRANSLATE_X_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-      () -> -modifyAxis(-m_controller.getRawAxis(Constants.TRANSALTE_Y_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-      () -> -modifyAxis(-m_controller.getRawAxis(Constants.ROTATE_AXIS)) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-).alongWith(new LimelightHoodLock(limelight, trajectoryTable, shooterHood, 1)));
+    leftStickButton.whenPressed(new InstantCommand(() -> s_Swerve.zeroGyro())); 
+
+
+    lockOnSwitch.whileHeld(new LimelightLockSwerve(s_Swerve, m_controller, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop).alongWith(new LimelightHoodLock(limelight,trajectoryTable,shooterHood, 3)));
+    lockOnSwitch.whenReleased(new TeleopSwerve(s_Swerve, m_controller, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop).alongWith(new LimelightHoodLock(limelight, trajectoryTable, shooterHood, 1)));
+
   hoodControlButton.cancelWhenActive(new ShooterHoodCommand(shooterHood));
 hoodControlButton.whenReleased(new ShooterHoodCommand(shooterHood));
  
@@ -236,18 +244,14 @@ hoodControlButton.whenReleased(new ShooterHoodCommand(shooterHood));
     autoClimbButton.whenPressed(new AutoClimbSequence(climber, pneumatics, dioSub));
     autoClimbButton.whenReleased(new ClimbCommand(climber));
 
-    armButton.whenPressed(new AutoDoubleLatch(pneumatics, dioSub).deadlineWith(new ClimbCommand2(climber).alongWith(new JoystickDriveCommand(
-      m_drivetrainSubsystem,
-      () -> -modifyAxis(m_controller.getRawAxis(Constants.TRANSLATE_X_AXIS)/3) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-      () -> -modifyAxis(-m_controller.getRawAxis(Constants.TRANSALTE_Y_AXIS)/3) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-      () -> -modifyAxis(-m_controller.getRawAxis(Constants.ROTATE_AXIS)/3) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-))),true);
-      armButton.whenReleased(new ClimbCommand2(climber).alongWith(new JoystickDriveCommand(
-        m_drivetrainSubsystem,
-        () -> -modifyAxis(m_controller.getRawAxis(Constants.TRANSLATE_X_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-        () -> -modifyAxis(-m_controller.getRawAxis(Constants.TRANSALTE_Y_AXIS)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-        () -> -modifyAxis(-m_controller.getRawAxis(Constants.ROTATE_AXIS)) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-  )), true);
+    armButton.whenPressed(
+      new AutoDoubleLatch(pneumatics, dioSub).deadlineWith(
+      new ClimbCommand2(climber).alongWith(
+      new TeleopSwerveSlow(s_Swerve, m_controller, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop))),true);
+
+      armButton.whenReleased(
+        new ClimbCommand2(climber).alongWith(
+        new TeleopSwerve(s_Swerve, m_controller, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop)), true);
     
 
 
@@ -262,13 +266,6 @@ hoodControlButton.whenReleased(new ShooterHoodCommand(shooterHood));
 /* ================================= SINGLE CONTROLLER ================================= */
 /* TODO REMOVE FOR DRIVERSTATION  */
 // resetGyro_SC.whenPressed(m_drivetrainSubsystem::zeroGyroscope); //Zero's the gyro to the robot's current direction
-
-// lockOnButton_SC.toggleWhenPressed(new JoystickDriveCommand(
-//   m_drivetrainSubsystem,
-//   () -> -modifyAxis(singleController.getRawAxis(1)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-//   () -> -modifyAxis(singleController.getRawAxis(0)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-//   () -> -modifyAxis(/* -m_drivetrainSubsystem.limelightOffset() */ -m_drivetrainSubsystem.joyControlUntilLock(-singleController.getRawAxis(4))) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-// ).alongWith(new LimelightHoodLock(limelight,trajectoryTable,shooterHood, 3)));
 
 
 // spinupButton_SC.whenPressed(new ShootCommand(shooter, true));
@@ -305,141 +302,12 @@ hoodControlButton.whenReleased(new ShooterHoodCommand(shooterHood));
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    String trajectoryJSON = "Paths/Step1.wpilib.json";
-
-    Path trajectoryPath =  Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-    // An ExampleCommand will run in autonomous
-    // return new InstantCommand();
-    Command lockAndShoot = new ParallelCommandGroup(new AutoShoot(limelight, shooter, serializer, shooterHood, trajectoryTable).deadlineWith(new JoystickDriveCommand(
-      m_drivetrainSubsystem,
-      () -> -modifyAxis(0) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-      () -> -modifyAxis(0) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-      () -> -modifyAxis(-m_drivetrainSubsystem.limelightOffset()/*  -m_drivetrainSubsystem.joyControlUntilLock(-singleController.getRawAxis(4) */) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-    )));
-
-    Command lockAndShoot2 = new ParallelCommandGroup(new AutoShoot(limelight, shooter, serializer, shooterHood, trajectoryTable).deadlineWith(new JoystickDriveCommand(
-      m_drivetrainSubsystem,
-      () -> -modifyAxis(0) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-      () -> -modifyAxis(0) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-      () -> -modifyAxis(-m_drivetrainSubsystem.limelightOffset()/*  -m_drivetrainSubsystem.joyControlUntilLock(-singleController.getRawAxis(4) */) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-    )));
-
-    Command lockAndShoot3 = new ParallelCommandGroup(new AutoShoot(limelight, shooter, serializer, shooterHood, trajectoryTable).deadlineWith(new JoystickDriveCommand(
-      m_drivetrainSubsystem,
-      () -> -modifyAxis(0) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-      () -> -modifyAxis(0) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-      () -> -modifyAxis(-m_drivetrainSubsystem.limelightOffset()/*  -m_drivetrainSubsystem.joyControlUntilLock(-singleController.getRawAxis(4) */) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
-    )));
-
-
-
-    TrajectoryConfig trajectoryConfig = new TrajectoryConfig(DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, 3).setKinematics(m_drivetrainSubsystem.m_kinematics);
-
-    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(
-      new Pose2d(0, 0 , new Rotation2d(0)),
-      List.of(
-              //  new Translation2d(1, 0.5),
-               new Translation2d(0.5, 0.01),
-               new Translation2d(-1.5, -3)
-               ),
-      new Pose2d(-1.5, -4, Rotation2d.fromDegrees(300)), 
-      trajectoryConfig
-      );
-
-    Trajectory trajectoryDos= TrajectoryGenerator.generateTrajectory(
-      new Pose2d(0, 0 , new Rotation2d(0)),
-      List.of(
-              new Translation2d(1.8, 0.01)      
-              ),
-      new Pose2d(1.8, 0, Rotation2d.fromDegrees(0)), 
-      trajectoryConfig
-      );
-
-      Trajectory trajectoryTres= TrajectoryGenerator.generateTrajectory(
-      new Pose2d(0, 0 , new Rotation2d(0)),
-      List.of(
-              new Translation2d(-0.2,-7)      
-              ),
-      new Pose2d(0.5, -13, Rotation2d.fromDegrees(300)), 
-      trajectoryConfig
-      );
-
-      // Trajectory trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-
-    PIDController xController = new PIDController(0.0, 0.0, 01);
-    PIDController yController = new PIDController(0.0, 0.0, 01);
-    ProfiledPIDController thetaController = new ProfiledPIDController(7.0, 0, 0, AutoConstants.kThetaControllerConstraints);
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
-    
-    SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
-    trajectory,
-     m_drivetrainSubsystem::getOdometryPose,
-      m_drivetrainSubsystem.m_kinematics,
-       new PIDController(1.5, 0, 0),
-        new PIDController(1.5, 0, 0),
-         thetaController,
-          m_drivetrainSubsystem::setModuleStates2,
-           m_drivetrainSubsystem);
-
-
-           SwerveControllerCommand swerveControllerCommand2 = new SwerveControllerCommand(
-            trajectoryDos,
-             m_drivetrainSubsystem::getOdometryPose,
-              m_drivetrainSubsystem.m_kinematics,
-               new PIDController(1.5, 0, 0),
-                new PIDController(1.5, 0, 0),
-                 thetaController,
-                  m_drivetrainSubsystem::setModuleStates2,
-                   m_drivetrainSubsystem);
-       
-          SwerveControllerCommand swerveControllerCommand3 = new SwerveControllerCommand(
-            trajectoryTres,
-             m_drivetrainSubsystem::getOdometryPose,
-              m_drivetrainSubsystem.m_kinematics,
-               new PIDController(1.5, 0, 0),
-                new PIDController(1.5, 0, 0),
-                 thetaController,
-                  m_drivetrainSubsystem::setModuleStates2,
-                   m_drivetrainSubsystem);
-    
-
-    return new SequentialCommandGroup(  /* AUTO SHIT ACTUALLY GOES HERE  also TODO MAYBE MAKE INDIVIDUAL COMMAND GROUPS FOR EACH FIELD POSITION AND USE A CASE SWITCH*/
-      
-       new InstantCommand(()-> m_drivetrainSubsystem.resetOdometry(trajectory.getInitialPose())),
-         swerveControllerCommand2.deadlineWith(new IntakeDelay(intake, -0.8, true)),
-          new InstantCommand(()-> m_drivetrainSubsystem.stop()).deadlineWith(new IntakeCommand(intake, 0, false)) ,
-            lockAndShoot2
-              // swerveControllerCommand.deadlineWith(new IntakeCommand(intake, -0.8, true)),
-              //  new InstantCommand(()-> m_drivetrainSubsystem.stop()).deadlineWith(new IntakeCommand(intake, -0.5, true)) ,
-              //   lockAndShoot
-                  // swerveControllerCommand3.deadlineWith(new IntakeCommand(intake, -0.5, true)),
-                  //   lockAndShoot3.deadlineWith(new IntakeCommand(intake, -0.5, true ))
-    );
+   
+    return new TwoBallAuto(s_Swerve, limelight, shooter, serializer, shooterHood, trajectoryTable, intake, m_controller);
 
     
   }
 
-  private static double deadband(double value, double deadband) {
-    if (Math.abs(value) > deadband) {
-      if (value > 0.0) {
-        return (value - deadband) / (1.0 - deadband);
-      } else {
-        return (value + deadband) / (1.0 - deadband);
-      }
-    } else {
-      return 0.0;
-    }
-  }
-
-  private static double modifyAxis(double value) {
-    // Deadband
-    value = deadband(value, Constants.DEADBAND_VALUE);
-
-    // Square the axis
-    value = Math.copySign(value * value, value);
-
-    return value;
-  }
-
+ 
   
 }
