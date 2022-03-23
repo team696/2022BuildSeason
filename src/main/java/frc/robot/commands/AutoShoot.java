@@ -67,7 +67,7 @@ public class AutoShoot extends CommandBase {
     speed = shooter.getRequiredShootSpeed();
        /* ====================== SETS SHOOTER AND HOOD ======================*/
 
-        shooter.setShooter(shooter.rpmToTalonFX(speed));
+        shooter.setShooter(shooter.rpmToTalonFX(speed ));
 
         if(distance <21){
           angle  = trajectoryTable.distanceToHoodAngle[distance];

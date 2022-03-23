@@ -141,7 +141,7 @@ public final class Constants {
     
         public static final double kPXController = 1.5;
         public static final double kPYController = 1.5;
-        public static final double kPThetaController = 0.7;
+        public static final double kPThetaController = 0.25;
     
         // Constraint for the motion profilied robot angle controller
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
@@ -157,7 +157,7 @@ public final class Constants {
      public static final int GYRO_RECALIBRATE_BUTTON = 8; //recalibrate button on joysticks
 
    
-    public static final double limelightDeadbandCoefficient = 0.01;
+    public static final double limelightDeadbandCoefficient = 0.3;
 
     public static final double rotatePid_P = 0.02;
     public static final double rotatePid_I = 0.0;

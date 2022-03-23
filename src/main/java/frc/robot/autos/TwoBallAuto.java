@@ -4,6 +4,7 @@ import frc.robot.Constants;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.IntakeDelay;
 import frc.robot.commands.LimelightLockSwerve;
+import frc.robot.commands.SerializerCommand;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Serializer;
@@ -28,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class TwoBallAuto extends SequentialCommandGroup {
     public TwoBallAuto(Swerve s_Swerve, 
@@ -41,7 +43,10 @@ public class TwoBallAuto extends SequentialCommandGroup {
 
         Command lockAndShoot = new ParallelCommandGroup(new AutoShoot(limelight, shooter, serializer, shooterHood, trajectoryTable).deadlineWith(
             new LimelightLockSwerve(s_Swerve, controller, 1, 4, 2, true, false)));
-      
+        Command lockAndShoot2 = new ParallelCommandGroup(new AutoShoot(limelight, shooter, serializer, shooterHood, trajectoryTable).deadlineWith(
+                new LimelightLockSwerve(s_Swerve, controller, 1, 4, 2, true, false)));
+                Command lockAndShoot3 = new ParallelCommandGroup(new AutoShoot(limelight, shooter, serializer, shooterHood, trajectoryTable).deadlineWith(
+                    new LimelightLockSwerve(s_Swerve, controller, 1, 4, 2, true, false)));
         
         TrajectoryConfig config =
             new TrajectoryConfig(
@@ -55,10 +60,10 @@ public class TwoBallAuto extends SequentialCommandGroup {
                 // Start at the origin facing the +X direction
                 new Pose2d(-0.5, 0, new Rotation2d(0)),
                 // Pass through these two interior waypoints, making an 's' curve path
-                List.of(new Translation2d(-1, 0.001),
-                new Translation2d(-1, 1)),
+                List.of(new Translation2d(-1.1, 0.001)),
+                
                 // End 3 meters straight ahead of where we started, facing forward
-                new Pose2d(-2, 1, new Rotation2d(0)),
+                new Pose2d(-1.5, -0.001, new Rotation2d(0)),
                 config);
 
         var thetaController =
@@ -66,7 +71,7 @@ public class TwoBallAuto extends SequentialCommandGroup {
                 Constants.AutoConstants.kPThetaController, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-        SwerveControllerCommand swerveControllerCommand =
+        SwerveControllerCommand Step1 =
             new SwerveControllerCommand(
                 exampleTrajectory,
                 s_Swerve::getPose,
@@ -76,12 +81,52 @@ public class TwoBallAuto extends SequentialCommandGroup {
                 thetaController,
                 s_Swerve::setModuleStates,
                 s_Swerve);
+        
+                SwerveControllerCommand Step2 =
+                new SwerveControllerCommand(
+                    TrajectoryGenerator.generateTrajectory(
+                        new Pose2d(-1.5, -0.001, new Rotation2d(0)),
+                        List.of(
+                                new Translation2d(0, 1)),
+                                new Pose2d(-0.1, 2.2, new Rotation2d(-180)),
+                        config),
+                    s_Swerve::getPose,
+                    Constants.Swerve.swerveKinematics,
+                    new PIDController(Constants.AutoConstants.kPXController, 0, 0),
+                    new PIDController(Constants.AutoConstants.kPYController, 0, 0),
+                    thetaController,
+                    s_Swerve::setModuleStates,
+                    s_Swerve);
 
+                    SwerveControllerCommand Step3 =
+                new SwerveControllerCommand(
+                    TrajectoryGenerator.generateTrajectory(
+                        new Pose2d(-0.1, 2.2, new Rotation2d(-180)),
+                        List.of(
+                                new Translation2d(-.29, 6.4)),
+                                new Pose2d(-0.4, 5, new Rotation2d(-180)),
+                        config),
+                    s_Swerve::getPose,
+                    Constants.Swerve.swerveKinematics,
+                    new PIDController(Constants.AutoConstants.kPXController, 0, 0),
+                    new PIDController(Constants.AutoConstants.kPYController, 0, 0),
+                    thetaController,
+                    s_Swerve::setModuleStates,
+                    s_Swerve);
+            
+            
+        
 
         addCommands(
             new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
-            swerveControllerCommand/* .deadlineWith(new IntakeDelay(intake, -0.8, true)) */
-/*             lockAndShoot
- */        );
+            Step1.deadlineWith(new IntakeDelay(intake, -0.8, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
+           lockAndShoot,
+           Step2.deadlineWith(new IntakeDelay(intake, -0.8, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
+           lockAndShoot2,
+           Step3.deadlineWith(new IntakeDelay(intake, -0.8, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
+            lockAndShoot3
+
+
+        );
     }
 }
