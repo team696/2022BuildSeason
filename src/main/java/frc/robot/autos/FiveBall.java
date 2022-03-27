@@ -31,8 +31,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-public class TwoBallAuto extends SequentialCommandGroup {
-    public TwoBallAuto(Swerve s_Swerve, 
+public class FiveBall extends SequentialCommandGroup {
+    public FiveBall(Swerve s_Swerve, 
                         Limelight limelight,
                         Shooter shooter,
                         Serializer serializer,
@@ -57,13 +57,9 @@ public class TwoBallAuto extends SequentialCommandGroup {
         // An example trajectory to follow.  All units in meters.
         Trajectory exampleTrajectory =
             TrajectoryGenerator.generateTrajectory(
-                // Start at the origin facing the +X direction
                 new Pose2d(-0.5, 0, new Rotation2d(0)),
-                // Pass through these two interior waypoints, making an 's' curve path
                 List.of(new Translation2d(-1.1, 0.001)),
-                
-                // End 3 meters straight ahead of where we started, facing forward
-                new Pose2d(-1.5, -0.001, new Rotation2d(0)),
+                         new Pose2d(-1.5, -0.001, new Rotation2d(0)),
                 config);
 
         var thetaController =
@@ -104,7 +100,7 @@ public class TwoBallAuto extends SequentialCommandGroup {
                         new Pose2d(-0.1, 2.2, new Rotation2d(-180)),
                         List.of(
                                 new Translation2d(-.29, 6.4)),
-                                new Pose2d(-0.4, 5, new Rotation2d(-180)),
+                                new Pose2d(-0.4, 4, new Rotation2d(200)),
                         config),
                     s_Swerve::getPose,
                     Constants.Swerve.swerveKinematics,
@@ -119,11 +115,11 @@ public class TwoBallAuto extends SequentialCommandGroup {
 
         addCommands(
             new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
-            Step1.deadlineWith(new IntakeDelay(intake, -0.8, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
+            Step1.deadlineWith(new IntakeDelay(intake, -0.6, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
            lockAndShoot,
-           Step2.deadlineWith(new IntakeDelay(intake, -0.8, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
+           Step2.deadlineWith(new IntakeDelay(intake, -0.6, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
            lockAndShoot2,
-           Step3.deadlineWith(new IntakeDelay(intake, -0.8, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
+           Step3.deadlineWith(new IntakeDelay(intake, -0.6, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
             lockAndShoot3
 
 

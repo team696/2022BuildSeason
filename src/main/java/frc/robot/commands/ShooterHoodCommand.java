@@ -12,12 +12,13 @@ import frc.robot.subsystems.ShooterHood;
 
 public class ShooterHoodCommand extends CommandBase {
   ShooterHood shooterHood;
-  double   position;
+  double    position;
   double last_hood_axis;
   // double timer;
   /** Open loop hood control. */
-  public ShooterHoodCommand(ShooterHood shooterHood) {
+  public ShooterHoodCommand(ShooterHood shooterHood, double  position) {
     this.shooterHood = shooterHood;
+    this.position = position;
     addRequirements(shooterHood);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -32,17 +33,22 @@ public class ShooterHoodCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // timer++;  
-        double hood_axis = -Math.round(RobotContainer.controlPanel.getRawAxis(Constants.Shooter.hoodAxis)*128*1.5*0.5);
+    // shooterHood.setHoodPos(position);
+    // shooterHood.runHoodMotor(RobotContainer.controlPanel.getRawAxis(Constants.Shooter.hoodAxis));
 
-    if(RobotContainer.controlPanel.getRawButton(Constants.Shooter.hoodAutoButton)){
-      shooterHood.moveActuators(100);
+    // timer++;  
+    //     double hood_axis = -Math.round(RobotContainer.controlPanel.getRawAxis(Constants.Shooter.hoodAxis)*128*1.5*0.5);
+
+    // if(RobotContainer.controlPanel.getRawButton(Constants.Shooter.hoodAutoButton)){
+    //   // shooterHood.moveActuators(100);
+    //   shooterHood.setHoodPos(100);
 
       
 
-    }
-    else{
-              shooterHood.moveActuators(/* shooterHood.servoPosition() + */ hood_axis + 100);
+    // }
+    // else{
+    //           // shooterHood.moveActuators(/* shooterHood.servoPosition() + */ hood_axis + 100);
+    //           shooterHood.setHoodPos(hood_axis);
 
 
       // double delta = hood_axis - last_hood_axis;
@@ -54,12 +60,13 @@ public class ShooterHoodCommand extends CommandBase {
        
       // }
       // last_hood_axis = hood_axis;
-  }
+  shooterHood.runHoodMotor(RobotContainer.controlPanel.getRawAxis(Constants.Shooter.hoodAxis));
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override

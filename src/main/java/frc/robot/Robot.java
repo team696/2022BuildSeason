@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.revrobotics.SparkMaxRelativeEncoder.Type;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -31,6 +33,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     ctreConfigs = new CTREConfigs();
 
+
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
@@ -52,16 +55,15 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("DIO 5 (DH R T)", DIOSub.DH_R_T);
     SmartDashboard.putBoolean("DIO 4 (SH L)", DIOSub.SH_L);
     SmartDashboard.putBoolean("DIO 3 (SH R)", DIOSub.SH_R);
-    SmartDashboard.putNumber("Climber Stick ", RobotContainer.controlPanel.getRawAxis(0));
     SmartDashboard.putNumber("Shooter Speed", m_robotContainer.shooter.getShooterRPM());
-    SmartDashboard.putNumber("Hood Axis", Math.round(m_robotContainer.controlPanel.getRawAxis(1)*128));
-    SmartDashboard.putNumber("HOOD ANGLE ", m_robotContainer.shooterHood.servoPosition());
+    SmartDashboard.putNumber("HOOD ANGLE ", m_robotContainer.shooterHood.getEncoderPos());
     SmartDashboard.putBoolean("DIO 6 BEAM BREAK ", m_robotContainer.serializer.beamBreak.get());
-    SmartDashboard.putNumber("Climber Angle", m_robotContainer.climber.getClimberPos() / 130.666); 
     SmartDashboard.putNumber("Pressure ", m_robotContainer.pneumatics.getPressure());
     SmartDashboard.putNumber("DISTANCE TO TARGET", m_robotContainer.limelight.getDistance()/12);
     SmartDashboard.putNumber("LL TX", m_robotContainer.limelight.tx());
     SmartDashboard.putBoolean("LOCKED ", m_robotContainer.limelight.crosshairOnTarget());
+    SmartDashboard.putNumber("HOD POS ", m_robotContainer.shooterHood.getEncoderPos());
+    SmartDashboard.putNumber("Hood SPEED PID", m_robotContainer.shooterHood.getHoodSpeed());
     
     
 

@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -30,7 +32,8 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.AutoConstants;
-import frc.robot.autos.TwoBallAuto;
+import frc.robot.autos.FiveBall;
+import frc.robot.autos.TwoBall;
 import frc.robot.commands.AutoClimbSequence;
 import frc.robot.commands.AutoDoubleLatch;
 import frc.robot.commands.AutoShoot;
@@ -154,7 +157,9 @@ public class RobotContainer {
   private final JoystickButton serializeButton_SC = new JoystickButton(singleController, 4); /* A main button */
   private final JoystickButton resetGyro_SC = new JoystickButton(singleController, 9); 
 
-  
+    public SendableChooser<Command> m_chooser = new SendableChooser<>();
+  private final SequentialCommandGroup fiveBall = new FiveBall(s_Swerve, limelight, shooter, serializer, shooterHood, trajectoryTable, intake, m_controller);
+  private final SequentialCommandGroup twoBall = new TwoBall(s_Swerve, limelight, shooter, serializer, shooterHood, trajectoryTable, intake, m_controller);
 
 
 
@@ -166,7 +171,7 @@ public class RobotContainer {
   public static  double shootSpeed = 3000;
 
   private final int translationAxis = 1;
-  private final int strafeAxis =  4;
+  private final int strafeAxis =  0;
   private final int rotationAxis = 2;
 
  
@@ -188,9 +193,12 @@ public class RobotContainer {
     s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, m_controller, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
 
     climber.setDefaultCommand(new ClimbCommand(climber));
-    shooterHood.setDefaultCommand(new ShooterHoodCommand(shooterHood));
+    shooterHood.setDefaultCommand(new ShooterHoodCommand(shooterHood, 0));
   
+    m_chooser.setDefaultOption("Five Ball Auto", fiveBall);
+    m_chooser.addOption("Two Ball Auto ", twoBall);
 
+    SmartDashboard.putData(m_chooser);
 
 
     configureButtonBindings();
@@ -227,9 +235,10 @@ public class RobotContainer {
     lockOnSwitch.whileHeld(new LimelightLockSwerve(s_Swerve, m_controller, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop).alongWith(new LimelightHoodLock(limelight,trajectoryTable,shooterHood, 3)));
     lockOnSwitch.whenReleased(new TeleopSwerve(s_Swerve, m_controller, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop).alongWith(new LimelightHoodLock(limelight, trajectoryTable, shooterHood, 1)));
 
-  hoodControlButton.cancelWhenActive(new ShooterHoodCommand(shooterHood));
-hoodControlButton.whenReleased(new ShooterHoodCommand(shooterHood));
- 
+//   hoodControlButton.cancelWhenActive(new ShooterHoodCommand(shooterHood));
+// hoodControlButton.whenReleased(new ShooterHoodCommand(shooterHood));
+// hoodControlButton.whileHeld(new ShooterHoodCommand(shooterHood, 0.6));
+// hoodControlButton.whenReleased(new ShooterHoodCommand(shooterHood, 1.2));
 
 /* ================================= CLIMBER ================================= */
     climbPneuButton1.toggleWhenPressed(new PneumaticsCommand1(pneumatics, Value.kForward));
@@ -303,8 +312,8 @@ hoodControlButton.whenReleased(new ShooterHoodCommand(shooterHood));
    */
   public Command getAutonomousCommand() {
    
-    return new TwoBallAuto(s_Swerve, limelight, shooter, serializer, shooterHood, trajectoryTable, intake, m_controller);
-
+    // return new FiveBall(s_Swerve, limelight, shooter, serializer, shooterHood, trajectoryTable, intake, m_controller);
+return m_chooser.getSelected();   
     
   }
 

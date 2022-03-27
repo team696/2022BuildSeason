@@ -30,7 +30,7 @@ public class LimelightHoodLock extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    last_angle = 50;
+    last_angle = 0.6;
 
   }
 
@@ -44,20 +44,23 @@ public class LimelightHoodLock extends CommandBase {
     limelightDistance = limelight.getDistance()/12;
     distance = (int)Math.round(limelightDistance);
 
+   double  testEquation = limelight.getDistance()/12 * 0.062;
+
  if(limelightDistance < 5.5){
       limelight.pipeline(0);
     }
     else{
       limelight.pipeline(1);
     }
-    if(distance <21){
-    angle  = trajectoryTable.distanceToHoodAngle[distance];
+    if(distance <20){
+    // angle  = trajectoryTable.distanceToHoodAngle[distance];
+    angle = testEquation;
     limelight.setLights(mode);
-    shooterHood.moveActuators(angle);
+    shooterHood.setHoodPos(angle);
       last_angle = angle;
     }
     else{
-      shooterHood.moveActuators(last_angle);
+      shooterHood.setHoodPos(last_angle);
     }
    
     

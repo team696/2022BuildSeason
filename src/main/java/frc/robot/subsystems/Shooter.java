@@ -35,7 +35,7 @@ public class Shooter extends SubsystemBase {
     leftShooterMotor.configPeakOutputReverse(-1);
     leftShooterMotor.configNominalOutputForward(0);
     leftShooterMotor.configNominalOutputReverse(0);
-    // leftShooterMotor.configClosedloopRamp(0.5);
+    leftShooterMotor.configClosedloopRamp(0.25);
     leftShooterMotor.config_kP(0, 0.1);
     leftShooterMotor.config_kI(0, 0.0);
     leftShooterMotor.config_kD(0, 0.0);
@@ -51,6 +51,7 @@ public class Shooter extends SubsystemBase {
     rightShooterMotor.configPeakOutputReverse(-1);
     rightShooterMotor.configNominalOutputForward(0);
     rightShooterMotor.configNominalOutputReverse(0);
+    rightShooterMotor.configClosedloopRamp(0.25);
     rightShooterMotor.follow(leftShooterMotor);
    
   }

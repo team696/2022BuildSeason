@@ -154,13 +154,13 @@ public final class Constants {
         public static final double HOLD_SPEED = -0.25; //motor power at which to hold the climber in rough position
         public static final double CLIMB_APPROACH_SPEED = -0.35;
     }   
-     public static final int GYRO_RECALIBRATE_BUTTON = 8; //recalibrate button on joysticks
+     public static final int GYRO_RECALIBRATE_BUTTON = 1; //recalibrate button on joysticks
 
    
     public static final double limelightDeadbandCoefficient = 0.3;
 
     public static final double rotatePid_P = 0.02;
-    public static final double rotatePid_I = 0.0;
+    public static final double rotatePid_I = 0.01;
     public static final double rotatePid_D = 0.0017;
     public static final double rotatePid_Tol = 0;
 
@@ -181,7 +181,7 @@ public final class Constants {
     public static final int SPINUP_SWITCH = 1;
     public static final int SPIT_BALL_BUTTON = 9;
     public static final int DROP_BALL_BUTTON = 12;
-    public static final int JOYSTICK_RIGHT_BUTTON = 7;
+    public static final int JOYSTICK_RIGHT_BUTTON = 2;
     public static final int FIRE_BUTTON = 3;
     public static final int HOOD_CONTROL_SWITCH = 10;
     public static final int EMERGENCY_CLIMB_SWITCH = 2;
@@ -218,20 +218,19 @@ public final class Constants {
 
     }
 
-   /* TODO Transfer all constant values from other subs into constants */
 
 public static final class Shooter {
         public static final int hoodAutoButton = 9;
         public static final int hoodAxis = 1;
-        public static final double hoodPeakOutput = 1;
-        public static final double hoodLimitFor = 400;
-        public static final double hoodLimitRev = -400;
-        public static final boolean hoodSoftLimitForward = true;
-        public static final boolean hoodSoftLimitReverse = true;
-        public static final double kP = 1.0;
-        public static final double kI = 0.0;
-        public static final double kD = 0.0;
-        public static final double kTolerance = 0.1;
+        public static final double hoodPeakOutput = 0.7;
+        public static final double hoodLimitFor = 130;
+        public static final double hoodLimitRev = 5;
+        public static final boolean hoodSoftLimitForward = false;
+        public static final boolean hoodSoftLimitReverse = false;
+        public static final double kP = 0.5;  /* TODO TUNE THIS PID  */
+        public static final double kI = 0.0005;
+        public static final double kD = 0.0000;
+        public static final double kTolerance = 0;
         public static final int hoodMotorPort = 60;
     }
 }

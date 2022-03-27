@@ -69,28 +69,47 @@ public class AutoShoot extends CommandBase {
 
         shooter.setShooter(shooter.rpmToTalonFX(speed ));
 
-        if(distance <21){
-          angle  = trajectoryTable.distanceToHoodAngle[distance];
-          limelight.setLights(3);
-          shooterHood.moveActuators(angle);
-            last_angle = angle;
-          }
-          else{
-            shooterHood.moveActuators(last_angle);
-          }
+        // if(distance <21){
+        //   angle  = trajectoryTable.distanceToHoodAngle[distance];
+        //   limelight.setLights(3);
+        //   shooterHood.moveActuators(angle);
+        //     last_angle = angle;
+        //   }
+        //   else{
+        //     shooterHood.moveActuators(last_angle);
+        //   }
+        double  testEquation = limelight.getDistance()/12 * 0.062;
+
+ if(limelightDistance < 5.5){
+      limelight.pipeline(0);
+    }
+    else{
+      limelight.pipeline(1);
+    }
+    if(distance <20){
+    // angle  = trajectoryTable.distanceToHoodAngle[distance];
+    angle = testEquation;
+    limelight.setLights(3);
+    shooterHood.setHoodPos(angle);
+      last_angle = angle;
+    }
+    else{
+      shooterHood.setHoodPos(last_angle);
+    }
+   
           shootTimer++;
         /* ====================== FIRE COMMAND ======================*/
 
-  if(shootTimer > 100){
+  if(shootTimer > 40){
 
       
    
     // if( shooter.getShooterRPM() > (speed )){
       switch(step){
         case 0:
-        serializer.runSerMotors(0.4, -0.5);
+        serializer.runSerMotors(0.2, -0.4);
          if(!serializer.beamBreak.get()){
-          serializer.runSerMotors(0.4, -0.6);
+          serializer.runSerMotors(0.2, -0.4);
           overallTimer = 0;
           }
         else{
@@ -99,9 +118,9 @@ public class AutoShoot extends CommandBase {
         break;                                                    /* ITS UGLY AF I KNOW  */
         case 1:
         timer++;
-        if(timer < 60){
+        if(timer < 60){                                                   /* 0.4, -0.6 */
        if(serializer.beamBreak.get()){
-       serializer.runSerMotors(0.4, -0.6);
+       serializer.runSerMotors(0.2, -0.4);
        }
        else{
          step = 2;
@@ -116,7 +135,7 @@ public class AutoShoot extends CommandBase {
         case 2:
         timer++;
         if(timer <5){
-        serializer.runSerMotors(0.0, -0.3);
+        serializer.runSerMotors(0.0, 0.0);
         }
         else{
           timer = 0;
@@ -128,10 +147,10 @@ public class AutoShoot extends CommandBase {
         
         timer++;
         if(timer < 20){
-          serializer.runSerMotors(0.4, -0.6);
+          serializer.runSerMotors(0.2, -0.4);
         }
         else{
-          serializer.runSerMotors(0, -0.3);
+          serializer.runSerMotors(0, 0.0);
           done = true;
         }
       } 
