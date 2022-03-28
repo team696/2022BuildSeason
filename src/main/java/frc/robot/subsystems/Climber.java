@@ -37,11 +37,23 @@ public class Climber extends SubsystemBase {
      rClimberMotor.configFactoryDefault();
    
      rClimberMotor.setNeutralMode(NeutralMode.Coast);
+     rClimberMotor.setStatusFramePeriod(3, 255);
+     rClimberMotor.setStatusFramePeriod(4, 255);
+     rClimberMotor.setStatusFramePeriod(8, 255);
+     rClimberMotor.setStatusFramePeriod(10, 255);
+     rClimberMotor.setStatusFramePeriod(12, 255);
+
     
 
     lClimberMotor.configFactoryDefault();
     lClimberMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 1, 30);
     lClimberMotor.setNeutralMode(NeutralMode.Coast );
+    lClimberMotor.setStatusFramePeriod(3, 255);
+    lClimberMotor.setStatusFramePeriod(4, 255);
+    lClimberMotor.setStatusFramePeriod(8, 255);
+    lClimberMotor.setStatusFramePeriod(10, 255);
+    lClimberMotor.setStatusFramePeriod(12, 255);
+
  
 
    

@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -12,35 +11,20 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import java.nio.file.Path;
-import java.util.List;
 
-
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import frc.robot.Constants.AutoConstants;
 import frc.robot.autos.FiveBall;
+import frc.robot.autos.ThreeBall;
 import frc.robot.autos.TwoBall;
 import frc.robot.commands.AutoClimbSequence;
 import frc.robot.commands.AutoDoubleLatch;
-import frc.robot.commands.AutoShoot;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.ClimbCommand2;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.IntakeDelay;
 import frc.robot.commands.FireCommand;
 import frc.robot.commands.LimelightHoodLock;
 import frc.robot.commands.LimelightLockSwerve;
@@ -97,20 +81,14 @@ public class RobotContainer {
   /**Button labeled "HOOKS" on the operator panel. */
   private final JoystickButton climbPneuButton2 = new JoystickButton(controlPanel, Constants.CLIMBER_SINGLE_HAND_BUTTON);
 
-  private final JoystickButton singleRelockButton = new JoystickButton(controlPanel , Constants.CLIMBER_SINGLE_RELOCK_BUTTON);
-
   /** Switch labeled "CLIMB" on the operator panel when it is in the up position. */
   private final JoystickButton autoClimbButton = new JoystickButton(controlPanel, Constants.CLIMBER_AUTO_BUTTON);
 
   /**Button labeled "DEPLOY" on the operator panel. */
   private final JoystickButton serializerForButton = new JoystickButton(controlPanel, Constants.INTAKE_DEPLOY_BUTTON );
 
-  private final JoystickButton serializerRevButton = new JoystickButton(controlPanel, 20);
-
   /**Button labeled "SPIN UP" on the operator panel. */
   private final JoystickButton shooterSpinup = new JoystickButton(controlPanel, Constants.SPINUP_SWITCH);
-
-  private final JoystickButton shooterHoodUp = new JoystickButton(controlPanel, 0);
 
   /**Second unlabeled button to the left of the "DEPLOY" button on the operator panel. */
   private final JoystickButton spitBallButton = new JoystickButton(controlPanel, Constants.SPIT_BALL_BUTTON);
@@ -136,16 +114,21 @@ public class RobotContainer {
   /**Switch labeled "INTAKE" when it is set to the down position (momentary switch). */
   private final JoystickButton intakeButtonDown = new JoystickButton(controlPanel, Constants.INTAKE_SWITCH_DOWN);
 
+  /** Silver switch labeled "ARM" (???????).*/
+  private final JoystickButton armButton = new JoystickButton(controlPanel, 4);
+
+  private final JoystickButton serializerRevButton = new JoystickButton(controlPanel, 20);
+
   private final JoystickButton flashbangButton = new JoystickButton(controlPanel, 30);
 
   private final JoystickButton testButton  = new JoystickButton(controlPanel, 15);
 
-  /** Silver switch labeled "ARM" (???????).*/
-  private final JoystickButton armButton = new JoystickButton(controlPanel, 4);
-  
+  /** Button */
+  private final JoystickButton singleRelockButton = new JoystickButton(controlPanel , Constants.CLIMBER_SINGLE_RELOCK_BUTTON);
 
+  private final JoystickButton shooterHoodUp = new JoystickButton(controlPanel, 0);
 
-  private final JoystickButton lockOnButton_SC = new  JoystickButton(singleController, 5); /* Shoulder Button  */
+  private final JoystickButton lockOnButton_SC = new  JoystickButton(singleController, 5);/* Shoulder Button  */
   private final JoystickButton spinupButton_SC = new JoystickButton(singleController, 6); /* Other shoulder button */
   private final JoystickButton intakeButton_SC = new JoystickButton(singleController, 1); /* A main button  */
   private final JoystickButton intakeRevButton_SC = new JoystickButton(singleController, 2); /* A main button  */
@@ -160,6 +143,7 @@ public class RobotContainer {
     public SendableChooser<Command> m_chooser = new SendableChooser<>();
   private final SequentialCommandGroup fiveBall = new FiveBall(s_Swerve, limelight, shooter, serializer, shooterHood, trajectoryTable, intake, m_controller);
   private final SequentialCommandGroup twoBall = new TwoBall(s_Swerve, limelight, shooter, serializer, shooterHood, trajectoryTable, intake, m_controller);
+  private final SequentialCommandGroup threeBall = new ThreeBall(s_Swerve, limelight, shooter, serializer, shooterHood, trajectoryTable, intake, m_controller);
 
 
 
@@ -175,7 +159,7 @@ public class RobotContainer {
   private final int rotationAxis = 2;
 
  
-  /* Subsystems */
+ 
 
 
 
@@ -191,16 +175,14 @@ public class RobotContainer {
   public RobotContainer() {
  
     s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, m_controller, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
-
     climber.setDefaultCommand(new ClimbCommand(climber));
     shooterHood.setDefaultCommand(new ShooterHoodCommand(shooterHood, 0));
   
     m_chooser.setDefaultOption("Five Ball Auto", fiveBall);
     m_chooser.addOption("Two Ball Auto ", twoBall);
+    m_chooser.addOption("Three Ball Auto", threeBall );
 
     SmartDashboard.putData(m_chooser);
-
-
     configureButtonBindings();
   }
 
@@ -217,38 +199,24 @@ public class RobotContainer {
 
     dropBallButton.whenHeld(new SerializerRevCommand(serializer, 0.0, 0.3).alongWith(new IntakeCommand(intake, 0.8, true)));
 
-
     spitBallButton.whenPressed(new SpitTopBall(serializer, shooter));
-
 
     fireButton.whenPressed(new FireCommand(serializer));
 
     intakeButtonDown.whenHeld(new SerializerCommand(serializer, 0.3, -0.3));
     
- 
-  
-    
 /* ================================= DRIVE ================================= */
     leftStickButton.whenPressed(new InstantCommand(() -> s_Swerve.zeroGyro())); 
-
 
     lockOnSwitch.whileHeld(new LimelightLockSwerve(s_Swerve, m_controller, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop).alongWith(new LimelightHoodLock(limelight,trajectoryTable,shooterHood, 3)));
     lockOnSwitch.whenReleased(new TeleopSwerve(s_Swerve, m_controller, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop).alongWith(new LimelightHoodLock(limelight, trajectoryTable, shooterHood, 1)));
 
-//   hoodControlButton.cancelWhenActive(new ShooterHoodCommand(shooterHood));
-// hoodControlButton.whenReleased(new ShooterHoodCommand(shooterHood));
-// hoodControlButton.whileHeld(new ShooterHoodCommand(shooterHood, 0.6));
-// hoodControlButton.whenReleased(new ShooterHoodCommand(shooterHood, 1.2));
-
 /* ================================= CLIMBER ================================= */
     climbPneuButton1.toggleWhenPressed(new PneumaticsCommand1(pneumatics, Value.kForward));
 
-    
     singleRelockButton.whenPressed(new PneumaticsCommand2(pneumatics, Value.kForward));
     climbPneuButton2.whenPressed(new SingleLatchRelease(climber, pneumatics));
     climbPneuButton2.whenReleased(new ClimbCommand(climber));
-
-
 
     autoClimbButton.whenPressed(new AutoClimbSequence(climber, pneumatics, dioSub));
     autoClimbButton.whenReleased(new ClimbCommand(climber));
@@ -258,9 +226,9 @@ public class RobotContainer {
       new ClimbCommand2(climber).alongWith(
       new TeleopSwerveSlow(s_Swerve, m_controller, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop))),true);
 
-      armButton.whenReleased(
-        new ClimbCommand2(climber).alongWith(
-        new TeleopSwerve(s_Swerve, m_controller, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop)), true);
+    armButton.whenReleased(
+      new ClimbCommand2(climber).alongWith(
+      new TeleopSwerve(s_Swerve, m_controller, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop)), true);
     
 
 
@@ -312,7 +280,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
    
-    // return new FiveBall(s_Swerve, limelight, shooter, serializer, shooterHood, trajectoryTable, intake, m_controller);
 return m_chooser.getSelected();   
     
   }

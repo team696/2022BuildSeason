@@ -16,6 +16,7 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 import com.revrobotics.SparkMaxRelativeEncoder.Type;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -53,6 +54,9 @@ public class ShooterHood extends SubsystemBase {
     hoodMotor.restoreFactoryDefaults();
     hoodMotor.setIdleMode(IdleMode.kBrake);
     hoodMotor.setSoftLimit(SoftLimitDirection.kForward, 1.3f);
+    hoodMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 60000);
+    hoodMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 60000);
+    
 
     
 //  controller.setFeedbackDevice(encoder);

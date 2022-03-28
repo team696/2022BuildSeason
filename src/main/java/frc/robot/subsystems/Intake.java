@@ -25,6 +25,15 @@ public class Intake extends SubsystemBase {
     intakeMotor.configFactoryDefault();
 
     intakeSolenoid = new Solenoid(PneumaticsModuleType.REVPH, 4);
+    intakeMotor.setStatusFramePeriod(21, 1000);
+    intakeMotor.setStatusFramePeriod(1, 255);
+    intakeMotor.setStatusFramePeriod(3, 255);
+    intakeMotor.setStatusFramePeriod(4, 255);
+    intakeMotor.setStatusFramePeriod(8, 255);
+    intakeMotor.setStatusFramePeriod(10 , 255);
+    intakeMotor.setStatusFramePeriod(12 , 255);
+    
+
 
 
   }

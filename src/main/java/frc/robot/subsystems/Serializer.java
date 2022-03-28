@@ -35,6 +35,12 @@ public class Serializer extends SubsystemBase {
     leftSerMotor.configPeakOutputReverse(-Constants.Serializer.peakOutput);
     leftSerMotor.configForwardSoftLimitEnable(false);
     leftSerMotor.configReverseSoftLimitEnable(false);
+    leftSerMotor.setStatusFramePeriod(3, 255);
+    leftSerMotor.setStatusFramePeriod(4, 255);
+    leftSerMotor.setStatusFramePeriod(8, 255);
+    leftSerMotor.setStatusFramePeriod(10, 255);
+    leftSerMotor.setStatusFramePeriod(12, 255);
+
     
 
     rightSerMotor.configFactoryDefault();
@@ -45,6 +51,12 @@ public class Serializer extends SubsystemBase {
     rightSerMotor.configPeakOutputReverse(-Constants.Serializer.peakOutput);
     rightSerMotor.configForwardSoftLimitEnable(false);
     rightSerMotor.configReverseSoftLimitEnable(false);
+    rightSerMotor.setStatusFramePeriod(3, 255);
+    rightSerMotor.setStatusFramePeriod(4, 255);
+    rightSerMotor.setStatusFramePeriod(8, 255);
+    rightSerMotor.setStatusFramePeriod(10, 255);
+    rightSerMotor.setStatusFramePeriod(12, 255);
+
   }
 
   /**

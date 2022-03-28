@@ -41,6 +41,11 @@ public class Shooter extends SubsystemBase {
     leftShooterMotor.config_kD(0, 0.0);
     leftShooterMotor.config_kF(0, 0.06);
     leftShooterMotor.configAllowableClosedloopError(0, 10);
+    leftShooterMotor.setStatusFramePeriod(3, 255);
+    leftShooterMotor.setStatusFramePeriod(4, 255);
+    leftShooterMotor.setStatusFramePeriod(8, 255);
+    leftShooterMotor.setStatusFramePeriod(10, 255);
+    leftShooterMotor.setStatusFramePeriod(12, 255);
 
     rightShooterMotor.configFactoryDefault();
     rightShooterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 10);
@@ -52,6 +57,12 @@ public class Shooter extends SubsystemBase {
     rightShooterMotor.configNominalOutputForward(0);
     rightShooterMotor.configNominalOutputReverse(0);
     rightShooterMotor.configClosedloopRamp(0.25);
+    rightShooterMotor.setStatusFramePeriod(3, 255);
+    rightShooterMotor.setStatusFramePeriod(4, 255);
+    rightShooterMotor.setStatusFramePeriod(8, 255);
+    rightShooterMotor.setStatusFramePeriod(10, 255);
+    rightShooterMotor.setStatusFramePeriod(12, 255);
+
     rightShooterMotor.follow(leftShooterMotor);
    
   }

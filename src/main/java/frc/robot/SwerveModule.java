@@ -74,6 +74,17 @@ public class SwerveModule {
         mAngleMotor.configAllSettings(Robot.ctreConfigs.swerveAngleFXConfig);
         mAngleMotor.setInverted(Constants.Swerve.angleMotorInvert);
         mAngleMotor.setNeutralMode(Constants.Swerve.angleNeutralMode);
+        mAngleMotor.setStatusFramePeriod(3, 255);
+        mAngleMotor.setStatusFramePeriod(4, 255);
+        mAngleMotor.setStatusFramePeriod(8, 255);
+        mAngleMotor.setStatusFramePeriod(10, 255);
+        mAngleMotor.setStatusFramePeriod(12, 255);
+
+
+
+
+
+
         resetToAbsolute();
     }
 
@@ -83,6 +94,16 @@ public class SwerveModule {
         mDriveMotor.setInverted(Constants.Swerve.driveMotorInvert);
         mDriveMotor.setNeutralMode(Constants.Swerve.driveNeutralMode);
         mDriveMotor.setSelectedSensorPosition(0);
+        mDriveMotor.setStatusFramePeriod(3, 255);
+        mDriveMotor.setStatusFramePeriod(4, 255);
+        mDriveMotor.setStatusFramePeriod(8, 255);
+        mDriveMotor.setStatusFramePeriod(10, 255);
+        mDriveMotor.setStatusFramePeriod(12, 255);
+
+
+
+
+
     }
 
     public Rotation2d getCanCoder(){
