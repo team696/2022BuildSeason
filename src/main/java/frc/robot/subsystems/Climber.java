@@ -5,7 +5,9 @@
 package frc.robot.subsystems;
 
 
+import com.ctre.phoenix.motorcontrol.ControlFrame;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -37,26 +39,71 @@ public class Climber extends SubsystemBase {
      rClimberMotor.configFactoryDefault();
    
      rClimberMotor.setNeutralMode(NeutralMode.Coast);
-     rClimberMotor.setStatusFramePeriod(3, 255);
-     rClimberMotor.setStatusFramePeriod(4, 255);
-     rClimberMotor.setStatusFramePeriod(8, 255);
-     rClimberMotor.setStatusFramePeriod(10, 255);
-     rClimberMotor.setStatusFramePeriod(12, 255);
+     rClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 255);
+     rClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
+     rClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_8_PulseWidth, 255);
+     rClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_9_MotProfBuffer, 255);
+     rClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 255);
+     rClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_11_UartGadgeteer, 255);
+     rClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 255);
+    //  rClimberMotor.setControlFramePeriod(ControlFrame.Control_3_General, 25);
+    //  rClimberMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 500);
+    //  rClimberMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 25);
+ 
 
     
 
     lClimberMotor.configFactoryDefault();
     lClimberMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 1, 30);
     lClimberMotor.setNeutralMode(NeutralMode.Coast );
-    lClimberMotor.setStatusFramePeriod(3, 255);
-    lClimberMotor.setStatusFramePeriod(4, 255);
-    lClimberMotor.setStatusFramePeriod(8, 255);
-    lClimberMotor.setStatusFramePeriod(10, 255);
-    lClimberMotor.setStatusFramePeriod(12, 255);
+    lClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 255);
+    lClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
+    lClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_8_PulseWidth, 255);
+    lClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_9_MotProfBuffer, 255);
+    lClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 255);
+    lClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_11_UartGadgeteer, 255);
+    lClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 255);
+    // lClimberMotor.setControlFramePeriod(ControlFrame.Control_3_General, 25);
+    // lClimberMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 500);
+    // lClimberMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 25);
 
  
 
    
+
+  }
+
+  public void configMotors(){
+    rClimberMotor.configFactoryDefault();
+   
+    rClimberMotor.setNeutralMode(NeutralMode.Coast);
+    rClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 255);
+    rClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
+    rClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_8_PulseWidth, 255);
+    rClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_9_MotProfBuffer, 255);
+    rClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 255);
+    rClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_11_UartGadgeteer, 255);
+    rClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 255);
+    rClimberMotor.setControlFramePeriod(ControlFrame.Control_3_General, 25);
+    rClimberMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 500);
+    rClimberMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 25);
+
+
+   
+
+   lClimberMotor.configFactoryDefault();
+   lClimberMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 1, 30);
+   lClimberMotor.setNeutralMode(NeutralMode.Coast );
+   lClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 255);
+   lClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
+   lClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_8_PulseWidth, 255);
+   lClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_9_MotProfBuffer, 255);
+   lClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 255);
+   lClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_11_UartGadgeteer, 255);
+   lClimberMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 255);
+   lClimberMotor.setControlFramePeriod(ControlFrame.Control_3_General, 25);
+   lClimberMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 500);
+   lClimberMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 25);
 
   }
 /** Get the voltage from the climber

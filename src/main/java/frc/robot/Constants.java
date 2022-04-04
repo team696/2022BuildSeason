@@ -35,7 +35,7 @@ public final class Constants {
         public static final double wheelDiameter = Units.inchesToMeters(3.94);
         public static final double wheelCircumference = wheelDiameter * Math.PI;
 
-        public static final double openLoopRamp = 0.3;
+        public static final double openLoopRamp = 0.4;
         public static final double closedLoopRamp = 0.0;
 
         public static final double driveGearRatio = (8.14 / 1.0); //6.86:1
@@ -157,11 +157,12 @@ public final class Constants {
      public static final int GYRO_RECALIBRATE_BUTTON = 1; //recalibrate button on joysticks
 
    
-    public static final double limelightDeadbandCoefficient = 0.3;
+    public static final double limelightDeadbandCoefficient = 0.085;
 
-    public static final double rotatePid_P = 0.02;
-    public static final double rotatePid_I = 0.01;
-    public static final double rotatePid_D = 0.0017;
+    public static final double rotatePid_P = 0.02
+    ;
+    public static final double rotatePid_I = 0.0005;
+    public static final double rotatePid_D = 0.00375;
     public static final double rotatePid_Tol = 0;
 
    
@@ -191,18 +192,18 @@ public final class Constants {
 
  //==================== Climber Constants ====================
     //DIO Pins on the RIO for climber sensors
-    public static final int DOUBLEHAND_L_BOTTOM = 0; /* 2 */
-    public static final int DOUBLEHAND_L_TOP = 2;  /* 0 */
-    public static final int DOUBLEHAND_R_BOTTOM = 5; /* 4 */
-    public static final int DOUBLEHAND_R_TOP = 4; /* 5 */
-    public static final int SINGLEHAND_L = 1; /* 2 */
+    public static final int DOUBLEHAND_L_BOTTOM = 1; /* 0 */
+    public static final int DOUBLEHAND_L_TOP = 0;  /* 2 */
+    public static final int DOUBLEHAND_R_BOTTOM = 4; /* 5 */
+    public static final int DOUBLEHAND_R_TOP = 5; /* 4 */
+    public static final int SINGLEHAND_L = 2; /* 1 */
     public static final int SINGLEHAND_R = 3; /* 3 */
     
     public static final class Serializer {
         public static final boolean serializerMotorInverted = false;
         public static final boolean serializerMotorSensorPhase = true;
         public static final int leftSerMotorport = 30;
-        public static final int rightSerMotor = 31;
+        public static final int rightSerMotor = 3;
         public static final double peakOutput = 1;
         public static final double kP = 1.00;
         public static final double kI = 1.00;
@@ -230,7 +231,7 @@ public static final class Shooter {
         public static final double kP = 0.5;  /* TODO TUNE THIS PID  */
         public static final double kI = 0.0005;
         public static final double kD = 0.0000;
-        public static final double kTolerance = 0;
+        public static final double kTolerance = 10;
         public static final int hoodMotorPort = 60;
     }
 }

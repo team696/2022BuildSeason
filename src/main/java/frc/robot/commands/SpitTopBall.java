@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.DIOSub;
 import frc.robot.subsystems.Serializer;
 import frc.robot.subsystems.Shooter;
 

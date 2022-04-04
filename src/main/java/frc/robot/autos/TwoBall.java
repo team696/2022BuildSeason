@@ -1,10 +1,12 @@
 package frc.robot.autos;
 
 import frc.robot.Constants;
+import frc.robot.commands.AutoLimeLock;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.IntakeDelay;
 import frc.robot.commands.LimelightLockSwerve;
 import frc.robot.commands.SerializerCommand;
+import frc.robot.subsystems.DIOSub;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Serializer;
@@ -42,7 +44,7 @@ public class TwoBall extends SequentialCommandGroup {
                         Joystick controller){
 
         Command lockAndShoot = new ParallelCommandGroup(new AutoShoot(limelight, shooter, serializer, shooterHood, trajectoryTable).deadlineWith(
-            new LimelightLockSwerve(s_Swerve, controller, 1, 4, 2, true, false)));
+            new AutoLimeLock(s_Swerve, true , true )));
        
         TrajectoryConfig config =
             new TrajectoryConfig(
@@ -55,7 +57,7 @@ public class TwoBall extends SequentialCommandGroup {
             TrajectoryGenerator.generateTrajectory(
                 new Pose2d(-0.5, 0, new Rotation2d(0)),
                 List.of(new Translation2d(-1.1, 0.001)),
-                         new Pose2d(-1.5, -0.001, new Rotation2d(0)),
+                         new Pose2d(-2, -0.001, new Rotation2d(0)),
                 config);
 
         var thetaController =
@@ -78,7 +80,7 @@ public class TwoBall extends SequentialCommandGroup {
 
         addCommands(
             new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
-            Step1.deadlineWith(new IntakeDelay(intake, -0.6, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
+            Step1.deadlineWith(new IntakeDelay(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
            lockAndShoot
          
 

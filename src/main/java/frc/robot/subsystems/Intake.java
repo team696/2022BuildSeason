@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlFrame;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -11,37 +13,57 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
-  WPI_TalonFX intakeMotor;
+ public Talon intakeMotor;
+ Solenoid intakeSolenoid;
 
-  Solenoid intakeSolenoid;
+  // Solenoid intakeSolenoid = new Solenoid(PneumaticsModuleType.REVPH, 4);
 
   /** Creates a new Intake. */
   public Intake() {
 
-    intakeMotor = new WPI_TalonFX(50);
-    intakeMotor.configFactoryDefault();
+    intakeMotor = new Talon( 0);
+    
+    // intakeMotor.configFactoryDefault();
 
     intakeSolenoid = new Solenoid(PneumaticsModuleType.REVPH, 4);
-    intakeMotor.setStatusFramePeriod(21, 1000);
-    intakeMotor.setStatusFramePeriod(1, 255);
-    intakeMotor.setStatusFramePeriod(3, 255);
-    intakeMotor.setStatusFramePeriod(4, 255);
-    intakeMotor.setStatusFramePeriod(8, 255);
-    intakeMotor.setStatusFramePeriod(10 , 255);
-    intakeMotor.setStatusFramePeriod(12 , 255);
-    
-
+    // intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_21_FeedbackIntegrated, 1000);
+    // intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 255);
+    // intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
+    // intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_8_PulseWidth, 255);
+    // intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_9_MotProfBuffer, 255);
+    // intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 255);
+    // intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_11_UartGadgeteer, 255);
+    // intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 255);
+    // intakeMotor.setControlFramePeriod(ControlFrame.Control_3_General, 25);
+    // intakeMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 500);
+    // intakeMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 25);
 
 
   }
+
+  // public void configMotors(){
+  //   intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_21_FeedbackIntegrated, 1000);
+  //   intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 255);
+  //   intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
+  //   intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_8_PulseWidth, 255);
+  //   intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_9_MotProfBuffer, 255);
+  //   intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 255);
+  //   intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_11_UartGadgeteer, 255);
+  //   intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 255);
+  //   intakeMotor.setControlFramePeriod(ControlFrame.Control_3_General, 25);
+  //   intakeMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 500);
+  //   intakeMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 25);
+
+  // }
 /** Runs the intake motors off percent output
  *  @param power double for the speed of the motor
  * */ 
   public void runIntake(double power){
-    intakeMotor.set(TalonFXControlMode.PercentOutput, power);
+    intakeMotor.set( power);
   }
 
   /** Deploys the intake pneumatics

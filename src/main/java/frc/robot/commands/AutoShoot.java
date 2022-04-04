@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.DIOSub;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Serializer;
 import frc.robot.subsystems.Shooter;
@@ -18,6 +19,7 @@ public class AutoShoot extends CommandBase {
   ShooterHood shooterHood;
   boolean finished;
   TrajectoryTable trajectoryTable;
+  
 
   boolean locked;
   int step;
@@ -35,6 +37,7 @@ public class AutoShoot extends CommandBase {
     this.serializer = serializer;
     this.shooterHood = shooterHood;
     this.trajectoryTable = trajectoryTable;
+    ;
 
     addRequirements(limelight, shooter, serializer, shooterHood ,trajectoryTable);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -78,7 +81,8 @@ public class AutoShoot extends CommandBase {
         //   else{
         //     shooterHood.moveActuators(last_angle);
         //   }
-        double  testEquation = limelight.getDistance()/12 * 0.062;
+        // double  testEquation = limelight.getDistance()/12 * 0.062;
+        double testEquation =  (14.1714 * Math.sqrt((limelight.getDistance()/12) -5))/46.8497;
 
  if(limelightDistance < 5.5){
       limelight.pipeline(0);
@@ -86,7 +90,7 @@ public class AutoShoot extends CommandBase {
     else{
       limelight.pipeline(1);
     }
-    if(distance <20){
+    if(distance <21 && distance > 5){
     // angle  = trajectoryTable.distanceToHoodAngle[distance];
     angle = testEquation;
     limelight.setLights(3);

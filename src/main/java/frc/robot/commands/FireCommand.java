@@ -5,16 +5,20 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.DIOSub;
 import frc.robot.subsystems.Serializer;
 
 public class FireCommand extends CommandBase {
   Serializer serializer;
+  DIOSub dioSub;
   int step;
   boolean done;
   double timer;
+
   /** Fires one ball and then uses the beam break to delay the second ball. */
-  public FireCommand(Serializer serializer ) {
+  public FireCommand(Serializer serializer) {
     this.serializer = serializer;
+    this.dioSub = dioSub;
     addRequirements(serializer );
     // Use addRequirements() here to declare subsystem dependencies.
   }

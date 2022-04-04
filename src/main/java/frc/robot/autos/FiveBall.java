@@ -1,10 +1,12 @@
 package frc.robot.autos;
 
 import frc.robot.Constants;
+import frc.robot.commands.AutoLimeLock;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.IntakeDelay;
 import frc.robot.commands.LimelightLockSwerve;
 import frc.robot.commands.SerializerCommand;
+import frc.robot.subsystems.DIOSub;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Serializer;
@@ -23,6 +25,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -42,11 +45,11 @@ public class FiveBall extends SequentialCommandGroup {
                         Joystick controller){
 
         Command lockAndShoot = new ParallelCommandGroup(new AutoShoot(limelight, shooter, serializer, shooterHood, trajectoryTable).deadlineWith(
-            new LimelightLockSwerve(s_Swerve, controller, 1, 4, 2, true, false)));
+            new AutoLimeLock(s_Swerve, true , true )));
         Command lockAndShoot2 = new ParallelCommandGroup(new AutoShoot(limelight, shooter, serializer, shooterHood, trajectoryTable).deadlineWith(
-                new LimelightLockSwerve(s_Swerve, controller, 1, 4, 2, true, false)));
+                new AutoLimeLock(s_Swerve, true , true )));
                 Command lockAndShoot3 = new ParallelCommandGroup(new AutoShoot(limelight, shooter, serializer, shooterHood, trajectoryTable).deadlineWith(
-                    new LimelightLockSwerve(s_Swerve, controller, 1, 4, 2, true, false)));
+                    new AutoLimeLock(s_Swerve, true , true)));
         
         TrajectoryConfig config =
             new TrajectoryConfig(
@@ -59,13 +62,17 @@ public class FiveBall extends SequentialCommandGroup {
             TrajectoryGenerator.generateTrajectory(
                 new Pose2d(-0.5, 0, new Rotation2d(0)),
                 List.of(new Translation2d(-1.1, 0.001)),
-                         new Pose2d(-1.5, -0.001, new Rotation2d(0)),
+                         new Pose2d(-1.4, -0.001, new Rotation2d(0)),
                 config);
 
         var thetaController =
             new ProfiledPIDController(
                 Constants.AutoConstants.kPThetaController, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+        var testThetaController = 
+        new ProfiledPIDController(0, 0, 0, new TrapezoidProfile.Constraints(0, 0));
+        testThetaController.enableContinuousInput(-Math.PI, Math.PI);
 
         SwerveControllerCommand Step1 =
             new SwerveControllerCommand(
@@ -78,7 +85,7 @@ public class FiveBall extends SequentialCommandGroup {
                 s_Swerve::setModuleStates,
                 s_Swerve);
         
-                SwerveControllerCommand Step2 =
+        SwerveControllerCommand Step2 =
                 new SwerveControllerCommand(
                     TrajectoryGenerator.generateTrajectory(
                         new Pose2d(-1.5, -0.001, new Rotation2d(0)),
@@ -94,33 +101,49 @@ public class FiveBall extends SequentialCommandGroup {
                     s_Swerve::setModuleStates,
                     s_Swerve);
 
-                    SwerveControllerCommand Step3 =
+        SwerveControllerCommand Step3 =
                 new SwerveControllerCommand(
                     TrajectoryGenerator.generateTrajectory(
                         new Pose2d(-0.1, 2.2, new Rotation2d(-180)),
                         List.of(
-                                new Translation2d(-.29, 6.4)),
-                                new Pose2d(-0.4, 4, new Rotation2d(200)),
+                                new Translation2d(-.55, 6.4)),
+                                new Pose2d(-0.4, 4, new Rotation2d(-180)),
                         config),
                     s_Swerve::getPose,
                     Constants.Swerve.swerveKinematics,
                     new PIDController(Constants.AutoConstants.kPXController, 0, 0),
                     new PIDController(Constants.AutoConstants.kPYController, 0, 0),
-                    thetaController,
+                    testThetaController,
                     s_Swerve::setModuleStates,
                     s_Swerve);
             
+        SwerveControllerCommand Step4 =
+        new SwerveControllerCommand(
+            TrajectoryGenerator.generateTrajectory(
+                new Pose2d(-0.1, 2.2, new Rotation2d(-180)),
+                List.of(
+                        new Translation2d(-.55, 6.4)),
+                        new Pose2d(-0.4, 5, new Rotation2d(0)),
+                config),
+            s_Swerve::getPose,
+            Constants.Swerve.swerveKinematics,
+            new PIDController(Constants.AutoConstants.kPXController, 0, 0),
+            new PIDController(Constants.AutoConstants.kPYController, 0, 0),
+            thetaController,
+            s_Swerve::setModuleStates,
+            s_Swerve);
+    
             
         
 
         addCommands(
-            new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
-            Step1.deadlineWith(new IntakeDelay(intake, -0.6, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
-           lockAndShoot,
-           Step2.deadlineWith(new IntakeDelay(intake, -0.6, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
-           lockAndShoot2,
-           Step3.deadlineWith(new IntakeDelay(intake, -0.6, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
-            lockAndShoot3
+        new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
+            Step1.deadlineWith(new IntakeDelay(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
+                lockAndShoot,
+                    Step2.deadlineWith(new IntakeDelay(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
+                        lockAndShoot2,
+                            Step3.deadlineWith(new IntakeDelay(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
+                                lockAndShoot3
 
 
         );

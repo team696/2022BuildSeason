@@ -19,6 +19,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 import com.revrobotics.SparkMaxRelativeEncoder.Type;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.Servo;
@@ -50,12 +51,14 @@ public class ShooterHood extends SubsystemBase {
 
     hoodPID = new PIDController(Constants.Shooter.kP, Constants.Shooter.kI, Constants.Shooter.kD); 
     hoodPID.setTolerance(Constants.Shooter.kTolerance);
+    
 
     hoodMotor.restoreFactoryDefaults();
     hoodMotor.setIdleMode(IdleMode.kBrake);
     hoodMotor.setSoftLimit(SoftLimitDirection.kForward, 1.3f);
     hoodMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 60000);
     hoodMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 60000);
+    hoodMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 60000);
     
 
     
@@ -64,6 +67,7 @@ public class ShooterHood extends SubsystemBase {
 //  controller.setI(Constants.Shooter.kI);
 //  controller.setD(Constants.Shooter.kD);
     encoder = hoodMotor.getEncoder(Type.kQuadrature, 8192);
+    // encoder.setPositionConversionFactor(11.5723);
     
     // throughBore = hoodMotor.getEncoder(Type.kQuadrature, 8192);
 
@@ -108,17 +112,11 @@ resetEncoderPos();
   public void setHoodPos(double pos){
     // hoodMotor.set(hoodPID.calculate(plgEncoder.get(), pos));
     hoodSpeed =  hoodPID.calculate(encoder.getPosition(), pos);
-    // if(encoder.getPosition()>1.3){
+    if(encoder.getPosition()>17){
+      setEncoder(16.8);
+    }
 
-    //   if(hoodSpeed > 0){
-    //     hoodMotor.set(0);
-    //   }
-    //   else{
-    //     hoodMotor.set(hoodSpeed);
-
-    //   }
-    // }
-    // else{
+    
     hoodMotor.set(hoodSpeed);
     // }
 
@@ -138,17 +136,27 @@ return 2;
   public double getEncoderPos(){
 return encoder.getPosition();  
 }
+
+/**
+ * Sets the through bore encoder on the hood to a given position.
+ * @param pos
+ */
   public void setEncoder(double pos){
 encoder.setPosition(pos); 
  }
 
+ /**Sets the through bore encoder on the hood to zero. */
  public void resetEncoderPos(){
    encoder.setPosition(0);
  }
 
+ /**
+  * Runs the Johnson PLG on the hood with the given percent.
+  * @param percent Desired percent output.
+  */
   public void runHoodMotor(double percent){
 
-    if( encoder.getPosition() > 1.3){
+    if( encoder.getPosition() > 17){
       if(percent > 0){
               hoodMotor.set(0);
 

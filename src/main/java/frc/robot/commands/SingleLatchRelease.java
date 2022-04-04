@@ -36,7 +36,7 @@ public class SingleLatchRelease extends CommandBase {
   public void execute() {
     climber.lClimberMotor.setNeutralMode(NeutralMode.Brake);
     climber.rClimberMotor.setNeutralMode(NeutralMode.Brake);
-    climber.moveClimber(-0.3);
+    climber.moveClimber(-0.3 );
     pneumatics.movePneumatics2(Value.kReverse);
     timer++;
   }
@@ -52,6 +52,6 @@ public class SingleLatchRelease extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return timer>15;
+    return timer>20;
   }
 }

@@ -1,6 +1,7 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
@@ -63,5 +64,19 @@ public final class CTREConfigs {
         
 
     }
+
+    // /**
+    //  * Sets the status frame period of selected talon in order to conserve CAN utilization.
+    //  * @param talon Desired talon to configure.
+    //  */
+    // public void setStatusPeriods(TalonFX talon){
+
+    //     talon.setStatusFramePeriod(3, 255);
+    //     talon.setStatusFramePeriod(4, 255);
+    //     talon.setStatusFramePeriod(8, 255);
+    //     talon.setStatusFramePeriod(10, 255);
+    //     talon.setStatusFramePeriod(12, 255);
+
+    // }
 
 }

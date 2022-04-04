@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -24,9 +25,11 @@ public class Swerve extends SubsystemBase {
     // public PigeonIMU gyro;
     public AHRS gyro;
     public PIDController rotatePID;
+    private Field2d field = new Field2d();
 
 
     public Swerve() {
+        SmartDashboard.putData(field);
         limelight = new Limelight();
         // gyro = new PigeonIMU(Constants.Swerve.pigeonID);
         gyro  = new AHRS();
@@ -142,6 +145,7 @@ public double joyControlUntilLock(double joystick){
     @Override
     public void periodic(){
         swerveOdometry.update(getYaw(), getStates());  
+        field.setRobotPose(swerveOdometry.getPoseMeters());
 
         // for(SwerveModule mod : mSwerveMods){
         //     SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());

@@ -4,18 +4,24 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlFrame;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+// import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Serializer extends SubsystemBase {
-  TalonFX leftSerMotor;
-  TalonFX rightSerMotor;
-  public DigitalInput beamBreak;
+ public  TalonFX leftSerMotor
+ ;
+ 
+public Talon rightSerMotor;
+  public DigitalInput beamBreak = new DigitalInput(6);
   Limelight limelight;
   TrajectoryTable trajectoryTable;
 
@@ -23,9 +29,8 @@ public class Serializer extends SubsystemBase {
   public Serializer() {
     limelight = new Limelight();
     trajectoryTable = new TrajectoryTable();
-    beamBreak = new DigitalInput(6);
     leftSerMotor = new TalonFX(Constants.Serializer.leftSerMotorport);
-    rightSerMotor = new TalonFX(Constants.Serializer.rightSerMotor);
+    rightSerMotor = new Talon(Constants.Serializer.rightSerMotor);
     
     leftSerMotor.configFactoryDefault();
     leftSerMotor.setSensorPhase(Constants.Serializer.serializerMotorSensorPhase);
@@ -35,30 +40,85 @@ public class Serializer extends SubsystemBase {
     leftSerMotor.configPeakOutputReverse(-Constants.Serializer.peakOutput);
     leftSerMotor.configForwardSoftLimitEnable(false);
     leftSerMotor.configReverseSoftLimitEnable(false);
-    leftSerMotor.setStatusFramePeriod(3, 255);
-    leftSerMotor.setStatusFramePeriod(4, 255);
-    leftSerMotor.setStatusFramePeriod(8, 255);
-    leftSerMotor.setStatusFramePeriod(10, 255);
-    leftSerMotor.setStatusFramePeriod(12, 255);
+    leftSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 255);
+    leftSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
+    leftSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_8_PulseWidth, 255);
+    leftSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_9_MotProfBuffer, 255);
+    leftSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 255);
+    leftSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_11_UartGadgeteer, 255);
+    leftSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 255);
+    // leftSerMotor.setControlFramePeriod(ControlFrame.Control_3_General, 25);
+    // leftSerMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 500);
+    // leftSerMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 25);
+
 
     
 
-    rightSerMotor.configFactoryDefault();
-    rightSerMotor.setSensorPhase(Constants.Serializer.serializerMotorSensorPhase);
-    rightSerMotor.setInverted(Constants.Serializer.serializerMotorInverted);
-    rightSerMotor.setNeutralMode(NeutralMode.Brake);
-    rightSerMotor.configPeakOutputForward(Constants.Serializer.peakOutput);
-    rightSerMotor.configPeakOutputReverse(-Constants.Serializer.peakOutput);
-    rightSerMotor.configForwardSoftLimitEnable(false);
-    rightSerMotor.configReverseSoftLimitEnable(false);
-    rightSerMotor.setStatusFramePeriod(3, 255);
-    rightSerMotor.setStatusFramePeriod(4, 255);
-    rightSerMotor.setStatusFramePeriod(8, 255);
-    rightSerMotor.setStatusFramePeriod(10, 255);
-    rightSerMotor.setStatusFramePeriod(12, 255);
+    // rightSerMotor.configFactoryDefault();
+    // rightSerMotor.setSensorPhase(Constants.Serializer.serializerMotorSensorPhase);
+    // rightSerMotor.setInverted(Constants.Serializer.serializerMotorInverted);
+    // rightSerMotor.setNeutralMode(NeutralMode.Brake);
+    // rightSerMotor.configPeakOutputForward(Constants.Serializer.peakOutput);
+    // rightSerMotor.configPeakOutputReverse(-Constants.Serializer.peakOutput);
+    // rightSerMotor.configForwardSoftLimitEnable(false);
+    // rightSerMotor.configReverseSoftLimitEnable(false);
+    // rightSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 255);
+    // rightSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
+    // rightSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_8_PulseWidth, 255);
+    // rightSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_9_MotProfBuffer, 255);
+    // rightSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 255);
+    // rightSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_11_UartGadgeteer, 255);
+    // rightSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 255);
+    // rightSerMotor.setControlFramePeriod(ControlFrame.Control_3_General, 25);
+    // rightSerMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 500);
+    // rightSerMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 25);
+
 
   }
 
+
+  public void configMotors(){
+    leftSerMotor.configFactoryDefault();
+    leftSerMotor.setSensorPhase(Constants.Serializer.serializerMotorSensorPhase);
+    leftSerMotor.setInverted(Constants.Serializer.serializerMotorInverted);
+    leftSerMotor.setNeutralMode(NeutralMode.Brake);
+    leftSerMotor.configPeakOutputForward(Constants.Serializer.peakOutput);
+    leftSerMotor.configPeakOutputReverse(-Constants.Serializer.peakOutput);
+    leftSerMotor.configForwardSoftLimitEnable(false);
+    leftSerMotor.configReverseSoftLimitEnable(false);
+    // leftSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 255);
+    // leftSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
+    // leftSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_8_PulseWidth, 255);
+    // leftSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_9_MotProfBuffer, 255);
+    // leftSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 255);
+    // leftSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_11_UartGadgeteer, 255);
+    // leftSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 255);
+    // leftSerMotor.setControlFramePeriod(ControlFrame.Control_3_General, 25);
+    // leftSerMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 500);
+    // leftSerMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 25);
+
+
+    
+
+    // rightSerMotor.configFactoryDefault();
+    // rightSerMotor.setSensorPhase(Constants.Serializer.serializerMotorSensorPhase);
+    // rightSerMotor.setInverted(Constants.Serializer.serializerMotorInverted);
+    // rightSerMotor.setNeutralMode(NeutralMode.Brake);
+    // rightSerMotor.configPeakOutputForward(Constants.Serializer.peakOutput);
+    // rightSerMotor.configPeakOutputReverse(-Constants.Serializer.peakOutput);
+    // rightSerMotor.configForwardSoftLimitEnable(false);
+    // rightSerMotor.configReverseSoftLimitEnable(false);
+    // rightSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 255);
+    // rightSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
+    // rightSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_8_PulseWidth, 255);
+    // rightSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_9_MotProfBuffer, 255);
+    // rightSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 255);
+    // rightSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_11_UartGadgeteer, 255);
+    // rightSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 255);
+    // rightSerMotor.setControlFramePeriod(ControlFrame.Control_3_General, 25);
+    // rightSerMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 500);
+    // rightSerMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 25);
+  }
   /**
    * Method for running the serializer motors.
    * @param percent percent output for the top motor.
@@ -66,7 +126,7 @@ public class Serializer extends SubsystemBase {
    */
     public void runSerMotors(double percent, double percent2){
       leftSerMotor.set(TalonFXControlMode.PercentOutput, percent);
-      rightSerMotor.set(TalonFXControlMode.PercentOutput, percent2);
+      rightSerMotor.set( percent2);
     }
 
     

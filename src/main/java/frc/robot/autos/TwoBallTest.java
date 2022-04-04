@@ -1,7 +1,6 @@
 package frc.robot.autos;
 
 import frc.robot.Constants;
-import frc.robot.commands.AutoLimeLock;
 import frc.robot.commands.AutoShoot;
 import frc.robot.commands.IntakeDelay;
 import frc.robot.commands.LimelightLockSwerve;
@@ -33,8 +32,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-public class ThreeBall extends SequentialCommandGroup {
-    public ThreeBall(Swerve s_Swerve, 
+public class TwoBallTest extends SequentialCommandGroup {
+    public TwoBallTest(Swerve s_Swerve, 
                         Limelight limelight,
                         Shooter shooter,
                         Serializer serializer,
@@ -43,11 +42,9 @@ public class ThreeBall extends SequentialCommandGroup {
                         Intake intake,
                         Joystick controller){
 
-        Command lockAndShoot = new ParallelCommandGroup(new AutoShoot(limelight, shooter, serializer, shooterHood, trajectoryTable).deadlineWith(
+        Command lockAndShoot = new ParallelCommandGroup(new AutoShoot(limelight, shooter, serializer, shooterHood, trajectoryTable ).deadlineWith(
             new LimelightLockSwerve(s_Swerve, controller, 1, 4, 2, true, false)));
-        Command lockAndShoot2 = new ParallelCommandGroup(new AutoShoot(limelight, shooter, serializer, shooterHood, trajectoryTable).deadlineWith(
-                new AutoLimeLock(s_Swerve, true , true)));
-               
+       
         TrajectoryConfig config =
             new TrajectoryConfig(
                     Constants.AutoConstants.kMaxSpeedMetersPerSecond,
@@ -57,9 +54,9 @@ public class ThreeBall extends SequentialCommandGroup {
         // An example trajectory to follow.  All units in meters.
         Trajectory exampleTrajectory =
             TrajectoryGenerator.generateTrajectory(
-                new Pose2d(-0.5, 0, new Rotation2d(0)),
-                List.of(new Translation2d(-1.1, 0.001)),
-                         new Pose2d(-1.5, -0.001, new Rotation2d(0)),
+                new Pose2d(-0.5, 0, new Rotation2d(90)),
+                List.of(new Translation2d(0.001, -1)),
+                         new Pose2d(-0.001, -1.1, new Rotation2d(90 )),
                 config);
 
         var thetaController =
@@ -78,32 +75,13 @@ public class ThreeBall extends SequentialCommandGroup {
                 s_Swerve::setModuleStates,
                 s_Swerve);
         
-                SwerveControllerCommand Step2 =
-                new SwerveControllerCommand(
-                    TrajectoryGenerator.generateTrajectory(
-                        new Pose2d(-1.5, -0.001, new Rotation2d(0)),
-                        List.of(
-                                new Translation2d(0, 1)),
-                                new Pose2d(-0.1, 2.2, new Rotation2d(-180)),
-                        config),
-                    s_Swerve::getPose,
-                    Constants.Swerve.swerveKinematics,
-                    new PIDController(Constants.AutoConstants.kPXController, 0, 0),
-                    new PIDController(Constants.AutoConstants.kPYController, 0, 0),
-                    thetaController,
-                    s_Swerve::setModuleStates,
-                    s_Swerve);
-
-                 
             
-        
 
         addCommands(
             new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
-            Step1.deadlineWith(new IntakeDelay(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
-           lockAndShoot,
-           Step2.deadlineWith(new IntakeDelay(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
-           lockAndShoot2
+            Step1.deadlineWith(new IntakeDelay(intake, -0.6, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
+           lockAndShoot
+         
 
 
         );

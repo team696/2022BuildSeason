@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.DIOSub;
 import frc.robot.subsystems.Serializer;
 import frc.robot.subsystems.Shooter;
 
@@ -22,7 +23,7 @@ public class SerializerCommand extends CommandBase {
    * @param percent1 percent output for top motor.
    * @param percent2 percent outup for bottom motor.
    */
-  public SerializerCommand(Serializer serializer, double  percent1, double  percent2) {
+  public SerializerCommand(Serializer serializer, double  percent1, double  percent2 ) {
     this.serializer = serializer;
     this.percent1 = percent1;
     this.percent2 = percent2;

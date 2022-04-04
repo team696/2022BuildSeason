@@ -10,7 +10,12 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.ClimbCommand;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DIOSub;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Serializer;
+import frc.robot.subsystems.Shooter;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -24,6 +29,10 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  // private Serializer serializer;
+  // private Climber climber;
+  // // private Intake intake;
+  // private Shooter shooter;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -31,7 +40,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    // serializer = new Serializer();
+    // climber = new Climber();
+    // // intake = new Intake();
+    // shooter = new Shooter();
     ctreConfigs = new CTREConfigs();
+    // shooter.configMotors();
+    // climber.configMotors();
+    // intake.configMotors();
+    // serializer.configMotors();
 
 
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
@@ -58,12 +75,13 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Shooter Speed", m_robotContainer.shooter.getShooterRPM());
     SmartDashboard.putNumber("HOOD ANGLE ", m_robotContainer.shooterHood.getEncoderPos());
     SmartDashboard.putBoolean("DIO 6 BEAM BREAK ", m_robotContainer.serializer.beamBreak.get());
-    SmartDashboard.putNumber("Pressure ", m_robotContainer.pneumatics.getPressure());
+    // SmartDashboard.putNumber("Pressure ", m_robotContainer.pneumatics.getPressure());
     SmartDashboard.putNumber("DISTANCE TO TARGET", m_robotContainer.limelight.getDistance()/12);
     SmartDashboard.putNumber("LL TX", m_robotContainer.limelight.tx());
     SmartDashboard.putBoolean("LOCKED ", m_robotContainer.limelight.crosshairOnTarget());
     SmartDashboard.putNumber("HOD POS ", m_robotContainer.shooterHood.getEncoderPos());
     SmartDashboard.putNumber("Hood SPEED PID", m_robotContainer.shooterHood.getHoodSpeed());
+    SmartDashboard.putNumber("GYRO ", m_robotContainer.s_Swerve.gyro.getYaw());
     
     
 

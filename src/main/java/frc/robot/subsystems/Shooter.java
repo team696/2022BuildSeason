@@ -5,8 +5,10 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
+import com.ctre.phoenix.motorcontrol.ControlFrame;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -14,8 +16,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LimelightConstants;
 
 public class Shooter extends SubsystemBase {
-  WPI_TalonFX leftShooterMotor;
-  WPI_TalonFX rightShooterMotor;
+public   WPI_TalonFX leftShooterMotor;
+ public WPI_TalonFX rightShooterMotor;
   Limelight limelight;
   TrajectoryTable trajectoryTable;
 
@@ -41,11 +43,16 @@ public class Shooter extends SubsystemBase {
     leftShooterMotor.config_kD(0, 0.0);
     leftShooterMotor.config_kF(0, 0.06);
     leftShooterMotor.configAllowableClosedloopError(0, 10);
-    leftShooterMotor.setStatusFramePeriod(3, 255);
-    leftShooterMotor.setStatusFramePeriod(4, 255);
-    leftShooterMotor.setStatusFramePeriod(8, 255);
-    leftShooterMotor.setStatusFramePeriod(10, 255);
-    leftShooterMotor.setStatusFramePeriod(12, 255);
+    leftShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 255);
+    leftShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
+    leftShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_8_PulseWidth, 255);
+    leftShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_9_MotProfBuffer, 255);
+    leftShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 255);
+    leftShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_11_UartGadgeteer, 255);
+    leftShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 255);
+    // leftShooterMotor.setControlFramePeriod(ControlFrame.Control_3_General, 25);
+    // leftShooterMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 500);
+    // leftShooterMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 25);
 
     rightShooterMotor.configFactoryDefault();
     rightShooterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 10);
@@ -57,14 +64,70 @@ public class Shooter extends SubsystemBase {
     rightShooterMotor.configNominalOutputForward(0);
     rightShooterMotor.configNominalOutputReverse(0);
     rightShooterMotor.configClosedloopRamp(0.25);
-    rightShooterMotor.setStatusFramePeriod(3, 255);
-    rightShooterMotor.setStatusFramePeriod(4, 255);
-    rightShooterMotor.setStatusFramePeriod(8, 255);
-    rightShooterMotor.setStatusFramePeriod(10, 255);
-    rightShooterMotor.setStatusFramePeriod(12, 255);
+    rightShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 255);
+    rightShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
+    rightShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_8_PulseWidth, 255);
+    rightShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_9_MotProfBuffer, 255);
+    rightShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 255);
+    rightShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_11_UartGadgeteer, 255);
+    rightShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 255);
+    // rightShooterMotor.setControlFramePeriod(ControlFrame.Control_3_General, 25);
+    // rightShooterMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 500);
+    // rightShooterMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 25);
 
     rightShooterMotor.follow(leftShooterMotor);
    
+  }
+
+  public void configMotors(){
+    leftShooterMotor.configFactoryDefault();
+    leftShooterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
+    leftShooterMotor.setSensorPhase(true );
+     leftShooterMotor.setNeutralMode(NeutralMode.Coast);
+    leftShooterMotor.configPeakOutputForward(1);
+    leftShooterMotor.configPeakOutputReverse(-1);
+    leftShooterMotor.configNominalOutputForward(0);
+    leftShooterMotor.configNominalOutputReverse(0);
+    leftShooterMotor.configClosedloopRamp(0.25);
+    leftShooterMotor.config_kP(0, 0.1);
+    leftShooterMotor.config_kI(0, 0.0);
+    leftShooterMotor.config_kD(0, 0.0);
+    leftShooterMotor.config_kF(0, 0.06);
+    leftShooterMotor.configAllowableClosedloopError(0, 10);
+    leftShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 255);
+    leftShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
+    leftShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_8_PulseWidth, 255);
+    leftShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_9_MotProfBuffer, 255);
+    leftShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 255);
+    leftShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_11_UartGadgeteer, 255);
+    leftShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 255);
+    leftShooterMotor.setControlFramePeriod(ControlFrame.Control_3_General, 25);
+    leftShooterMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 500);
+    leftShooterMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 25);
+
+    rightShooterMotor.configFactoryDefault();
+    rightShooterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 10);
+    rightShooterMotor.setSensorPhase(false );
+    rightShooterMotor.setInverted(true);
+    rightShooterMotor.setNeutralMode(NeutralMode.Coast);
+    rightShooterMotor.configPeakOutputForward(1 );
+    rightShooterMotor.configPeakOutputReverse(-1);
+    rightShooterMotor.configNominalOutputForward(0);
+    rightShooterMotor.configNominalOutputReverse(0);
+    rightShooterMotor.configClosedloopRamp(0.25);
+    rightShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 255);
+    rightShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
+    rightShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_8_PulseWidth, 255);
+    rightShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_9_MotProfBuffer, 255);
+    rightShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 255);
+    rightShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_11_UartGadgeteer, 255);
+    rightShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 255);
+    rightShooterMotor.setControlFramePeriod(ControlFrame.Control_3_General, 25);
+    rightShooterMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 500);
+    rightShooterMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 25);
+
+    rightShooterMotor.follow(leftShooterMotor);
+
   }
   
 
@@ -122,6 +185,7 @@ public class Shooter extends SubsystemBase {
 
     if(distance <21){
     speed  = trajectoryTable.distanceToShooterSpeed[distance];
+    // speed = (Math.sqrt(limelightDistance) * 848.972) + 200;
     last_speed = speed;
     // speed = trajectoryTable.distanceToShooterSpeed[distance];
     // limelight.setLights(mode);
