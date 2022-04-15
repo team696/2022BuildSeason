@@ -10,10 +10,12 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -24,7 +26,7 @@ public class Swerve extends SubsystemBase {
     public SwerveModule[] mSwerveMods;
     // public PigeonIMU gyro;
     public AHRS gyro;
-    public PIDController rotatePID;
+    public ProfiledPIDController rotatePID;
     private Field2d field = new Field2d();
 
 
@@ -46,10 +48,10 @@ public class Swerve extends SubsystemBase {
         };
 
         
-        rotatePID = new PIDController(
+        rotatePID = new ProfiledPIDController(
                 Constants.rotatePid_P,
                 Constants.rotatePid_I,
-                Constants.rotatePid_D);
+                Constants.rotatePid_D, new TrapezoidProfile.Constraints(1, 3));
 
         rotatePID.setTolerance(Constants.rotatePid_Tol);
 
@@ -123,7 +125,7 @@ public class Swerve extends SubsystemBase {
     public double limelightOffset(){
         if(limelight.tx() > ((limelight.getDistance()/12) * Constants.limelightDeadbandCoefficient) ||
            limelight.tx() <  -((limelight.getDistance()/12) * Constants.limelightDeadbandCoefficient)){
-      return rotatePID.calculate(limelight.tx(), 0);
+      return rotatePID.calculate(limelight.tx(), 1);
         }
         else {
         return 0;

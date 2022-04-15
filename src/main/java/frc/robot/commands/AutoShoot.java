@@ -90,9 +90,9 @@ public class AutoShoot extends CommandBase {
     else{
       limelight.pipeline(1);
     }
-    if(distance <21 && distance > 5){
-    // angle  = trajectoryTable.distanceToHoodAngle[distance];
-    angle = testEquation;
+    if(distance <25 && distance > 5){
+    angle  = trajectoryTable.distanceToHoodAngle[distance];
+    // angle = testEquation;
     limelight.setLights(3);
     shooterHood.setHoodPos(angle);
       last_angle = angle;

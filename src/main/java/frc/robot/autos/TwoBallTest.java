@@ -79,7 +79,7 @@ public class TwoBallTest extends SequentialCommandGroup {
 
         addCommands(
             new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
-            Step1.deadlineWith(new IntakeDelay(intake, -0.6, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
+            Step1.deadlineWith(new IntakeDelay(intake, -0.6, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6, shooter, 0 ))),
            lockAndShoot
          
 

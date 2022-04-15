@@ -3,6 +3,7 @@ package frc.robot.autos;
 import frc.robot.Constants;
 import frc.robot.commands.AutoLimeLock;
 import frc.robot.commands.AutoShoot;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeDelay;
 import frc.robot.commands.LimelightLockSwerve;
 import frc.robot.commands.SerializerCommand;
@@ -17,6 +18,8 @@ import frc.robot.subsystems.TrajectoryTable;
 
 import java.util.List;
 
+import org.opencv.core.Mat;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -25,6 +28,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+// import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -48,17 +52,35 @@ public class TwoBall extends SequentialCommandGroup {
        
         TrajectoryConfig config =
             new TrajectoryConfig(
-                    Constants.AutoConstants.kMaxSpeedMetersPerSecond,
-                    Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+                    /* Constants.AutoConstants.kMaxSpeedMetersPerSecond */5,
+                    /* Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared */5)
                 .setKinematics(Constants.Swerve.swerveKinematics);
+                config.setReversed(true);
+
+                // config.setReversed(true );
 
         // An example trajectory to follow.  All units in meters.
+        // Trajectory exampleTrajectory =
+        //     TrajectoryGenerator.generateTrajectory(
+        //         new Pose2d(0, 0.00, new Rotation2d(0)),
+        //         List.of(new Translation2d(0.00, 0.00),
+        //         new Translation2d(-1.1, 0)),
+        //                  new Pose2d(-1.2, 0.00, new Rotation2d(0)),
+        //         config);
+
         Trajectory exampleTrajectory =
-            TrajectoryGenerator.generateTrajectory(
-                new Pose2d(-0.5, 0, new Rotation2d(0)),
-                List.of(new Translation2d(-1.1, 0.001)),
-                         new Pose2d(-2, -0.001, new Rotation2d(0)),
-                config);
+        TrajectoryGenerator.generateTrajectory(
+            new Pose2d(-0.5, 0, new Rotation2d(0)),
+            List.of(new Translation2d(-1.1, 0.001)),
+                     new Pose2d(-2, -0.001, new Rotation2d(0)),
+            config);
+                // Trajectory exampleTrajectory = 
+
+                // TrajectoryGenerator.generateTrajectory(
+                //     List.of(
+                //     new Pose2d(0, 0, new Rotation2d(0)),
+                //     new Pose2d(-1, 0.0, new Rotation2d(0))),
+                //      config);
 
         var thetaController =
             new ProfiledPIDController(
@@ -70,8 +92,8 @@ public class TwoBall extends SequentialCommandGroup {
                 exampleTrajectory,
                 s_Swerve::getPose,
                 Constants.Swerve.swerveKinematics,
-                new PIDController(Constants.AutoConstants.kPXController, 0, 0),
-                new PIDController(Constants.AutoConstants.kPYController, 0, 0),
+                new PIDController(/* Constants.AutoConstants.kPXController */0.8, 0, 0.004),
+                new PIDController(/* Constants.AutoConstants.kPYController */0.8, 0, 0.004),
                 thetaController,
                 s_Swerve::setModuleStates,
                 s_Swerve);
@@ -80,7 +102,7 @@ public class TwoBall extends SequentialCommandGroup {
 
         addCommands(
             new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
-            Step1.deadlineWith(new IntakeDelay(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
+            Step1.deadlineWith(new IntakeCommand(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6, shooter, 0 ))),
            lockAndShoot
          
 

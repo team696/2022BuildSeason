@@ -3,6 +3,7 @@ package frc.robot.autos;
 import frc.robot.Constants;
 import frc.robot.commands.AutoLimeLock;
 import frc.robot.commands.AutoShoot;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeDelay;
 import frc.robot.commands.LimelightLockSwerve;
 import frc.robot.commands.SerializerCommand;
@@ -57,6 +58,16 @@ public class FiveBall extends SequentialCommandGroup {
                     Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared)
                 .setKinematics(Constants.Swerve.swerveKinematics);
 
+        config.setReversed(true);
+
+        TrajectoryConfig config2 =
+        new TrajectoryConfig(
+                Constants.AutoConstants.kMaxSpeedMetersPerSecond,
+                Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+            .setKinematics(Constants.Swerve.swerveKinematics);
+
+    config2.setReversed(false);
+
         // An example trajectory to follow.  All units in meters.
         Trajectory exampleTrajectory =
             TrajectoryGenerator.generateTrajectory(
@@ -65,9 +76,14 @@ public class FiveBall extends SequentialCommandGroup {
                          new Pose2d(-1.4, -0.001, new Rotation2d(0)),
                 config);
 
-        var thetaController =
+        /* var thetaController =
             new ProfiledPIDController(
                 Constants.AutoConstants.kPThetaController, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
+        thetaController.enableContinuousInput(-Math.PI, Math.PI); */
+
+        var thetaController =
+            new ProfiledPIDController(
+                Constants.rotatePid_P*10, Constants.rotatePid_I*5, Constants.rotatePid_D*5, Constants.AutoConstants.kThetaControllerConstraints);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
         var testThetaController = 
@@ -88,11 +104,11 @@ public class FiveBall extends SequentialCommandGroup {
         SwerveControllerCommand Step2 =
                 new SwerveControllerCommand(
                     TrajectoryGenerator.generateTrajectory(
-                        new Pose2d(-1.5, -0.001, new Rotation2d(0)),
+                        new Pose2d(-1.4, -0.001, new Rotation2d(0)),
                         List.of(
-                                new Translation2d(0, 1)),
-                                new Pose2d(-0.1, 2.2, new Rotation2d(-180)),
-                        config),
+                                new Translation2d(0., .8)),
+                                new Pose2d(-0.1, 2.2, Rotation2d.fromDegrees(90)),
+                        config2),
                     s_Swerve::getPose,
                     Constants.Swerve.swerveKinematics,
                     new PIDController(Constants.AutoConstants.kPXController, 0, 0),
@@ -107,8 +123,8 @@ public class FiveBall extends SequentialCommandGroup {
                         new Pose2d(-0.1, 2.2, new Rotation2d(-180)),
                         List.of(
                                 new Translation2d(-.55, 6.4)),
-                                new Pose2d(-0.4, 4, new Rotation2d(-180)),
-                        config),
+                                new Pose2d(-0.4, 6, new Rotation2d(-180)),
+                        config2),
                     s_Swerve::getPose,
                     Constants.Swerve.swerveKinematics,
                     new PIDController(Constants.AutoConstants.kPXController, 0, 0),
@@ -123,7 +139,7 @@ public class FiveBall extends SequentialCommandGroup {
                 new Pose2d(-0.1, 2.2, new Rotation2d(-180)),
                 List.of(
                         new Translation2d(-.55, 6.4)),
-                        new Pose2d(-0.4, 5, new Rotation2d(0)),
+                        new Pose2d(-0.4, 6, new Rotation2d(0)),
                 config),
             s_Swerve::getPose,
             Constants.Swerve.swerveKinematics,
@@ -132,18 +148,37 @@ public class FiveBall extends SequentialCommandGroup {
             thetaController,
             s_Swerve::setModuleStates,
             s_Swerve);
+
+            SwerveControllerCommand Step5 =
+            new SwerveControllerCommand(
+                TrajectoryGenerator.generateTrajectory(
+                    new Pose2d(-0.4,6 , new Rotation2d(0)),
+                    List.of(
+                            new Translation2d(-.4, 5)),
+                            new Pose2d(0.4, 3.5, new Rotation2d(0)),
+                    config2),
+                s_Swerve::getPose,
+                Constants.Swerve.swerveKinematics,
+                new PIDController(Constants.AutoConstants.kPXController, 0, 0),
+                new PIDController(Constants.AutoConstants.kPYController, 0, 0),
+                testThetaController,
+                s_Swerve::setModuleStates,
+                s_Swerve);
+
     
             
         
 
         addCommands(
         new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
-            Step1.deadlineWith(new IntakeDelay(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
+            Step1.deadlineWith(new IntakeCommand(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6, shooter, 0 ))),
                 lockAndShoot,
-                    Step2.deadlineWith(new IntakeDelay(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
+                    Step2.deadlineWith(new IntakeDelay(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6, shooter, 0 ))),
                         lockAndShoot2,
-                            Step3.deadlineWith(new IntakeDelay(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
-                                lockAndShoot3
+                             Step3.deadlineWith(new IntakeDelay(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6, shooter, 0 ))),
+                                new WaitCommand(0.5).deadlineWith(new IntakeCommand(intake, -0.4, true)),
+                                    Step5,
+                                      lockAndShoot3
 
 
         );

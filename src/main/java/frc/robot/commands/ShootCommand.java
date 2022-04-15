@@ -31,9 +31,11 @@ public class ShootCommand extends CommandBase {
   @Override
   public void execute() {
     RobotContainer.isShooting = isRunning;
+    double shootSpeed = shooter.shooterSpeed;
+    System.out.println(shootSpeed);
 
     // shooter.setShooter(shooter.rpmToTalonFX(rpm));
-    shooter.setShooter(shooter.rpmToTalonFX(shooter.getRequiredShootSpeed()));
+    shooter.setShooter(shooter.rpmToTalonFX(shootSpeed));
   }
 
   // Called once the command ends or is interrupted.

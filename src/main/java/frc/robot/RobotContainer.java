@@ -20,12 +20,14 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.FiveBall;
 import frc.robot.autos.ThreeBall;
 import frc.robot.autos.TwoBall;
+import frc.robot.autos.TwoBallDisruptor;
 import frc.robot.autos.TwoBallTest;
 import frc.robot.commands.AutoClimbSequence;
 import frc.robot.commands.AutoDoubleLatch;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.ClimbCommand2;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.LEDDefCommand;
 import frc.robot.commands.FireCommand;
 import frc.robot.commands.LimelightHoodLock;
 import frc.robot.commands.LimelightLockSwerve;
@@ -43,6 +45,7 @@ import frc.robot.commands.TeleopSwerveSlow;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DIOSub;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LEDSub;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.Serializer;
@@ -70,6 +73,7 @@ public class RobotContainer {
   public final Limelight limelight = new Limelight();
   public final TrajectoryTable trajectoryTable = new TrajectoryTable();
   public  final Swerve s_Swerve = new Swerve();
+  public final LEDSub ledSub = new LEDSub();
   private final Joystick m_controller = new Joystick(0);
   public  static final Joystick controlPanel = new Joystick(2);
   public static final Joystick singleController = new Joystick(3);
@@ -147,8 +151,11 @@ public class RobotContainer {
   private final SequentialCommandGroup twoBall = new TwoBall(s_Swerve, limelight, shooter, serializer, shooterHood, trajectoryTable, intake, m_controller);
   private final SequentialCommandGroup threeBall = new ThreeBall(s_Swerve, limelight, shooter, serializer, shooterHood, trajectoryTable, intake, m_controller);
   private final SequentialCommandGroup twoBallTest = new TwoBallTest(s_Swerve, limelight, shooter, serializer, shooterHood, trajectoryTable, intake, m_controller);
+  private final SequentialCommandGroup twoBallDisruptor = new TwoBallDisruptor(s_Swerve, limelight, shooter, serializer, shooterHood, trajectoryTable, intake, m_controller);
 
-
+    // public SendableChooser<Command> colorChooser = new SendableChooser<>();
+    // public  final Command  blueAlliance  = new CheckBlueAlliance(serializer, shooter);
+    // public final Command  redAlliance = new CheckRedAlliance(serializer, shooter);
 
 
      boolean fieldRelative = true;
@@ -177,17 +184,22 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // serializer = new Serializer();
- 
     s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, m_controller, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
     climber.setDefaultCommand(new ClimbCommand(climber));
     shooterHood.setDefaultCommand(new ShooterHoodCommand(shooterHood, 0));
+    ledSub.setDefaultCommand(new LEDDefCommand(ledSub));
+    // serializer.setDefaultCommand(new CheckBlueAlliance(serializer, shooter).andThen(new SpitTopBall(serializer, shooter)));
   
     m_chooser.setDefaultOption("Five Ball Auto", fiveBall);
     m_chooser.addOption("Two Ball Auto ", twoBall);
     m_chooser.addOption("Three Ball Auto", threeBall );
     m_chooser.addOption("TWO BALL TEST", twoBallTest);
+    m_chooser.addOption("Two Ball Disruptor", twoBallDisruptor);
+    // colorChooser.setDefaultOption("Red Alliance", redAlliance);
+    // colorChooser.addOption("Blue Alliance ", blueAlliance);
 
     SmartDashboard.putData(m_chooser);
+    // SmartDashboard.putData(colorChooser);
     configureButtonBindings();
   }
 
@@ -201,8 +213,8 @@ public class RobotContainer {
 /* ================================= SERIALIZER/INTAKE ================================= */
 
     serializerForButton.whenHeld(
-      new SerializerCommand(serializer, 0.2, -0.6 ).alongWith(
-        new IntakeCommand(intake, -0.4, true)));
+      new SerializerCommand(serializer, 0.2, -0.6, shooter, 0.4 ).alongWith(
+        new IntakeCommand(intake, -0.5, true)));
 
     dropBallButton.whenHeld(
       new SerializerRevCommand(serializer, 0.0, 0.3).alongWith(
@@ -215,17 +227,19 @@ public class RobotContainer {
       new FireCommand(serializer));
 
     intakeButtonDown.whenHeld(
-      new SerializerCommand(serializer, 0.3, -0.3));
+      new SerializerCommand(serializer, 0.3, -0.3, shooter, 0.2));
     
 /* ================================= DRIVE ================================= */
-    leftStickButton.whenPressed(new InstantCommand(() -> s_Swerve.zeroGyro())); 
+    // leftStickButton.whileHeld(new InstantCommand(() -> s_Swerve.zeroGyro())); 
+    leftStickButton.whileHeld((new TeleopSwerve(s_Swerve, m_controller, translationAxis, strafeAxis, rotationAxis, false, openLoop)));
+    testButton.whenPressed(new InstantCommand(() -> s_Swerve.zeroGyro()));
 
     lockOnSwitch.whileHeld(
                 new LimelightLockSwerve(s_Swerve, m_controller, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop).alongWith(
-                new LimelightHoodLock(limelight,trajectoryTable,shooterHood, 3)));
+                new LimelightHoodLock(limelight,trajectoryTable,shooterHood, 3, ledSub, false)));
     lockOnSwitch.whenReleased(
                 new TeleopSwerve(s_Swerve, m_controller, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop).alongWith(
-                new LimelightHoodLock(limelight, trajectoryTable, shooterHood, 1)/* .alongWith(
+                new LimelightHoodLock(limelight, trajectoryTable, shooterHood, 1, ledSub, true )/* .alongWith(
                 new ShooterHoodCommand(shooterHood, 30) */));
 
 /* ================================= CLIMBER ================================= */
@@ -254,7 +268,7 @@ public class RobotContainer {
       new TeleopSwerve(s_Swerve, m_controller, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop)), true);
     
 /* ================================= SHOOTER ================================= */
-    shooterSpinup.whenPressed(
+    shooterSpinup.whileHeld(
       new ShootCommand(shooter, /* shootSpeed, */ true));
     shooterSpinup.whenReleased(
       new ShooterFinished(shooter));

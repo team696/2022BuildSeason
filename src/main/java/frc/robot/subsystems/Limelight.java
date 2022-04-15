@@ -36,6 +36,8 @@ public class Limelight extends SubsystemBase {
     return NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
   }
 
+  
+
   public static double ty() {
     return NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
   }
@@ -68,6 +70,10 @@ public class Limelight extends SubsystemBase {
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setDouble(x);
   }
 
+  public void stream(){
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("stream").setDouble(0);
+  }
+  
   public static double getPipeline() {
 
     return NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").getDouble(0);
@@ -84,7 +90,7 @@ public class Limelight extends SubsystemBase {
   public boolean crosshairOnTarget(){
     if(hasTarget()==1){
       //need to adjust this threshold. maybe can change depending on distance from target
-      return tx()<3;
+      return tx()<(getDistance() * Constants.limelightDeadbandCoefficient);
     }
     else{
       return false;
@@ -107,6 +113,7 @@ public class Limelight extends SubsystemBase {
   @Override
   public void periodic() {
     updateCamTran();
+    stream();
 
     // This method will be called once per scheduler run
   }

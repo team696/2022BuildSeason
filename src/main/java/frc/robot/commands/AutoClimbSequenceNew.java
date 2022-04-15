@@ -45,12 +45,10 @@ public class AutoClimbSequenceNew extends CommandBase {
     @Override
     public void execute() {
       double climber_angle = (climber.getClimberPos() / 130.66666666) - climber_pos_offset; // Rotations times the gear ratio of the climber
-      SmartDashboard.putNumber("Climber Angle", climber_angle); 
       double arm_ground_angle = climber_angle - m_navx.getPitch();
 
       // tab.add("Climber Arm Angle", arm_ground_angle);
 
-      System.out.println(stage);
       switch (stage){
         case 0: //initialize robot for climbing
           if ((!DIOSub.DH_L_B && !DIOSub.DH_R_B)){ //Either top or bottom must be fully seated on the bar 

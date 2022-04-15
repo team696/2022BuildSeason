@@ -4,10 +4,22 @@
 
 package frc.robot;
 
+import com.revrobotics.ColorSensorV3;
 import com.revrobotics.SparkMaxRelativeEncoder.Type;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CameraServerJNI;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.VideoCamera;
+import edu.wpi.first.cscore.VideoSource;
+import edu.wpi.first.cscore.VideoMode.PixelFormat;
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.ClimbCommand;
@@ -29,6 +41,17 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  public static  CameraServer camServ;
+  public VideoCamera cam;
+  // public AddressableLED rightLED;
+  // public AddressableLEDBuffer rightBuffer;
+
+  // public AddressableLED leftLED;
+  // public AddressableLEDBuffer leftBuffer;
+
+
+  // public final  I2C.Port i2cPort = I2C.Port.kOnboard;
+  // public final ColorSensorV3 colorSensor  = new ColorSensorV3(i2cPort);
   // private Serializer serializer;
   // private Climber climber;
   // // private Intake intake;
@@ -48,7 +71,47 @@ public class Robot extends TimedRobot {
     // shooter.configMotors();
     // climber.configMotors();
     // intake.configMotors();
-    // serializer.configMotors();
+    // serializer.configMotors();\
+
+    // cam = new vide
+        // cam.setVideoMode(PixelFormat.kYUYV, 320, 240, 30);
+        
+
+    CameraServer.startAutomaticCapture().setVideoMode(PixelFormat.kMJPEG, 176, 144, 30);
+    
+//  PWM port 9
+// //     Must be a PWM header, not MXP or DIO
+    // rightLED = new AddressableLED(9);
+    // // leftLED = new AddressableLED(8);
+    // // leftLED = new AddressableLED(9);
+
+    // // Reuse buffer
+    // // Default to a length of 60, start empty output
+    // // Length is expensive to set, so only set it once, then just update data
+    // rightBuffer = new AddressableLEDBuffer(60);
+    // rightLED.setLength(rightBuffer.getLength());
+
+    // // Set the data
+    // rightLED.setData(rightBuffer);
+    // rightLED.start();
+
+
+
+
+    // Reuse buffer
+    // Default to a length of 60, start empty output
+    // Length is expensive to set, so only set it once, then just update data
+    // leftBuffer = new AddressableLEDBuffer(60);
+    // leftLED.setLength(leftBuffer.getLength());
+
+    // // Set the data
+    // leftLED.setData(rightBuffer);
+    // leftLED.start();
+
+
+
+    
+    
 
 
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
@@ -66,6 +129,24 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    // m_robotContainer.ledSub.setLeftLEDs(0, 0, 255);
+    // m_robotContainer.ledSub.setRightLEDs(0, 0, 255);
+
+    // Color detectedColor = colorSensor./getColor();
+// for (var i = 0; i < rightBuffer.getLength(); i++) {
+//    // Sets the specified LED to the RGB values for red
+//    rightBuffer.setRGB(i, 0, 255, 0);
+// }
+
+// rightLED.setData(rightBuffer);
+
+// for (var i = 0; i < leftBuffer.getLength(); i++) {
+//   // Sets the specified LED to the RGB values for red
+//   leftBuffer.setRGB(i, 0, 255, 0);
+// }
+
+// leftLED.setData(rightBuffer);
+    // SmartDashboard.putNumber("RED ", detectedColor.red);
     SmartDashboard.putBoolean("DIO 0 (DH L B)", DIOSub.DH_L_B);
     SmartDashboard.putBoolean("DIO 1 (DH L T)", DIOSub.DH_L_T);
     SmartDashboard.putBoolean("DIO 2 (DH R B)", DIOSub.DH_R_B);
@@ -79,9 +160,11 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("DISTANCE TO TARGET", m_robotContainer.limelight.getDistance()/12);
     SmartDashboard.putNumber("LL TX", m_robotContainer.limelight.tx());
     SmartDashboard.putBoolean("LOCKED ", m_robotContainer.limelight.crosshairOnTarget());
-    SmartDashboard.putNumber("HOD POS ", m_robotContainer.shooterHood.getEncoderPos());
-    SmartDashboard.putNumber("Hood SPEED PID", m_robotContainer.shooterHood.getHoodSpeed());
     SmartDashboard.putNumber("GYRO ", m_robotContainer.s_Swerve.gyro.getYaw());
+
+    // SmartDashboard.putNumber("RED", m_robotContainer.serializer.getRed());
+    // SmartDashboard.putNumber("GREEN", m_robotContainer.serializer.getGreen());
+    // SmartDashboard.putNumber("BLUE ", m_robotContainer.serializer.getBlue());
     
     
 

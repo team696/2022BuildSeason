@@ -16,19 +16,26 @@ public class SerializerCommand extends CommandBase {
   Serializer serializer;
   double percent1;
   double percent2;
+  Shooter shooter;
   boolean stoppable;
+  double shootPercent;
+  boolean ballIsSame = false;
+  boolean isBallWrong = false;
+  int counter = 0;
   /** Runs the serializer motors. Will not move the ball past the beam break unless shooting.
    * 
    * 
    * @param percent1 percent output for top motor.
    * @param percent2 percent outup for bottom motor.
    */
-  public SerializerCommand(Serializer serializer, double  percent1, double  percent2 ) {
+  public SerializerCommand(Serializer serializer, double  percent1, double  percent2, Shooter shooter, double shootPercent) {
     this.serializer = serializer;
+    this.shooter = shooter;
+    this.shootPercent = shootPercent;
     this.percent1 = percent1;
     this.percent2 = percent2;
     
-    addRequirements(serializer);
+    addRequirements(serializer, shooter);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -39,7 +46,6 @@ public class SerializerCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
   if(RobotContainer.isShooting ){
     stoppable = false;
   }
@@ -48,15 +54,33 @@ public class SerializerCommand extends CommandBase {
     stoppable = true;
   }
   if(stoppable){
+    
     boolean broken = serializer.beamBreak.get();
-    if(broken){ 
+    if(broken){  //If beam is not broken
       serializer.runSerMotors(percent1, percent2);
+      shooter.setShooterPercent(0);
+      ballIsSame = false;
+      counter = 0;
     }
-    else{
-
+    else{ //Beam is broken
       serializer.runSerMotors(0, 0);
+      shooter.setShooterPercent(0);
+      if (counter < 20){
+        isBallWrong = serializer.isBallWrong();
+        counter++;
+      }
+
+
+
+      
+      if(isBallWrong){
+        serializer.runSerMotors(percent1, percent2);
+        shooter.setShooterPercent(shootPercent);
+      }
+
     }
   }
+
   else{
     if (percent1 != 0){
       serializer.runSerMotors(Constants.Serializer.SHOOT_SPEED, -Constants.Serializer.SHOOT_SPEED);

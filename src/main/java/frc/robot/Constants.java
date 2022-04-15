@@ -35,8 +35,8 @@ public final class Constants {
         public static final double wheelDiameter = Units.inchesToMeters(3.94);
         public static final double wheelCircumference = wheelDiameter * Math.PI;
 
-        public static final double openLoopRamp = 0.4;
-        public static final double closedLoopRamp = 0.0;
+        public static final double openLoopRamp = 0.5;
+        public static final double closedLoopRamp = 0.5;
 
         public static final double driveGearRatio = (8.14 / 1.0); //6.86:1
         public static final double angleGearRatio = (12.8 / 1.0); //12.8:1
@@ -141,7 +141,7 @@ public final class Constants {
     
         public static final double kPXController = 1.5;
         public static final double kPYController = 1.5;
-        public static final double kPThetaController = 0.25;
+        public static final double kPThetaController = 0.15;
     
         // Constraint for the motion profilied robot angle controller
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
@@ -157,13 +157,12 @@ public final class Constants {
      public static final int GYRO_RECALIBRATE_BUTTON = 1; //recalibrate button on joysticks
 
    
-    public static final double limelightDeadbandCoefficient = 0.085;
-
-    public static final double rotatePid_P = 0.02
+    public static final double limelightDeadbandCoefficient = 0.055
     ;
-    public static final double rotatePid_I = 0.0005;
-    public static final double rotatePid_D = 0.00375;
-    public static final double rotatePid_Tol = 0;
+    public static final double rotatePid_P = 0.025;
+    public static final double rotatePid_I = 0.0002;
+    public static final double rotatePid_D = 0.003;
+    public static final double rotatePid_Tol = 1;
 
    
     // kMaxAngularSpeedRadiansPerSecond

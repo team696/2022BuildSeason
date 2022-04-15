@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.LEDSub;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.ShooterHood;
 import frc.robot.subsystems.TrajectoryTable;
@@ -14,16 +15,20 @@ public class LimelightHoodLock extends CommandBase {
   Limelight limelight;
   TrajectoryTable trajectoryTable;
   ShooterHood shooterHood;
+  LEDSub ledSub;
   int mode;
   double last_angle;
+  boolean idle;
 
   /** Moves the hood based on the distance gotten from the limelight. */
-  public LimelightHoodLock(Limelight limelight, TrajectoryTable trajectoryTable,ShooterHood shooterHood, int mode) {
+  public LimelightHoodLock(Limelight limelight, TrajectoryTable trajectoryTable,ShooterHood shooterHood, int mode, LEDSub ledSub, boolean idle) {
     this.limelight = limelight;
     this.trajectoryTable = trajectoryTable;
     this.shooterHood = shooterHood;
     this.mode = mode;
-    addRequirements(limelight, trajectoryTable, shooterHood);
+    this.ledSub = ledSub;
+    this.idle = idle;
+    addRequirements(limelight, trajectoryTable, shooterHood, ledSub);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -37,7 +42,7 @@ public class LimelightHoodLock extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   
+   boolean locked = limelight.crosshairOnTarget();
     int distance;
     double limelightDistance;
     double angle;
@@ -53,9 +58,9 @@ public class LimelightHoodLock extends CommandBase {
     else{
       limelight.pipeline(1);
     }
-    if(distance <22 && distance > 5){
-    // angle  = trajectoryTable.distanceToHoodAngle[distance];
-    angle = testEquation;
+    if(distance <25 && distance > 5){
+    angle  = trajectoryTable.distanceToHoodAngle[distance];
+    // angle = testEquation;
     limelight.setLights(mode);
     shooterHood.setHoodPos(angle);
       last_angle = angle;
@@ -64,6 +69,19 @@ public class LimelightHoodLock extends CommandBase {
       shooterHood.setHoodPos(last_angle);
     }
    
+
+    if( locked){
+      ledSub.setRightLEDs(0, 255, 0);
+    }
+    else {
+      if(idle){
+        ledSub.setRightLEDs(255, 255, 255);
+      }
+      else{
+              ledSub.setRightLEDs(255, 0, 0);
+
+      }
+    }
     
   }
 
@@ -72,6 +90,7 @@ public class LimelightHoodLock extends CommandBase {
   public void end(boolean interrupted) {
 
     limelight.setLights(1);
+    ledSub.setRightLEDsHSV(0, 0, 90);
   }
 
   // Returns true when the command should end.

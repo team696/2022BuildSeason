@@ -27,8 +27,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ShooterHood extends SubsystemBase {
-  public Servo leftActuator;
- public  Servo rightActuator;
+//   public Servo leftActuator;
+//  public  Servo rightActuator;
 //  public WPI_TalonSRX hoodMotor;
  public JohnsonPlg plgEncoder;
  private double hoodSpeed;
@@ -40,8 +40,8 @@ public class ShooterHood extends SubsystemBase {
 
   /** Creates a new ShooterHood. */
   public ShooterHood() {
-    leftActuator = new Servo(6);
-    rightActuator = new Servo(7);
+    // leftActuator = new Servo(6);
+    // rightActuator = new Servo(7);
     hoodMotor = new CANSparkMax(55, MotorType.kBrushed);
     // controller = hoodMotor.getPIDController();
     
@@ -96,18 +96,17 @@ resetEncoderPos();
  * Method used for controlling the linear actuators.
  * @param position Desired position in angle (about 50 - 130).
  */
-  public void moveActuators(double position){
-    // if(position<0){
-    //   position = 0;
-    // }
-    // if(position>360){
-    //   position = 360;
-    // }
+  // public void moveActuators(double position){
+  //   // if(position<0){
+  //   //   position = 0;
+  //   // }
+  //   // if(position>360){
+  //   //   position = 360;
+  //   // }
 
-    leftActuator.setAngle(position);
-    rightActuator.setAngle(position);
-    System.out.println("Imhere" + position);
-  }
+  //   leftActuator.setAngle(position);
+  //   rightActuator.setAngle(position);
+  // }
 
   public void setHoodPos(double pos){
     // hoodMotor.set(hoodPID.calculate(plgEncoder.get(), pos));
@@ -120,7 +119,6 @@ resetEncoderPos();
     hoodMotor.set(hoodSpeed);
     // }
 
-    System.out.println(hoodSpeed);
     // controller.setReference(pos, ControlType.kPosition);
     // hoodMotor.set(TalonSRXControlMode.PercentOutput, hoodSpeed);
   }
@@ -177,9 +175,12 @@ encoder.setPosition(pos);
  * 
  * @return the position of the linear actuators in angle.
  */
-  public double servoPosition(){
-return leftActuator.getAngle();
-  }
+//   public double servoPosition(){
+// return leftActuator.getAngle();
+
+
+
+//   }
 
   @Override
   public void periodic() {

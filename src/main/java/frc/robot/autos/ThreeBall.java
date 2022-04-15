@@ -100,9 +100,9 @@ public class ThreeBall extends SequentialCommandGroup {
 
         addCommands(
             new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
-            Step1.deadlineWith(new IntakeDelay(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
+            Step1.deadlineWith(new IntakeDelay(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6, shooter,  0))),
            lockAndShoot,
-           Step2.deadlineWith(new IntakeDelay(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6))),
+           Step2.deadlineWith(new IntakeDelay(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6, shooter, 0 ))),
            lockAndShoot2
 
 

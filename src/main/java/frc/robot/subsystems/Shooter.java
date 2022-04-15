@@ -18,8 +18,10 @@ import frc.robot.Constants.LimelightConstants;
 public class Shooter extends SubsystemBase {
 public   WPI_TalonFX leftShooterMotor;
  public WPI_TalonFX rightShooterMotor;
+ public double shooterSpeed;
   Limelight limelight;
   TrajectoryTable trajectoryTable;
+  double lldistance;
 
   /** Creates a new Shooter. */
   public Shooter() {
@@ -129,7 +131,10 @@ public   WPI_TalonFX leftShooterMotor;
     rightShooterMotor.follow(leftShooterMotor);
 
   }
-  
+
+  public void getLimelightDistance(){
+    lldistance = limelight.getDistance();
+  }  
 
   /**
    * Method used to convert RPM  to TalonFX sensor units.
@@ -174,13 +179,37 @@ public   WPI_TalonFX leftShooterMotor;
  * Uses the limelight and the trajectory table 
  * @return the required shooter wheel speed using the distance from the target.
  */
+
+ public void getShootSpeed(){
+   int distance;
+   double limelightDistance;
+   double speed;
+   double last_speed = 2000;
+   // double speed;
+   limelightDistance = lldistance/12;
+   distance = (int)Math.round(limelightDistance);
+
+   if(distance <21){
+   speed  = trajectoryTable.distanceToShooterSpeed[distance];
+   // speed = (Math.sqrt(limelightDistance) * 848.972) + 200;
+   last_speed = speed;
+   // speed = trajectoryTable.distanceToShooterSpeed[distance];
+   // limelight.setLights(mode);
+   // shooterHood.moveActuators(angle);
+   shooterSpeed =  speed;
+   }
+   else{
+     shooterSpeed =  last_speed;
+   }
+
+ }
   public double getRequiredShootSpeed(){
     int distance;
     double limelightDistance;
     double speed;
     double last_speed = 2000;
     // double speed;
-    limelightDistance = limelight.getDistance()/12;
+    limelightDistance = lldistance/12;
     distance = (int)Math.round(limelightDistance);
 
     if(distance <21){
@@ -219,6 +248,8 @@ public   WPI_TalonFX leftShooterMotor;
 
   @Override
   public void periodic() {
+    getLimelightDistance();
+    getShootSpeed();
     // This method will be called once per scheduler run
   }
 }
