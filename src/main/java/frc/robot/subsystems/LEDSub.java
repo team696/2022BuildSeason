@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -16,14 +18,20 @@ public class LEDSub extends SubsystemBase {
 //   public AddressableLEDBuffer leftBuffer;
 
   
-// public int m_rainbowFirstPixelHue;
+public int m_rainbowFirstPixelHue;
 public int pinkGreenFirstPixHue;
+
+
+int r;
+int g;
+int b;
   
   /** Creates a new LEDSub. */
   public LEDSub() {
     rightLED = new AddressableLED(9);
     // leftLED = new AddressableLED(8);
     pinkGreenFirstPixHue = 60;
+    m_rainbowFirstPixelHue = 60;
 
     // // Reuse buffer
     // // Default to a length of 60, start empty output
@@ -43,41 +51,100 @@ public int pinkGreenFirstPixHue;
     
     
   }
-  // private void rainbow() {
-  //   // For every pixel
-  //   for (var i = 0; i < rightBuffer.getLength(); i++) {
-  //     // Calculate the hue - hue is easier for rainbows because the color
-  //     // shape is a circle so only one value needs to precess
-  //     final var hue = (m_rainbowFirstPixelHue + (i * 180 / rightBuffer.getLength())) % 180;
-  //     // Set the value
-  //     rightBuffer.setHSV(i, hue, 255, 128);
-  //   }
-  //   // Increase by to make the rainbow "move"
-  //   m_rainbowFirstPixelHue += 3;
-  //   // Check bounds
-  //   m_rainbowFirstPixelHue %= 180;
-  // }
-
-  public void pinkGreen(){
-
-   int  redstep = (0 - 255)/rightBuffer.getLength();
-   int greenStep = (255 - 0)/rightBuffer.getLength();
-   int blueStep = (0 -221)/rightBuffer.getLength();
-
+  public void rainbow() {
+    
+    // For every pixel
     for (var i = 0; i < rightBuffer.getLength(); i++) {
-      
-      // final var hue = (pinkGreenFirstPixHue + (i * 180 / rightBuffer.getLength())) % 155;
-      int r = 255 + i * redstep;
-      int g = 0 + i * greenStep;
-      int b = 221 + i * blueStep;
+      // Calculate the hue - hue is easier for rainbows because the color
+      // shape is a circle so only one value needs to precess
+      final var hue = (m_rainbowFirstPixelHue + (i * 155 / rightBuffer.getLength())) % 155;
+      // Set the value
+      rightBuffer.setHSV(i, hue, 255, 128);
+    }
+    // Increase by to make the rainbow "move"
+    m_rainbowFirstPixelHue += 3;
+    // Check bounds
+    m_rainbowFirstPixelHue %= 155;
+  }
+//   private int mapint(int x, int in_min, int in_max, int out_min, int out_max){
+//     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+// }
 
-      rightBuffer.setRGB(i, r, g, b);
+//-------------Pink and Green LED Code-------------------------
+//--First Robot Code by Abu :)
+
+//Call static variables
+  private int pinkGreen_timer=0,LEDnumber=0,DelayedLEDnumber=-24,DelayedLEDnumber2=-1;
+//Make a Function
+  public void pinkGreen(){
+//Each time the function is called, the timer is changed by 1
+  pinkGreen_timer++;
+//When the function is called 50 times, the code advances
+  if(pinkGreen_timer == 5)
+  {
+    //Resets timer
+    pinkGreen_timer=0; 
+    //Call variable(used for the blue value of RGB) 
+    //int b=0;
+    //Graduadly fades green into white
+
+    for (int i =  0; i <= 255000; i++)
+    {
+      int refrenceValue = Math.round(i/1000);
+      rightBuffer.setRGB(LEDnumber, refrenceValue, 255, refrenceValue);
     }
 
-    pinkGreenFirstPixHue += 3;
+    //Graduadly fades white to pink
+    if(DelayedLEDnumber2 >= 0)
+    {
+    for (int i =  0; i <= 255000; i++)
+    {
+      int refrenceValue = Math.round(i/1000);
+      rightBuffer.setRGB(DelayedLEDnumber2, 255, (255-refrenceValue), 255);
+    }
+    }
+    //rightBuffer.setRGB(LEDnumber,255,0,235);
+    //Moves on to the next led
 
-    pinkGreenFirstPixHue %= 155;
+    LEDnumber++;
+    if(LEDnumber == 50)
+    {
+      LEDnumber = 0;
+    }
+    DelayedLEDnumber++;
+    if(DelayedLEDnumber == 50)
+    {
+      DelayedLEDnumber = 0;
+    }
+    DelayedLEDnumber2++;
+    if(DelayedLEDnumber2 == 50)
+    {
+      DelayedLEDnumber2 = 0;
+    }
+
+    //Resets variable(used for the blue value of RGB) 
+
+    //b=0;
+    //Checks if there is desired number of pink LEDs
+
+    if (DelayedLEDnumber >= 0)
+    {
+      //Gradually fades pink into green
+
+      rightBuffer.setRGB(DelayedLEDnumber,0,255,0);
+      // for (int i = 255000; i == 0; i--)
+      // {
+      // int refrenceValue2 = Math.round(i/1000);
+      // if(refrenceValue2-20 >= 0)
+      // {
+      // b = refrenceValue2 - 20;
+      // }
+      //   rightBuffer.setRGB(DelayedLEDnumber, refrenceValue2, (255-refrenceValue2), b);
+      // }
+    }
   }
+}
+//--------------End of Pink and Green LED Code ----------------
 
   public void setRightLEDs(int r, int g, int b){
     for (var i = 0; i < rightBuffer.getLength(); i++) {

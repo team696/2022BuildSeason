@@ -123,9 +123,25 @@ public class Swerve extends SubsystemBase {
   
 
     public double limelightOffset(){
+
+        // float Kp = -0.1f;
+double min_command = 0.1;
+
+
+        double heading_error = limelight.tx();
+        double steering_adjust = 0.0;
+        if (limelight.tx() > 1)
+        {
+                steering_adjust = /* Kp*heading_error */ - min_command;
+        }
+        else if (limelight.tx() < 1)
+        {
+                steering_adjust =/*  Kp*heading_error + */ min_command;
+        }
+
         if(limelight.tx() > ((limelight.getDistance()/12) * Constants.limelightDeadbandCoefficient) ||
            limelight.tx() <  -((limelight.getDistance()/12) * Constants.limelightDeadbandCoefficient)){
-      return rotatePID.calculate(limelight.tx(), 1);
+      return (rotatePID.calculate(limelight.tx(), 1) + steering_adjust);
         }
         else {
         return 0;

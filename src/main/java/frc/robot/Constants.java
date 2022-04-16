@@ -159,9 +159,9 @@ public final class Constants {
    
     public static final double limelightDeadbandCoefficient = 0.055
     ;
-    public static final double rotatePid_P = 0.025;
-    public static final double rotatePid_I = 0.0002;
-    public static final double rotatePid_D = 0.003;
+    public static final double rotatePid_P = /* 0.025 */ 0.02;
+    public static final double rotatePid_I = /* 0.0002 */ 0.0005;
+    public static final double rotatePid_D = /* 0.003 */0.00375;
     public static final double rotatePid_Tol = 1;
 
    
@@ -191,11 +191,11 @@ public final class Constants {
 
  //==================== Climber Constants ====================
     //DIO Pins on the RIO for climber sensors
-    public static final int DOUBLEHAND_L_BOTTOM = 1; /* 0 */
-    public static final int DOUBLEHAND_L_TOP = 0;  /* 2 */
-    public static final int DOUBLEHAND_R_BOTTOM = 4; /* 5 */
-    public static final int DOUBLEHAND_R_TOP = 5; /* 4 */
-    public static final int SINGLEHAND_L = 2; /* 1 */
+    public static final int DOUBLEHAND_L_BOTTOM = 2; /* 1 */
+    public static final int DOUBLEHAND_L_TOP = 0;  /* 0 */
+    public static final int DOUBLEHAND_R_BOTTOM = 5; /* 4 */
+    public static final int DOUBLEHAND_R_TOP = 4; /* 5 */
+    public static final int SINGLEHAND_L = 1; /* 2 */
     public static final int SINGLEHAND_R = 3; /* 3 */
     
     public static final class Serializer {

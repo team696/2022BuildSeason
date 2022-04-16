@@ -90,7 +90,7 @@ public class Limelight extends SubsystemBase {
   public boolean crosshairOnTarget(){
     if(hasTarget()==1){
       //need to adjust this threshold. maybe can change depending on distance from target
-      return tx()<(getDistance() * Constants.limelightDeadbandCoefficient);
+      return (tx()<(getDistance() * Constants.limelightDeadbandCoefficient)&& tx()>  -getDistance() * Constants.limelightDeadbandCoefficient);
     }
     else{
       return false;

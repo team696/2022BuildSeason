@@ -75,12 +75,20 @@ public class TwoBallDisruptor extends SequentialCommandGroup {
         //         new Translation2d(-1.1, 0)),
         //                  new Pose2d(-1.2, 0.00, new Rotation2d(0)),
         //         config);
-        Trajectory exampleTrajectory =
-            TrajectoryGenerator.generateTrajectory(
-                new Pose2d(-0.5, 0, new Rotation2d(0)),
-                List.of(new Translation2d(-1.1, 0.001)),
-                         new Pose2d(-2, -0.001, new Rotation2d(0)),
-                config);
+        // Trajectory exampleTrajectory =
+        //     TrajectoryGenerator.generateTrajectory(
+        //         new Pose2d(-0.5, 0, new Rotation2d(0)),
+        //         List.of(new Translation2d(-1.1, 0.001)),
+        //                  new Pose2d(-2, -0.001, new Rotation2d(0)),
+        //         config);
+
+
+                Trajectory exampleTrajectory =
+                TrajectoryGenerator.generateTrajectory(
+                    List.of(new Pose2d(-0.5, 0, new Rotation2d(0)),
+                    new Pose2d(-1.1, 0.001, new Rotation2d(0)),
+                    new Pose2d(-2, -0.001, new Rotation2d(0))),
+                    config);
                 // Trajectory exampleTrajectory = 
 
                 // TrajectoryGenerator.generateTrajectory(
@@ -97,7 +105,7 @@ public class TwoBallDisruptor extends SequentialCommandGroup {
 
         var thetaController2 =
         new ProfiledPIDController(
-            /* Constants.AutoConstants.kPThetaController */01, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
+            /* Constants.AutoConstants.kPThetaController */5, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
     thetaController2.enableContinuousInput(-Math.PI, Math.PI);
 
         SwerveControllerCommand Step1 =
@@ -111,27 +119,58 @@ public class TwoBallDisruptor extends SequentialCommandGroup {
                 s_Swerve::setModuleStates,
                 s_Swerve);
                 
-  SwerveControllerCommand Step2 =
-            new SwerveControllerCommand(
-                TrajectoryGenerator.generateTrajectory(
-            new Pose2d(-2, -0.001, new Rotation2d(0)),
-            List.of(new Translation2d(-1, 0.0)),
-                     new Pose2d(-1.5, 2, Rotation2d.fromDegrees(50)),
-            config2),
-                s_Swerve::getPose,
-                Constants.Swerve.swerveKinematics,
-                new PIDController(/* Constants.AutoConstants.kPXController */0.8, 0, 0.004),
-                new PIDController(/* Constants.AutoConstants.kPYController */0.8, 0, 0.004),
-                thetaController,
-                s_Swerve::setModuleStates,
-                s_Swerve);
+//   SwerveControllerCommand Step2 =
+//             new SwerveControllerCommand(
+//                 TrajectoryGenerator.generateTrajectory(
+//             new Pose2d(-2, -0.001, new Rotation2d(0)),
+//             List.of(new Translation2d(-1, 0.0)),
+//                      new Pose2d(-1.5, 2, Rotation2d.fromDegrees(50)),
+//             config2),
+//                 s_Swerve::getPose,
+//                 Constants.Swerve.swerveKinematics,
+//                 new PIDController(/* Constants.AutoConstants.kPXController */0.8, 0, 0.004),
+//                 new PIDController(/* Constants.AutoConstants.kPYController */0.8, 0, 0.004),
+//                 thetaController,
+//                 s_Swerve::setModuleStates,
+//                 s_Swerve);
+
+                SwerveControllerCommand Step2 =
+                new SwerveControllerCommand(
+                    TrajectoryGenerator.generateTrajectory(
+              List.of(new Pose2d(-2, -0.001, new Rotation2d(0)),
+              new Pose2d(-1, 0.0, Rotation2d.fromDegrees(20)),
+              new Pose2d(-1.5, 2, Rotation2d.fromDegrees(50))),
+              
+                config),
+                    s_Swerve::getPose,
+                    Constants.Swerve.swerveKinematics,
+                    new PIDController(/* Constants.AutoConstants.kPXController */0.8, 0, 0.004),
+                    new PIDController(/* Constants.AutoConstants.kPYController */0.8, 0, 0.004),
+                    thetaController,
+                    s_Swerve::setModuleStates,
+                    s_Swerve);
                 
-          SwerveControllerCommand Step3 =
+        //   SwerveControllerCommand Step3 =
+        //     new SwerveControllerCommand(
+        //         TrajectoryGenerator.generateTrajectory(
+        //              new Pose2d(-1.5, 2, Rotation2d.fromDegrees(50)),
+        //     List.of(new Translation2d(0, 0.0)),
+        //              new Pose2d(0, -2, Rotation2d.fromDegrees(-120 )),
+        //     config),
+        //         s_Swerve::getPose,
+        //         Constants.Swerve.swerveKinematics,
+        //         new PIDController(/* Constants.AutoConstants.kPXController */0.8, 0, 0.004),
+        //         new PIDController(/* Constants.AutoConstants.kPYController */0.8, 0, 0.004),
+        //         thetaController,
+        //         s_Swerve::setModuleStates,
+        //         s_Swerve);
+
+        SwerveControllerCommand Step3 =
             new SwerveControllerCommand(
                 TrajectoryGenerator.generateTrajectory(
-                     new Pose2d(-1.5, 2, Rotation2d.fromDegrees(50)),
-            List.of(new Translation2d(0, 0.0)),
-                     new Pose2d(0, -2, Rotation2d.fromDegrees(-120 )),
+                    List.of(new Pose2d(-1.5, 2, new Rotation2d(50)),
+                    new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(-20)),
+                    new Pose2d(0,- 2, Rotation2d.fromDegrees(-120))),
             config),
                 s_Swerve::getPose,
                 Constants.Swerve.swerveKinematics,
@@ -141,6 +180,21 @@ public class TwoBallDisruptor extends SequentialCommandGroup {
                 s_Swerve::setModuleStates,
                 s_Swerve);
 
+                // SwerveControllerCommand Step4 =
+                // new SwerveControllerCommand(
+                //     TrajectoryGenerator.generateTrajectory(
+                //         new Pose2d(0, 0, Rotation2d.fromDegrees(0 )),
+                //         List.of(new Translation2d(-0.5, -0.1), 
+                //         new Translation2d(-0.7, -0.3)),
+                //          new Pose2d(-1, -0.5, Rotation2d.fromDegrees(320)),
+                // config),
+                //     s_Swerve::getPose,
+                //     Constants.Swerve.swerveKinematics,
+                //     new PIDController(/* Constants.AutoConstants.kPXController */0.8, 0, 0.004),
+                //     new PIDController(/* Constants.AutoConstants.kPYController */0.8, 0, 0.004),
+                //     thetaController2,
+                //     s_Swerve::setModuleStates,
+                //     s_Swerve);
                 SwerveControllerCommand Step4 =
                 new SwerveControllerCommand(
                     TrajectoryGenerator.generateTrajectory(
