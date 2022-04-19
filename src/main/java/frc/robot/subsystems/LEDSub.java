@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import java.util.Map;
 
+import javax.lang.model.util.ElementScanner6;
+
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -74,77 +76,231 @@ int b;
 //--First Robot Code by Abu :)
 
 //Call static variables
-  private int pinkGreen_timer=0,LEDnumber=0,DelayedLEDnumber=-24,DelayedLEDnumber2=-1;
-//Make a Function
-  public void pinkGreen(){
+//   private int pinkGreen_timer=0,LEDnumber=0,DelayedLEDnumber=-24;//,DelayedLEDnumber2=-1;
+// //Make a Function
+//   public void pinkGreen(){
+// //Each time the function is called, the timer is changed by 1
+//   pinkGreen_timer++;
+// //When the function is called 50 times, the code advances
+//   if(pinkGreen_timer == 5)
+//   {
+//     //Resets timer
+//     pinkGreen_timer=0; 
+//     //Chanages LED color to pink
+//     rightBuffer.setRGB(LEDnumber,255,0,255);
+//     //Moves on to the next led
+//     LEDnumber++;
+//     if(LEDnumber == 50)
+//     {
+//       LEDnumber = 0;
+//     }
+//     DelayedLEDnumber++;
+//     if(DelayedLEDnumber == 50)
+//     {
+//       DelayedLEDnumber = 0;
+//     }
+//     // DelayedLEDnumber2++;
+//     // if(DelayedLEDnumber2 == 50)
+//     // {
+//     //   DelayedLEDnumber2 = 0;
+//     // }
+
+//     //Checks if there is desired number of pink LEDs
+
+//     if (DelayedLEDnumber >= 0)
+//     {
+//       //Changes LED color back to green
+//       rightBuffer.setRGB(DelayedLEDnumber,0,255,0);   
+//     }
+//   }
+// }
+//--------------End of Pink and Green LED Code ----------------
+//Call static variables
+private int pinkGreen_timer_A=0,LEDnumber_A=0,DelayedLEDnumber_A=-12,LEDnumber2_A=25,DelayedLEDnumber2_A=13; //_A stands for Alternating
+
+//Make a function
+  public void pinkGreen_Alt(){ //_Alt stands for Alternating
+
 //Each time the function is called, the timer is changed by 1
-  pinkGreen_timer++;
-//When the function is called 50 times, the code advances
-  if(pinkGreen_timer == 5)
+  pinkGreen_timer_A++;
+
+//When the function is called 5 times, the code advances *Change this value to 1 or remove if function for max speed*
+  if(pinkGreen_timer_A == 5)
   {
     //Resets timer
-    pinkGreen_timer=0; 
-    //Call variable(used for the blue value of RGB) 
-    //int b=0;
-    //Graduadly fades green into white
+    pinkGreen_timer_A=0; 
 
-    for (int i =  0; i <= 255000; i++)
-    {
-      int refrenceValue = Math.round(i/1000);
-      rightBuffer.setRGB(LEDnumber, refrenceValue, 255, refrenceValue);
-    }
+    //Changes LED color from Green to pink
+    rightBuffer.setRGB(LEDnumber_A,255,0,255);
+    rightBuffer.setRGB(LEDnumber2_A,255,0,255);
 
-    //Graduadly fades white to pink
-    if(DelayedLEDnumber2 >= 0)
-    {
-    for (int i =  0; i <= 255000; i++)
-    {
-      int refrenceValue = Math.round(i/1000);
-      rightBuffer.setRGB(DelayedLEDnumber2, 255, (255-refrenceValue), 255);
-    }
-    }
-    //rightBuffer.setRGB(LEDnumber,255,0,235);
     //Moves on to the next led
-
-    LEDnumber++;
-    if(LEDnumber == 50)
+    LEDnumber_A++;
+    if(LEDnumber_A == 25)
     {
-      LEDnumber = 0;
-    }
-    DelayedLEDnumber++;
-    if(DelayedLEDnumber == 50)
-    {
-      DelayedLEDnumber = 0;
-    }
-    DelayedLEDnumber2++;
-    if(DelayedLEDnumber2 == 50)
-    {
-      DelayedLEDnumber2 = 0;
+      LEDnumber_A = 0;
     }
 
-    //Resets variable(used for the blue value of RGB) 
+    DelayedLEDnumber_A++;
+    if(DelayedLEDnumber_A == 25)
+    {
+      DelayedLEDnumber_A = 0;
+    }
 
-    //b=0;
+    DelayedLEDnumber2_A++;
+    if(DelayedLEDnumber2_A == 50)
+    {
+      DelayedLEDnumber2_A = 25;
+    }
+
+    LEDnumber2_A++;
+    if(LEDnumber2_A== 50)
+    {
+      LEDnumber2_A = 25;
+    }
+
     //Checks if there is desired number of pink LEDs
-
-    if (DelayedLEDnumber >= 0)
+    if (DelayedLEDnumber_A >= 0)
     {
-      //Gradually fades pink into green
-
-      rightBuffer.setRGB(DelayedLEDnumber,0,255,0);
-      // for (int i = 255000; i == 0; i--)
-      // {
-      // int refrenceValue2 = Math.round(i/1000);
-      // if(refrenceValue2-20 >= 0)
-      // {
-      // b = refrenceValue2 - 20;
-      // }
-      //   rightBuffer.setRGB(DelayedLEDnumber, refrenceValue2, (255-refrenceValue2), b);
-      // }
+      //Changes LED color from pink to green
+      rightBuffer.setRGB(DelayedLEDnumber_A,0,255,0);
+    }
+    
+    //Does the same thing but for the other side
+    if (DelayedLEDnumber2_A >= 25)
+    {
+      rightBuffer.setRGB(DelayedLEDnumber2_A,0,255,0);
     }
   }
 }
-//--------------End of Pink and Green LED Code ----------------
+
+//----Bouncing Pink on LED Strip-----
+
+//Call static variables
+private int pinkGreen_timer_B=0,LEDnumber_B=0,DelayedLEDnumber_B=-2; //_B stands for Bouncing
+private boolean endReached = false, DelayedEndReached = false;
+
+//Make a function
+  public void pinkLightBouncing()
+  {
+    //Each time the function is called, the timer is changed by 1
+    pinkGreen_timer_B++;
+
+    //When the function is called 2 times, the code advances *Change this value to 1 or remove if function for max speed*
+    if(pinkGreen_timer_B == 3)
+    {
+      //Resets timer
+      pinkGreen_timer_B=0; 
+
+      //Changes LED color from Green to pink
+      rightBuffer.setRGB(LEDnumber_B,255,0,255);
+
+      //Moves on to the next led until it reaches the end. If it reaches the end, it will reverse direction
+      if(endReached)
+      {
+        LEDnumber_B--;
+        if(LEDnumber_B == 0)
+        {
+        endReached = false;
+        }
+      }
+      else
+      {
+        LEDnumber_B++;
+        if(LEDnumber_B == 50)
+        {
+        endReached = true;
+        }
+      }
+      
+      if(DelayedEndReached)
+      {
+        DelayedLEDnumber_B--;
+        if(LEDnumber_B == 0)
+        {
+          DelayedEndReached = false;
+        }
+      }
+      else
+      {
+        DelayedLEDnumber_B++;
+        if(DelayedLEDnumber_B == 50)
+        {
+          DelayedEndReached = true;
+        }
+      }
+
+      //Checks if there is desired number of pink LEDs
+      if (DelayedLEDnumber_B >= 0)
+      {
+        //Changes LED color from pink to green
+        rightBuffer.setRGB(DelayedLEDnumber_B,0,255,0);
+      }
+    }
+  }
+    //Call static variables
+   private int pinkGreen_timer_f=0;
+   private boolean breathingSwicth_f = false;
+
+   //Make a function
+   public void pinkGreen_flash() 
+   {
+    pinkGreen_timer++;
+    //When the function is called 5 times, the code advances *Change this value to 1 or remove if function for max speed*
+    if(pinkGreen_timer_f == 5)
+    {
+      //Restes timer
+      pinkGreen_timer_f = 0;
+
+     if(breathingSwicth_f)
+     {
+      breathingSwicth_f = false;
+      for (var i = 0; i <= 50; i++) 
+      {
+       rightBuffer.setRGB(i, 0, 255, 0);
+      } 
+     }
+     else
+     {
+      breathingSwicth_f = true;
+      for (var i = 0; i <= 50; i++) { 
+        rightBuffer.setRGB(i,255, 0, 255);
+     }
+     }
+   }
+  }
+
+ //Call static variables
+ private int LED_number=0;
+ //Call the map function
+ private int mapint(int x, int in_min, int in_max, int out_min, int out_max)
+ {
+   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+ }
+
+ //Make a function
+ public void pinkGreen_Brth() //Brth stands for Breathing
+ {
+    for (var i = 0; i <= 50; i++) 
+    {
+      //Maps the i value to 0 to 255
+      int refrenceValue = mapint(i,0,50,0,255);
+
+      //Sets the specified LED to the RGB values
+      rightBuffer.setRGB(LED_number, refrenceValue, (255-refrenceValue), refrenceValue);
+     //rightBuffer.setRGB(i, 0, 255, 0);
+     int j = i-7;
+     if(j >=0 ){
+      rightBuffer.setRGB(LED_number, (255-refrenceValue), refrenceValue, (255-refrenceValue)); 
+      //rightBuffer.setRGB(j,255, 0, 255);
+     }
+     LED_number++;
+     if (LED_number==50)
+     {
+      LED_number=0;
+     }
+    } 
+}
 
   public void setRightLEDs(int r, int g, int b){
     for (var i = 0; i < rightBuffer.getLength(); i++) {
@@ -160,6 +316,91 @@ int b;
       rightBuffer.setHSV(i, h, s, v);
    }
   }
+
+  public void armenianFlag(){
+    for (var i = 11; i < 16; i++) {
+      // Sets the specified LED to the RGB values for red
+      rightBuffer.setRGB(i, 255, 0,0 );
+    }
+
+    for (var i = 16; i < 21; i++) {
+      // Sets the specified LED to the RGB values for red
+      rightBuffer.setRGB(i, 0, 20, 127);
+    }
+
+    for (var i = 21; i < 25; i++) {
+      // Sets the specified LED to the RGB values for red
+      rightBuffer.setRGB(i, 255, 100, 0);
+    }
+
+
+
+
+  }
+
+  public void italianFlag(){
+    for (var i = 0; i < 3; i++) {
+      // Sets the specified LED to the RGB values for red
+      rightBuffer.setRGB(i, 255, 0,0 );
+    }
+
+    for (var i = 3; i < 7; i++) {
+      // Sets the specified LED to the RGB values for red
+      rightBuffer.setRGB(i, 255, 255, 255);
+    }
+
+    for (var i = 7; i < 11; i++) {
+      // Sets the specified LED to the RGB values for red
+      rightBuffer.setRGB(i, 0, 255, 0);
+    }
+  }
+
+
+  public void japaneseFlag(){
+    for (var i = 25; i < 29; i++) {
+      // Sets the specified LED to the RGB values for red
+      rightBuffer.setRGB(i, 255, 255,255 );
+    }
+
+    for (var i = 29; i < 32; i++) {
+      // Sets the specified LED to the RGB values for red
+      rightBuffer.setRGB(i, 255, 0, 0);
+    }
+
+    for (var i = 32; i < 36; i++) {
+      // Sets the specified LED to the RGB values for red
+      rightBuffer.setRGB(i, 255, 255, 255);
+    }
+  }
+  public void americanFlag(){
+    for (var i = 36; i < 41; i++) {
+      // Sets the specified LED to the RGB values for red
+      rightBuffer.setRGB(i, 0, 0,255 );
+    }
+     
+      rightBuffer.setRGB(41, 255, 0, 0);
+      rightBuffer.setRGB(42, 255, 255, 255);
+      rightBuffer.setRGB(43, 255, 0, 0);
+      rightBuffer.setRGB(44, 255, 255, 255);
+      rightBuffer.setRGB(45, 255, 0, 0);
+      rightBuffer.setRGB(46, 255, 255, 255);
+      rightBuffer.setRGB(47, 255, 0, 0);
+      rightBuffer.setRGB(48, 255, 255, 255);
+      rightBuffer.setRGB(49, 255, 0, 0);
+      rightBuffer.setRGB(50, 255, 255, 255);
+
+
+
+    // for (var i = 16; i < 21; i++) {
+    //   // Sets the specified LED to the RGB values for red
+    //   rightBuffer.setRGB(i, 0, 20, 127);
+    // }
+
+    // for (var i = 21; i < 25; i++) {
+    //   // Sets the specified LED to the RGB values for red
+    //   rightBuffer.setRGB(i, 255, 100, 0);
+    }
+  
   
 
   // public void setLeftLEDs(int r, int g, int b){
@@ -187,7 +428,6 @@ int b;
    rightLED.setData(rightBuffer);
 
 
-   System.out.println(rightBuffer.getLength());
 
 
 //    for (var i = 0; i < leftBuffer.getLength(); i++) {

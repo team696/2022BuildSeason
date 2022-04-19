@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DIOSub;
+import frc.robot.subsystems.LEDSub;
 import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.Pneumatics.LatchStates;
 
@@ -14,13 +15,14 @@ public class AutoDoubleLatch extends CommandBase {
   Pneumatics pneumatics;
   DIOSub dioSub;
   boolean[] sensor;
-
+  LEDSub ledSub;
 
   /** Creates a new AutoDoubleLatch. */
-  public AutoDoubleLatch(Pneumatics pneumatics, DIOSub dioSub) {
+  public AutoDoubleLatch(Pneumatics pneumatics, DIOSub dioSub, LEDSub ledSub) {
     this.dioSub = dioSub;
     this.pneumatics = pneumatics;
-    addRequirements(pneumatics, dioSub);
+    this.ledSub = ledSub;
+    addRequirements(pneumatics, dioSub, ledSub);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -28,6 +30,7 @@ public class AutoDoubleLatch extends CommandBase {
   @Override
   public void initialize() {
     pneumatics.autoPneumatics(LatchStates.DOUBLE_LATCHES, Value.kForward);
+    ledSub.setRightLEDs(255, 255, 0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -42,7 +45,7 @@ public class AutoDoubleLatch extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     pneumatics.autoPneumatics(LatchStates.DOUBLE_LATCHES, Value.kReverse);
-
+    ledSub.setRightLEDs(0, 255, 0);
 
   }
 

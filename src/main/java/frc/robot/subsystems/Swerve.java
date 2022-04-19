@@ -125,16 +125,16 @@ public class Swerve extends SubsystemBase {
     public double limelightOffset(){
 
         // float Kp = -0.1f;
-double min_command = 0.1;
+double min_command = Constants.rotatePid_FF;
 
 
         double heading_error = limelight.tx();
         double steering_adjust = 0.0;
-        if (limelight.tx() > 1)
+        if ((limelight.tx()+1) > 2)
         {
                 steering_adjust = /* Kp*heading_error */ - min_command;
         }
-        else if (limelight.tx() < 1)
+        else if ((limelight.tx()+1) < 0)
         {
                 steering_adjust =/*  Kp*heading_error + */ min_command;
         }

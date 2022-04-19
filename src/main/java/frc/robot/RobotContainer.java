@@ -217,8 +217,8 @@ public class RobotContainer {
         new IntakeCommand(intake, -0.5, true)));
 
     dropBallButton.whenHeld(
-      new SerializerRevCommand(serializer, 0.0, 0.3).alongWith(
-        new IntakeCommand(intake, 0.8, true)));
+      new SerializerRevCommand(serializer, 0.0, 0.55).alongWith(
+        new IntakeCommand(intake, 0.4, true)));
 
     spitBallButton.whenPressed(
       new SpitTopBall(serializer, shooter));
@@ -259,7 +259,7 @@ public class RobotContainer {
       new ClimbCommand(climber));
 
     armButton.whenPressed(
-      new AutoDoubleLatch(pneumatics, dioSub).deadlineWith(
+      new AutoDoubleLatch(pneumatics, dioSub, ledSub).alongWith(
       new ClimbCommand2(climber).alongWith(
       new TeleopSwerveSlow(s_Swerve, m_controller, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop))),true);
 

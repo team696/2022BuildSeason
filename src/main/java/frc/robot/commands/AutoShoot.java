@@ -165,7 +165,7 @@ public class AutoShoot extends CommandBase {
 
       /* ====================== TIMER ======================*/
 
-     if (overallTimer > 300){
+     if (overallTimer > 250){
        done = true;
      }
 

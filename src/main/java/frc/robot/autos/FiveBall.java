@@ -107,7 +107,7 @@ public class FiveBall extends SequentialCommandGroup {
                         new Pose2d(-1.4, -0.001, new Rotation2d(0)),
                         List.of(
                                 new Translation2d(0., .8)),
-                                new Pose2d(-0.1, 2.2, Rotation2d.fromDegrees(90)),
+                                new Pose2d(-0.1, 2.2, Rotation2d.fromDegrees(120)),
                         config2),
                     s_Swerve::getPose,
                     Constants.Swerve.swerveKinematics,
@@ -122,7 +122,7 @@ public class FiveBall extends SequentialCommandGroup {
                     TrajectoryGenerator.generateTrajectory(
                         new Pose2d(-0.1, 2.2, new Rotation2d(-180)),
                         List.of(
-                                new Translation2d(-.55, 6.4)),
+                                new Translation2d(-.35, 6.4)),
                                 new Pose2d(-0.4, 6, new Rotation2d(-180)),
                         config2),
                     s_Swerve::getPose,
@@ -176,7 +176,7 @@ public class FiveBall extends SequentialCommandGroup {
                     Step2.deadlineWith(new IntakeDelay(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6, shooter, 0 ))),
                         lockAndShoot2,
                              Step3.deadlineWith(new IntakeDelay(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6, shooter, 0 ))),
-                                new WaitCommand(0.5).deadlineWith(new IntakeCommand(intake, -0.4, true)),
+                                new WaitCommand(0.2).deadlineWith(new IntakeCommand(intake, -0.4, true)),
                                     Step5,
                                       lockAndShoot3
 

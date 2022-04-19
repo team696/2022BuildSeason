@@ -159,9 +159,10 @@ public final class Constants {
    
     public static final double limelightDeadbandCoefficient = 0.055
     ;
-    public static final double rotatePid_P = /* 0.025 */ 0.02;
-    public static final double rotatePid_I = /* 0.0002 */ 0.0005;
-    public static final double rotatePid_D = /* 0.003 */0.00375;
+    public static final double rotatePid_FF = 0.09;
+    public static final double rotatePid_P = /* 0.025 */ 0.017;
+    public static final double rotatePid_I = /* 0.0002 */ 0.0;
+    public static final double rotatePid_D = /* 0.003 */0.002125;
     public static final double rotatePid_Tol = 1;
 
    

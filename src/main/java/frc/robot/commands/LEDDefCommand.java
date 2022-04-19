@@ -27,7 +27,7 @@ public class LEDDefCommand extends CommandBase {
   @Override
   public void execute() {
     // ledSub.setRightLEDsHSV(0, 0, 50);\
-    ledSub.rainbow();
+    ledSub.pinkLightBouncing();
   }
 
   // Called once the command ends or is interrupted.

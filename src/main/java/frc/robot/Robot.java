@@ -63,6 +63,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    // m_robotContainer.ledSub.armenianFlag();
+
     // serializer = new Serializer();
     // climber = new Climber();
     // // intake = new Intake();
@@ -177,10 +179,22 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    // m_robotContainer.ledSub.armenianFlag();
+    // m_robotContainer.ledSub.americanFlag();
+    // m_robotContainer.ledSub.italianFlag();
+    // m_robotContainer.ledSub.japaneseFlag();
+  }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    m_robotContainer.ledSub.pinkGreen_Brth();;
+    // m_robotContainer.ledSub.armenianFlag();
+    // m_robotContainer.ledSub.americanFlag();
+    // m_robotContainer.ledSub.italianFlag();
+    // m_robotContainer.ledSub.japaneseFlag();
+    // m_robotContainer.ledSub.pinkGreen_Alt();
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
