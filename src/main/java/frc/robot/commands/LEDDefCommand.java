@@ -20,14 +20,14 @@ public class LEDDefCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    ledSub.setRightLEDs(0, 255, 0);
+    // ledSub.setRightLEDs(0, 255, 0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // ledSub.setRightLEDsHSV(0, 0, 50);\
-    ledSub.pinkLightBouncing();
+    // ledSub.setRightLEDsHSV(0, 0, 50);
+    // ledSub.pinkLightBouncing();
   }
 
   // Called once the command ends or is interrupted.

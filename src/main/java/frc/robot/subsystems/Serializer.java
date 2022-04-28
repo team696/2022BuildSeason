@@ -254,9 +254,9 @@ chosenAlliance = allianceColor.getSelected();
     allianceColor.addOption("PRACTICE MODE", practiceMode);
 
     SmartDashboard.putData(allianceColor);
-    SmartDashboard.putNumber("GREEN ", getGreen());
-    SmartDashboard.putNumber("RED ", getRed());
-    SmartDashboard.putNumber("BLUE ", getBlue());
+    // SmartDashboard.putNumber("GREEN ", getGreen());
+    // SmartDashboard.putNumber("RED ", getRed());
+    // SmartDashboard.putNumber("BLUE ", getBlue());
     // SmartDashboard.putNumber("RED ", get.red);
     // double green = getGreen();
     // SmartDashboard.putNumber("GREEN", green);

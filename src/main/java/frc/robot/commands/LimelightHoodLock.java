@@ -69,19 +69,30 @@ public class LimelightHoodLock extends CommandBase {
       shooterHood.setHoodPos(last_angle);
     }
    
+if (idle){
+  ledSub.setRightLEDs(50, 50, 50);
+}
+else{
+  if(locked){
+    ledSub.setRightLEDs(0, 255, 0);
+  }
+  else{
+    ledSub.setRightLEDs(255, 0, 0);
 
-    if( locked){
-      ledSub.setRightLEDs(0, 255, 0);
-    }
-    else {
-      if(idle){
-        ledSub.setRightLEDs(255, 255, 255);
-      }
-      else{
-              ledSub.setRightLEDs(255, 0, 0);
+  }
+}
+    // if( locked){
+    //   ledSub.setRightLEDs(0, 255, 0);
+    // }
+    // else {
+    //   if(idle){
+    //     ledSub.setRightLEDs(255, 255, 255);
+    //   }
+    //   else{
+    //           ledSub.setRightLEDs(255, 0, 0);
 
-      }
-    }
+    //   }
+    // }
     
   }
 
@@ -90,7 +101,7 @@ public class LimelightHoodLock extends CommandBase {
   public void end(boolean interrupted) {
 
     limelight.setLights(1);
-    ledSub.setRightLEDsHSV(0, 0, 90);
+    ledSub.setRightLEDsHSV(0, 0, 50);
   }
 
   // Returns true when the command should end.

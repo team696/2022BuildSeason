@@ -213,7 +213,7 @@ public final class Constants {
     }
     public static final class LimelightConstants{
                                                                
-        public static final double limelightDegrees = 39;  
+        public static final double limelightDegrees = 41;  
         public static final double limelightHeight = 24; 
         public static final double goalHeight = 104; 
 

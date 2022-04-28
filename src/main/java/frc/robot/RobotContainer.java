@@ -187,7 +187,7 @@ public class RobotContainer {
     s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, m_controller, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
     climber.setDefaultCommand(new ClimbCommand(climber));
     shooterHood.setDefaultCommand(new ShooterHoodCommand(shooterHood, 0));
-    ledSub.setDefaultCommand(new LEDDefCommand(ledSub));
+    // ledSub.setDefaultCommand(new LEDDefCommand(ledSub));
     // serializer.setDefaultCommand(new CheckBlueAlliance(serializer, shooter).andThen(new SpitTopBall(serializer, shooter)));
   
     m_chooser.setDefaultOption("Five Ball Auto", fiveBall);

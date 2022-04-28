@@ -63,6 +63,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    // m_robotContainer.ledSub.setRightLEDs(100, 100, 100);
     // m_robotContainer.ledSub.armenianFlag();
 
     // serializer = new Serializer();
@@ -162,7 +163,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("DISTANCE TO TARGET", m_robotContainer.limelight.getDistance()/12);
     SmartDashboard.putNumber("LL TX", m_robotContainer.limelight.tx());
     SmartDashboard.putBoolean("LOCKED ", m_robotContainer.limelight.crosshairOnTarget());
-    SmartDashboard.putNumber("GYRO ", m_robotContainer.s_Swerve.gyro.getYaw());
+    // SmartDashboard.putNumber("GYRO ", m_robotContainer.s_Swerve.gyro.getYaw());
 
     // SmartDashboard.putNumber("RED", m_robotContainer.serializer.getRed());
     // SmartDashboard.putNumber("GREEN", m_robotContainer.serializer.getGreen());
@@ -180,25 +181,28 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    // m_robotContainer.ledSub.armenianFlag();
-    // m_robotContainer.ledSub.americanFlag();
-    // m_robotContainer.ledSub.italianFlag();
-    // m_robotContainer.ledSub.japaneseFlag();
+    m_robotContainer.ledSub.setRightLEDs(0, 30, 0);
+  //  m_robotContainer.ledSub.armenianFlag();
+  //  m_robotContainer.ledSub.americanFlag();
+  //  m_robotContainer.ledSub.italianFlag();
+  // m_robotContainer.ledSub.japaneseFlag();
   }
 
   @Override
   public void disabledPeriodic() {
-    m_robotContainer.ledSub.pinkGreen_Brth();;
-    // m_robotContainer.ledSub.armenianFlag();
-    // m_robotContainer.ledSub.americanFlag();
-    // m_robotContainer.ledSub.italianFlag();
-    // m_robotContainer.ledSub.japaneseFlag();
+    // m_robotContainer.ledSub.pinkGreen_Alt();
+    // m_robotContainer.ledSub.pinkGreen_Brth();;
+    //  m_robotContainer.ledSub.armenianFlag();
+    //  m_robotContainer.ledSub.americanFlag();
+    //  m_robotContainer.ledSub.italianFlag();
+    //  m_robotContainer.ledSub.japaneseFlag();
     // m_robotContainer.ledSub.pinkGreen_Alt();
   }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    m_robotContainer.ledSub.setRightLEDs(100, 100, 100);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -213,6 +217,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    m_robotContainer.ledSub.setRightLEDs(10, 10, 10);
    
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
