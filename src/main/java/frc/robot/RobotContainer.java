@@ -214,7 +214,7 @@ public class RobotContainer {
 
     serializerForButton.whenHeld(
       new SerializerCommand(serializer, 0.2, -0.6, shooter, 0.4 ).alongWith(
-        new IntakeCommand(intake, -0.5, true)));
+        new IntakeCommand(intake, -0.6, true)));
 
     dropBallButton.whenHeld(
       new SerializerRevCommand(serializer, 0.0, 0.55).alongWith(

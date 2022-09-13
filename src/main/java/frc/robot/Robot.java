@@ -181,7 +181,7 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    m_robotContainer.ledSub.setRightLEDs(0, 30, 0);
+    // m_robotContainer.ledSub.setRightLEDs(0, 30, 0);
   //  m_robotContainer.ledSub.armenianFlag();
   //  m_robotContainer.ledSub.americanFlag();
   //  m_robotContainer.ledSub.italianFlag();
@@ -202,7 +202,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    m_robotContainer.ledSub.setRightLEDs(100, 100, 100);
+    // m_robotContainer.ledSub.setRightLEDs(100, 100, 100);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -217,7 +217,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    m_robotContainer.ledSub.setRightLEDs(10, 10, 10);
+    // m_robotContainer.ledSub.setRightLEDs(10, 10, 10);
    
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to

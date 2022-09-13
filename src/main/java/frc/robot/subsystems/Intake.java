@@ -19,6 +19,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Intake extends SubsystemBase {
  public Talon intakeMotor;
  Solenoid intakeSolenoid;
+ 
+ 
 
   // Solenoid intakeSolenoid = new Solenoid(PneumaticsModuleType.REVPH, 4);
 

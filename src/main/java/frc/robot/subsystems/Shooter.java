@@ -184,7 +184,7 @@ public   WPI_TalonFX leftShooterMotor;
    int distance;
    double limelightDistance;
    double speed;
-   double last_speed = 2000;
+   double last_speed = 3000;
    // double speed;
    limelightDistance = lldistance/12;
    distance = (int)Math.round(limelightDistance);
@@ -193,13 +193,17 @@ public   WPI_TalonFX leftShooterMotor;
    speed  = trajectoryTable.distanceToShooterSpeed[distance];
    // speed = (Math.sqrt(limelightDistance) * 848.972) + 200;
    last_speed = speed;
+
+   //THIS EQUATION IS OWNING. BY CODING KING
+   // 1833.96x^3+-2524.94x^2+1848.64x+1820.18
+
    // speed = trajectoryTable.distanceToShooterSpeed[distance];
    // limelight.setLights(mode);
    // shooterHood.moveActuators(angle);
-   shooterSpeed =  speed;
+   shooterSpeed =  speed - 50 ;
    }
    else{
-     shooterSpeed =  last_speed;
+     shooterSpeed =  last_speed ;
    }
 
  }
@@ -207,7 +211,7 @@ public   WPI_TalonFX leftShooterMotor;
     int distance;
     double limelightDistance;
     double speed;
-    double last_speed = 2000;
+    double last_speed = 3000;
     // double speed;
     limelightDistance = lldistance/12;
     distance = (int)Math.round(limelightDistance);

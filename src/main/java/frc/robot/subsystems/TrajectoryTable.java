@@ -35,7 +35,7 @@ public class TrajectoryTable extends SubsystemBase {
      1.114, /* 17 */
      1.176, /* 18 */
      1.238, /* 19 */
-     1.2,  /* 20 */
+     1.2,  /* 20 */ 
      1.2,
      1.2,
      1.2,
