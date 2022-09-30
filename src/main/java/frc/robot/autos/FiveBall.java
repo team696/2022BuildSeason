@@ -47,6 +47,8 @@ public class FiveBall extends SequentialCommandGroup {
 
         Command lockAndShoot = new ParallelCommandGroup(new AutoShoot(limelight, shooter, serializer, shooterHood, trajectoryTable).deadlineWith(
             new AutoLimeLock(s_Swerve, true , true )));
+            Command lockAndShoot4 = new ParallelCommandGroup(new AutoShoot(limelight, shooter, serializer, shooterHood, trajectoryTable).deadlineWith(
+            new AutoLimeLock(s_Swerve, true , true )));
         Command lockAndShoot2 = new ParallelCommandGroup(new AutoShoot(limelight, shooter, serializer, shooterHood, trajectoryTable).deadlineWith(
                 new AutoLimeLock(s_Swerve, true , true )));
                 Command lockAndShoot3 = new ParallelCommandGroup(new AutoShoot(limelight, shooter, serializer, shooterHood, trajectoryTable).deadlineWith(
@@ -72,7 +74,7 @@ public class FiveBall extends SequentialCommandGroup {
         Trajectory exampleTrajectory =
             TrajectoryGenerator.generateTrajectory(
                 new Pose2d(-0.5, 0, new Rotation2d(0)),
-                List.of(new Translation2d(-1.1, 0.001)),
+                List.of(new Translation2d(-1, 0.001)),
                          new Pose2d(-1.4, -0.001, new Rotation2d(0)),
                 config);
 
@@ -165,19 +167,36 @@ public class FiveBall extends SequentialCommandGroup {
                 s_Swerve::setModuleStates,
                 s_Swerve);
 
+                SwerveControllerCommand Step0 =
+                new SwerveControllerCommand(
+                    TrajectoryGenerator.generateTrajectory(
+                new Pose2d(-0.5, 0, new Rotation2d(0)),
+                List.of(new Translation2d(-1.1, 0.001)),
+                         new Pose2d(-1.2, -0.001, new Rotation2d(0)),
+                config),
+                    s_Swerve::getPose,
+                    Constants.Swerve.swerveKinematics,
+                    new PIDController(Constants.AutoConstants.kPXController, 0, 0),
+                    new PIDController(Constants.AutoConstants.kPYController, 0, 0),
+                    thetaController,
+                    s_Swerve::setModuleStates,
+                    s_Swerve);
     
             
         
 
         addCommands(
         new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
-            Step1.deadlineWith(new IntakeCommand(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6, shooter, 0 ))),
+        // Step0,
+        // lockAndShoot4,
+            Step1/* .deadlineWith(new IntakeCommand(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6, shooter, 0 ))) */,
                 lockAndShoot,
-                    Step2.deadlineWith(new IntakeDelay(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6, shooter, 0 ))),
+                            new WaitCommand(0.5).deadlineWith( new IntakeCommand(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6, shooter, 0 ))),
+                    Step2.deadlineWith(new IntakeDelay(intake, -0.5, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6, shooter, 0 ))),
                         lockAndShoot2,
-                             Step3.deadlineWith(new IntakeDelay(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6, shooter, 0 ))),
-                                new WaitCommand(0.2).deadlineWith(new IntakeCommand(intake, -0.4, true)),
-                                    Step5,
+                             Step3.deadlineWith(new IntakeDelay(intake, -0.5, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6, shooter, 0 ))),
+/*                                 new WaitCommand(0.02).deadlineWith(new IntakeCommand(intake, -0.4, true)),
+ */                                    Step5,
                                       lockAndShoot3
 
 

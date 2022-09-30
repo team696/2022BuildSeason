@@ -19,6 +19,8 @@ public class AutoClimbStep2 extends CommandBase {
   double init_climber_pos;
   double current_climber_pos;
   int counter = 0;
+  boolean flag1;
+  boolean flag2;
   static double target_climber_pos = 32 + 180;
   boolean[] sensor;
   /** Creates a new AutoClimbStep2. */
@@ -34,6 +36,8 @@ public class AutoClimbStep2 extends CommandBase {
   @Override
   public void initialize() {
     init_climber_pos = climber.getClimberPos();
+    flag1 = false;
+    flag2 = false;
 
   }
 
@@ -45,6 +49,13 @@ public class AutoClimbStep2 extends CommandBase {
 
     climber.moveClimber(1); /* 1 */
     pneumatics.autoPneumatics(LatchStates.DOUBLE_LATCHES, Value.kReverse);
+    if (!sensor[0]){
+      flag1 = true;
+    }
+
+    if (!sensor[2]){
+      flag2 = true;
+    }
 
   }
 
@@ -65,7 +76,7 @@ public class AutoClimbStep2 extends CommandBase {
     //   return false;
     // }
 
-    if (!sensor[0] || !sensor[1] || !sensor[2] || !sensor[3]){
+    if (/* !sensor[0]  || !sensor[0] || !sensor[3] ||  && !sensor[3] */ flag1 && flag2){
       return true;
 
     }

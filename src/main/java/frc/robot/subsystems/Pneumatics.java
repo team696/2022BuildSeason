@@ -62,7 +62,7 @@ public class Pneumatics extends SubsystemBase {
     }
 
   }
-  
+    
   public void movePeumatics1(Value value){
     sol1.set(value);
   }

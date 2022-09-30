@@ -30,7 +30,7 @@ int b;
   
   /** Creates a new LEDSub. */
   public LEDSub() {
-    rightLED = new AddressableLED(9);
+    rightLED = new AddressableLED(8);
     // leftLED = new AddressableLED(8);
     pinkGreenFirstPixHue = 60;
     m_rainbowFirstPixelHue = 60;
@@ -38,7 +38,7 @@ int b;
     // // Reuse buffer
     // // Default to a length of 60, start empty output
     // // Length is expensive to set, so only set it once, then just update data
-    rightBuffer = new AddressableLEDBuffer(60);
+    rightBuffer = new AddressableLEDBuffer(80);
     // leftBuffer = new AddressableLEDBuffer(60);
   
     rightLED.setLength(rightBuffer.getLength());
@@ -246,11 +246,11 @@ int b;
 // //--------------End of Pink and Green LED Code ----------------
 
   public void setRightLEDs(int r, int g, int b){
-    for (var i = 0; i < rightBuffer.getLength(); i++) {
+    for (var i = 0; i <  rightBuffer.getLength() ; i++) {
       // Sets the specified LED to the RGB values for red
       rightBuffer.setRGB(i, r, g, b);
    }
-  //  rightLED.setData(rightBuffer);
+   rightLED.setData(rightBuffer);
 
   }
 

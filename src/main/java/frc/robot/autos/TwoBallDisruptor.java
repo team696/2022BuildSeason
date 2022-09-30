@@ -49,6 +49,8 @@ public class TwoBallDisruptor extends SequentialCommandGroup {
 
         Command lockAndShoot = new ParallelCommandGroup(new AutoShoot(limelight, shooter, serializer, shooterHood, trajectoryTable).deadlineWith(
             new AutoLimeLock(s_Swerve, true , true )));
+            Command lockAndShoot2 = new ParallelCommandGroup(new AutoShoot(limelight, shooter, serializer, shooterHood, trajectoryTable).deadlineWith(
+            new AutoLimeLock(s_Swerve, true , true )));
        
         TrajectoryConfig config =
             new TrajectoryConfig(
@@ -87,8 +89,11 @@ public class TwoBallDisruptor extends SequentialCommandGroup {
                 TrajectoryGenerator.generateTrajectory(
                     List.of(new Pose2d(-0.5, 0, new Rotation2d(0)),
                     new Pose2d(-1.1, 0.001, new Rotation2d(0)),
-                    new Pose2d(-2, -0.001, new Rotation2d(0))),
+                    new Pose2d(-1.3, -0.001, new Rotation2d(0))),
                     config);
+
+
+
                 // Trajectory exampleTrajectory = 
 
                 // TrajectoryGenerator.generateTrajectory(
@@ -105,7 +110,7 @@ public class TwoBallDisruptor extends SequentialCommandGroup {
 
         var thetaController2 =
         new ProfiledPIDController(
-            /* Constants.AutoConstants.kPThetaController */5, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
+            /* Constants.AutoConstants.kPThetaController */1.5, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
     thetaController2.enableContinuousInput(-Math.PI, Math.PI);
 
         SwerveControllerCommand Step1 =
@@ -137,12 +142,11 @@ public class TwoBallDisruptor extends SequentialCommandGroup {
                 SwerveControllerCommand Step2 =
                 new SwerveControllerCommand(
                     TrajectoryGenerator.generateTrajectory(
-              List.of(new Pose2d(-2, -0.001, new Rotation2d(180)),
-              new Pose2d(-1, 1, Rotation2d.fromDegrees(210)),
-              new Pose2d(-1.6, 1.5, Rotation2d.fromDegrees(210
-              ))),
+              List.of(new Pose2d(-1.3, -0.001, new Rotation2d(0)),
+              new Pose2d(-1.4, -0.001, new Rotation2d(0)),
+              new Pose2d(-1.6, -0.002, new Rotation2d(0))),
               
-              config2),
+              config),
                     s_Swerve::getPose,
                     Constants.Swerve.swerveKinematics,
                     new PIDController(/* Constants.AutoConstants.kPXController */0.8, 0, 0.004),
@@ -151,12 +155,27 @@ public class TwoBallDisruptor extends SequentialCommandGroup {
                     s_Swerve::setModuleStates,
                     s_Swerve);
                 
+                    SwerveControllerCommand Step3 =
+                    new SwerveControllerCommand(
+                        TrajectoryGenerator.generateTrajectory(
+                  List.of(new Pose2d(-1.6, -0.002, new Rotation2d(0)),
+                  new Pose2d(-0.5, 0.5, new Rotation2d(0)),
+                  new Pose2d(-1, 3, new Rotation2d(0))),
+                  
+                  config),
+                        s_Swerve::getPose,
+                        Constants.Swerve.swerveKinematics,
+                        new PIDController(/* Constants.AutoConstants.kPXController */0.8, 0, 0.004),
+                        new PIDController(/* Constants.AutoConstants.kPYController */0.8, 0, 0.004),
+                        thetaController2,
+                        s_Swerve::setModuleStates,
+                        s_Swerve);
         //   SwerveControllerCommand Step3 =
         //     new SwerveControllerCommand(
         //         TrajectoryGenerator.generateTrajectory(
         //              new Pose2d(-1.5, 2, Rotation2d.fromDegrees(50)),
         //     List.of(new Translation2d(0, 0.0)),
-        //              new Pose2d(0, -2, Rotation2d.fromDegrees(-120 )),
+        //              new Pose2d(0, -2, Rotation2d.fromDegrees(50)),
         //     config),
         //         s_Swerve::getPose,
         //         Constants.Swerve.swerveKinematics,
@@ -214,10 +233,12 @@ public class TwoBallDisruptor extends SequentialCommandGroup {
 
         addCommands(
             new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
-            Step1.deadlineWith(new IntakeCommand(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6, shooter, 0))),
+            Step1,/* .deadlineWith(new IntakeCommand(intake, -0.4, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6, shooter, 0))), */
            lockAndShoot,
-           Step2.deadlineWith(new IntakeDelay(intake, -0.4, true))
-        //    Step3.deadlineWith(new IntakeDelay(intake, -0.4, true)),
+           Step2.deadlineWith(new IntakeCommand(intake, -0.4, true)),
+           lockAndShoot2
+        //    Step3
+        //    Step3.deadlineWith(new IntakeDelay(intake, -0.4, true))
 
         //    Step4
          

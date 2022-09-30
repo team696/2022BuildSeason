@@ -33,8 +33,8 @@ public class Climber extends SubsystemBase {
   /** Creates a new Climber. */
   public Climber() {
     
-    lClimberMotor = new WPI_TalonFX(20);
-    rClimberMotor = new WPI_TalonFX(21);
+    lClimberMotor = new WPI_TalonFX(20, "Alex");
+    rClimberMotor = new WPI_TalonFX(21, "Alex");
 
      rClimberMotor.configFactoryDefault();
    

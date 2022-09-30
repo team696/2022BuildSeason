@@ -75,7 +75,7 @@ public class FireCommand extends CommandBase {
       break;
       case 3:
       timer++;
-      if(timer < 20){
+      if(timer < 30 /* 20  */){
         serializer.runSerMotors(0.2, -0.4);
       }
       else{

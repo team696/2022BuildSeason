@@ -26,6 +26,7 @@ import frc.robot.commands.ClimbCommand;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DIOSub;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LEDSub;
 import frc.robot.subsystems.Serializer;
 import frc.robot.subsystems.Shooter;
 
@@ -43,6 +44,8 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
   public static  CameraServer camServ;
   public VideoCamera cam;
+  // private LEDSub ledSub;
+
   // public AddressableLED rightLED;
   // public AddressableLEDBuffer rightBuffer;
 
@@ -61,11 +64,13 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
+
+
   @Override
   public void robotInit() {
-    // m_robotContainer.ledSub.setRightLEDs(100, 100, 100);
-    // m_robotContainer.ledSub.armenianFlag();
+        // ledSub = new LEDSub();
 
+    // m_robotContainer.ledSub.armenianFlag();
     // serializer = new Serializer();
     // climber = new Climber();
     // // intake = new Intake();
@@ -119,8 +124,12 @@ public class Robot extends TimedRobot {
 
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
-    // climber = new Climber();
+    // climber = new Climber(); 
+       m_robotContainer = new RobotContainer(); 
+
+     m_robotContainer.ledSub.setRightLEDs(100, 100, 100);
+
+
   }
 
   /**

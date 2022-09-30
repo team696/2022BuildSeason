@@ -28,8 +28,8 @@ public   WPI_TalonFX leftShooterMotor;
     limelight = new Limelight();
     trajectoryTable = new TrajectoryTable();
 
-    leftShooterMotor = new WPI_TalonFX(41);
-    rightShooterMotor = new WPI_TalonFX(40);
+    leftShooterMotor = new WPI_TalonFX(41, "Alex");
+    rightShooterMotor = new WPI_TalonFX(40, "Alex");
 
     leftShooterMotor.configFactoryDefault();
     leftShooterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);

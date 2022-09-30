@@ -51,7 +51,7 @@ public Talon rightSerMotor;
 
     limelight = new Limelight();
     trajectoryTable = new TrajectoryTable();
-    leftSerMotor = new TalonFX(Constants.Serializer.leftSerMotorport);
+    leftSerMotor = new TalonFX(Constants.Serializer.leftSerMotorport, "Alex");
     rightSerMotor = new Talon(Constants.Serializer.rightSerMotor);
 
     allianceColor = new SendableChooser<>();
