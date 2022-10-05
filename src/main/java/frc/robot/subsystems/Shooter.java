@@ -13,7 +13,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.LimelightConstants;
+import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
 public   WPI_TalonFX leftShooterMotor;
@@ -208,16 +208,17 @@ public   WPI_TalonFX leftShooterMotor;
 
  }
   public double getRequiredShootSpeed(){
-    int distance;
+    int distance; 
     double limelightDistance;
     double speed;
     double last_speed = 3000;
     // double speed;
     limelightDistance = lldistance/12;
-    distance = (int)Math.round(limelightDistance);
+    distance = (int)Math.round(limelightDistance); 
 
     if(distance <21){
-    speed  = trajectoryTable.distanceToShooterSpeed[distance];
+    speed = Math.sqrt(Constants.Shooter.gravity * (Constants.Shooter.height + Math.sqrt(Constants.Shooter.height * Constants.Shooter.height + limelightDistance * limelightDistance )) ) * Constants.Shooter.conversionFactor;
+    //speed  = trajectoryTable.distanceToShooterSpeed[distance];
     // speed = (Math.sqrt(limelightDistance) * 848.972) + 200;
     last_speed = speed;
     // speed = trajectoryTable.distanceToShooterSpeed[distance];

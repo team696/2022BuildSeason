@@ -10,7 +10,7 @@ import frc.robot.subsystems.LEDSub;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.ShooterHood;
 import frc.robot.subsystems.TrajectoryTable;
-
+import frc.robot.Constants;
 public class LimelightHoodLock extends CommandBase {
   Limelight limelight;
   TrajectoryTable trajectoryTable;
@@ -47,19 +47,29 @@ public class LimelightHoodLock extends CommandBase {
     double limelightDistance;
     double angle;
     limelightDistance = limelight.getDistance()/12;
+    double iniAngle =  ( Math.atan( (Constants.Shooter.height + Math.sqrt( Constants.Shooter.height * Constants.Shooter.height + limelightDistance * limelightDistance )) / limelightDistance)) -0.227;
     distance = (int)Math.round(limelightDistance);
 
-   double  testEquation = limelight.getDistance()/12 * 0.062;
-  //  double test = ((14.1714 * Math.sqrt((limelight.getDistance()/12) -5))/46.8497)*11.5723;
 
- if(limelightDistance < 5.5){
+    
+
+ 
+   
+if (idle){
+  ledSub.setRightLEDs(50, 50, 50);
+  shooterHood.setHoodPos(0);
+}
+
+
+else{
+if(limelightDistance < 5.5){
       limelight.pipeline(0);
     }
     else{
       limelight.pipeline(1);
     }
     if(distance <25 && distance > 5){
-    angle  = trajectoryTable.distanceToHoodAngle[distance];
+    angle = iniAngle; //trajectoryTable.distanceToHoodAngle[distance];
     // angle = testEquation;
     limelight.setLights(mode);
     shooterHood.setHoodPos(angle);
@@ -68,11 +78,8 @@ public class LimelightHoodLock extends CommandBase {
     else{
       shooterHood.setHoodPos(last_angle);
     }
-   
-if (idle){
-  ledSub.setRightLEDs(50, 50, 50);
-}
-else{
+
+
   if(locked){
     ledSub.setRightLEDs(0, 255, 0);
   }

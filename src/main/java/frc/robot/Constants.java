@@ -96,7 +96,7 @@ public final class Constants {
             public static final int driveMotorID = 2;
             public static final int angleMotorID = 1;
             public static final int canCoderID = 3;
-            public static final double angleOffset =  141.2   /* Math.toRadians(141.2) */  /* Math.toRadians(40) */;
+            public static final double angleOffset =  9.4   /* Math.toRadians(141.2) */  /* Math.toRadians(40) */;
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -106,7 +106,7 @@ public final class Constants {
             public static final int driveMotorID = 11;
             public static final int angleMotorID = 10;
             public static final int canCoderID = 12;
-            public static final double angleOffset =   81 /* Math.toRadians(81) */ /*  Math.toRadians(100) */;
+            public static final double angleOffset = 74 /* Math.toRadians(81) */ /*  Math.toRadians(100) */;
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -116,7 +116,7 @@ public final class Constants {
             public static final int driveMotorID = 5;
             public static final int angleMotorID = 4;
             public static final int canCoderID = 6;
-            public static final double angleOffset =  79.36 /* Math.toRadians(74.1) */  /* -Math.toRadians(254.5) */;
+            public static final double angleOffset =  307 /* Math.toRadians(74.1) */  /* -Math.toRadians(254.5) */;
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -126,7 +126,7 @@ public final class Constants {
             public static final int driveMotorID = 8;
             public static final int angleMotorID = 7;
             public static final int canCoderID = 9;
-            public static final double angleOffset =  152.3 /*   Math.toRadians(152.3); */ /* -Math.toRadians(333) */;
+            public static final double angleOffset =  146 /*   Math.toRadians(152.3); */ /* -Math.toRadians(333) */;
             public static final SwerveModuleConstants constants = 
                 new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -233,5 +233,8 @@ public static final class Shooter {
         public static final double kD = 0.0000;
         public static final double kTolerance = 10;
         public static final int hoodMotorPort = 60;
+        public static final double gravity = 32.152231;
+        public static final double height = 3;
+        public static final double conversionFactor = 28.6478897566;
     }
 }

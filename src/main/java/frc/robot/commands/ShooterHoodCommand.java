@@ -33,7 +33,7 @@ public class ShooterHoodCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // shooterHood.setHoodPos(position);
+    shooterHood.setHoodPos(0);
     // shooterHood.runHoodMotor(RobotContainer.controlPanel.getRawAxis(Constants.Shooter.hoodAxis));
 
     // timer++;  
@@ -60,7 +60,7 @@ public class ShooterHoodCommand extends CommandBase {
        
       // }
       // last_hood_axis = hood_axis;
-  shooterHood.runHoodMotor(RobotContainer.controlPanel.getRawAxis(Constants.Shooter.hoodAxis));
+  // shooterHood.runHoodMotor(RobotContainer.controlPanel.getRawAxis(Constants.Shooter.hoodAxis));
   }
 
   // Called once the command ends or is interrupted.
