@@ -110,7 +110,7 @@ public class Climber extends SubsystemBase {
  * @return  The voltage as a double
   */ 
   public  double getClimberVoltage(){
-    return lClimberMotor.getSupplyCurrent();
+    return lClimberMotor.getMotorOutputVoltage();
   }
 
   public void setNeutralBrake(){
@@ -134,6 +134,10 @@ public class Climber extends SubsystemBase {
   public double getClimberPos(){
     // return lClimberMotor.getSelectedSensorPosition() / 2048.0;
     return lClimberMotor.getSelectedSensorPosition() / 2048.0 * 360;
+  }
+  public double getClimberCurrent(){
+    return lClimberMotor.getStatorCurrent();
+
   }
   
   

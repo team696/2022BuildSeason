@@ -27,125 +27,72 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ShooterHood extends SubsystemBase {
-//   public Servo leftActuator;
-//  public  Servo rightActuator;
-//  public WPI_TalonSRX hoodMotor;
+
  public JohnsonPlg plgEncoder;
  private double hoodSpeed;
  public CANSparkMax hoodMotor;
  public RelativeEncoder encoder;
-//  public SparkMaxPIDController controller;
 
- public PIDController hoodPID; /*MIGHT USE INTAGRATED TALON SRX PID FOR POSITION CONTROL*/
+ public PIDController hoodPID; 
 
-  /** Creates a new ShooterHood. */
   public ShooterHood() {
-    // leftActuator = new Servo(6);
-    // rightActuator = new Servo(7);
     hoodMotor = new CANSparkMax(55, MotorType.kBrushed);
-    // controller = hoodMotor.getPIDController();
     
-    
-    // hoodMotor = new WPI_TalonSRX(55);
-    // plgEncoder = new JohnsonPlg(8, 9);
-
     hoodPID = new PIDController(Constants.Shooter.kP, Constants.Shooter.kI, Constants.Shooter.kD); 
     hoodPID.setTolerance(Constants.Shooter.kTolerance);
-    
-
+  
     hoodMotor.restoreFactoryDefaults();
     hoodMotor.setIdleMode(IdleMode.kBrake);
     hoodMotor.setSoftLimit(SoftLimitDirection.kForward, 1.3f);
     hoodMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 60000);
     hoodMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 60000);
     hoodMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 60000);
-    
-
-    
-//  controller.setFeedbackDevice(encoder);
-//  controller.setP(Constants.Shooter.kP);
-//  controller.setI(Constants.Shooter.kI);
-//  controller.setD(Constants.Shooter.kD);
+  
     encoder = hoodMotor.getEncoder(Type.kQuadrature, 8192);
-    // encoder.setPositionConversionFactor(11.5723);
-    
-    // throughBore = hoodMotor.getEncoder(Type.kQuadrature, 8192);
+   
+    resetEncoderPos();
 
 
-
-    // hoodMotor.configFactoryDefault();
-    // hoodMotor.setNeutralMode(NeutralMode.Brake);
-    // hoodMotor.configNominalOutputForward(0);
-    // hoodMotor.configNominalOutputReverse(0);
-    // hoodMotor.configPeakOutputForward(Constants.Shooter.hoodPeakOutput);
-    // hoodMotor.configPeakOutputReverse(-Constants.Shooter.hoodPeakOutput);
-    // hoodMotor.configForwardSoftLimitThreshold(Constants.Shooter.hoodLimitFor);
-    // hoodMotor.configReverseSoftLimitThreshold(Constants.Shooter.hoodLimitRev);
-    // hoodMotor.configForwardSoftLimitEnable(Constants.Shooter.hoodSoftLimitForward);
-    // hoodMotor.configReverseSoftLimitEnable(Constants.Shooter.hoodSoftLimitReverse);
-    
-
-    
-
-
-    // leftActuator.setAngle(0);
-    // rightActuator.setAngle(0);
-resetEncoderPos();
   }
-/** 
- * Method used for controlling the linear actuators.
- * @param position Desired position in angle (about 50 - 130).
- */
-  // public void moveActuators(double position){
-  //   // if(position<0){
-  //   //   position = 0;
-  //   // }
-  //   // if(position>360){
-  //   //   position = 360;
-  //   // }
-
-  //   leftActuator.setAngle(position);
-  //   rightActuator.setAngle(position);
-  // }
 
   public void setHoodPos(double pos){
-    // hoodMotor.set(hoodPID.calculate(plgEncoder.get(), pos));
     hoodSpeed =  hoodPID.calculate(encoder.getPosition(), pos);
     if(encoder.getPosition()>17){
-      setEncoder(16.8);
+    setEncoder(16.8);
     }
 
+  hoodMotor.set(hoodSpeed);
     
-    hoodMotor.set(hoodSpeed);
-    // }
 
-    // controller.setReference(pos, ControlType.kPosition);
-    // hoodMotor.set(TalonSRXControlMode.PercentOutput, hoodSpeed);
   }
 
   public double getHoodSpeed(){
-return 2;
+    return 2;
+
+
   }
 
-  // public void setPLGEncoder(int pos ){
-  //   plgEncoder.set(pos);
-  // }
-
   public double getEncoderPos(){
-return encoder.getPosition();  
-}
+    return encoder.getPosition(); 
+    
+    
+  }
 
 /**
  * Sets the through bore encoder on the hood to a given position.
  * @param pos
  */
   public void setEncoder(double pos){
-encoder.setPosition(pos); 
- }
+    encoder.setPosition(pos); 
 
- /**Sets the through bore encoder on the hood to zero. */
+
+  }
+
+/**Sets the through bore encoder on the hood to zero. */
  public void resetEncoderPos(){
-   encoder.setPosition(0);
+  encoder.setPosition(0);
+
+
  }
 
  /**
@@ -162,25 +109,14 @@ encoder.setPosition(pos);
       else{
         hoodMotor.set( percent);
 
-  }
-    }
-    else{
+      }
+    } else {
           hoodMotor.set( percent);
 
     }
+
+
   }
-
-  
-/**
- * 
- * @return the position of the linear actuators in angle.
- */
-//   public double servoPosition(){
-// return leftActuator.getAngle();
-
-
-
-//   }
 
   @Override
   public void periodic() {

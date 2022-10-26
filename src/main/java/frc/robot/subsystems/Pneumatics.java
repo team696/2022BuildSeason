@@ -21,7 +21,6 @@ public class Pneumatics extends SubsystemBase {
 
   }
   public LatchStates latchState = LatchStates.SINGLE_LATCHES;
-  /** Creates a new Pneumatics. */
   public Pneumatics() {
     sol2 = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 3);
     sol1 = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 2);
@@ -29,16 +28,7 @@ public class Pneumatics extends SubsystemBase {
     module = new PneumaticsControlModule(1);
     module.clearAllStickyFaults();
     
-    
-
-    // compressor = new Compressor(1, PneumaticsModuleType.REVPH);
-
-    // compressor.enableDigital();
   }
-/** Returns the pressure reading of the compressor in PSI */
-  // public double getPressure(){
-  //   return compressor.getPressure();
-  // }
 
 /** Method used to control the climber pneumatics
  * @param state which latches you want to move
@@ -72,6 +62,5 @@ public class Pneumatics extends SubsystemBase {
   }
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
   }
 }

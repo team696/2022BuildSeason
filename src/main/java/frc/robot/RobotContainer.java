@@ -153,7 +153,7 @@ public class RobotContainer {
   private final SequentialCommandGroup twoBallTest = new TwoBallTest(s_Swerve, limelight, shooter, serializer, shooterHood, trajectoryTable, intake, m_controller);
   private final SequentialCommandGroup twoBallDisruptor = new TwoBallDisruptor(s_Swerve, limelight, shooter, serializer, shooterHood, trajectoryTable, intake, m_controller);
 
-    // public SendableChooser<Command> colorChooser = new SendableChooser<>();
+    public SendableChooser<Command> colorChooser = new SendableChooser<>();
     // public  final Command  blueAlliance  = new CheckBlueAlliance(serializer, shooter);
     // public final Command  redAlliance = new CheckRedAlliance(serializer, shooter);
 

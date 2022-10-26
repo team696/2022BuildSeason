@@ -68,6 +68,7 @@ public class FiveBall extends SequentialCommandGroup {
                 Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared)
             .setKinematics(Constants.Swerve.swerveKinematics);
 
+           
     config2.setReversed(false);
 
         // An example trajectory to follow.  All units in meters.
@@ -124,8 +125,8 @@ public class FiveBall extends SequentialCommandGroup {
                     TrajectoryGenerator.generateTrajectory(
                         new Pose2d(-0.1, 2.2, new Rotation2d(-180)),
                         List.of(
-                                new Translation2d(-.5, 6.2)),
-                                new Pose2d(-0.4, 6, new Rotation2d(-180)),
+                                new Translation2d(-.5, 6.4)),
+                                new Pose2d(-0.4, 4.5, new Rotation2d(-180)),
                         config2),
                     s_Swerve::getPose,
                     Constants.Swerve.swerveKinematics,
@@ -156,14 +157,14 @@ public class FiveBall extends SequentialCommandGroup {
                 TrajectoryGenerator.generateTrajectory(
                     new Pose2d(-0.4,6 , new Rotation2d(0)),
                     List.of(
-                            new Translation2d(-.4, 5)),
-                            new Pose2d(-.4, 3.5, new Rotation2d(-40)),
+                            new Translation2d(-0.4, 5)),
+                            new Pose2d(-0.4, 4.7, new Rotation2d(0)),
                     config),
                 s_Swerve::getPose,
                 Constants.Swerve.swerveKinematics,
-                new PIDController(Constants.AutoConstants.kPXController, 0, 0),
-                new PIDController(Constants.AutoConstants.kPYController, 0, 0),
-                testThetaController,
+                new PIDController(/* Constants.AutoConstants.kPXController */ 0, 0, 0),
+                new PIDController(/* Constants.AutoConstants.kPYController */0, 0, 0),
+                thetaController,
                 s_Swerve::setModuleStates,
                 s_Swerve);
 
@@ -196,7 +197,7 @@ public class FiveBall extends SequentialCommandGroup {
                         lockAndShoot2,
                              Step3.deadlineWith(new IntakeDelay(intake, -0.5, true).alongWith(new SerializerCommand(serializer, 0.2, -0.6, shooter, 0 ))),
 /*                                 new WaitCommand(0.02).deadlineWith(new IntakeCommand(intake, -0.4, true)),
- */                                    Step5,
+ */                                    /* Step5, */
                                       lockAndShoot3
 
 

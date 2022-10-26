@@ -15,7 +15,6 @@ public class DIOSub extends SubsystemBase {
   DigitalInput sensor_DH_R_T = new DigitalInput(Constants.DOUBLEHAND_R_TOP);
   DigitalInput sensor_SH_L = new DigitalInput(Constants.SINGLEHAND_L);
   DigitalInput sensor_SH_R = new DigitalInput(Constants.SINGLEHAND_R);
-//  public  DigitalInput beamBreak = new DigitalInput(6);
 
   public static boolean DH_L_B;
   public static boolean DH_L_T;
@@ -23,7 +22,6 @@ public class DIOSub extends SubsystemBase {
   public static boolean DH_R_T;
   public static boolean SH_L;
   public static boolean SH_R;
-  /** Creates a new DIO. */
   public DIOSub() {}
 /**
  * Uses an array to return the values from all 6 DIO ports

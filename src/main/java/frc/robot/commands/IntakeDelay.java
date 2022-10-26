@@ -40,7 +40,7 @@ public class IntakeDelay extends CommandBase {
     intake.deployIntake(state);
 
     if(timer > 40){
-    intake.runIntake(power);
+      intake.runIntake(power);
     }
 
   }

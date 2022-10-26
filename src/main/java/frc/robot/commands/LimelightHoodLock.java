@@ -11,6 +11,8 @@ import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.ShooterHood;
 import frc.robot.subsystems.TrajectoryTable;
 import frc.robot.Constants;
+import frc.robot.commands.TeleopSwerve;
+
 public class LimelightHoodLock extends CommandBase {
   Limelight limelight;
   TrajectoryTable trajectoryTable;
@@ -19,7 +21,8 @@ public class LimelightHoodLock extends CommandBase {
   int mode;
   double last_angle;
   boolean idle;
-
+    //double midpart = Math.PI/2 - Math.atan( (Constants.Shooter.height + Math.sqrt( Constants.Shooter.height * Constants.Shooter.height + limelightDistance * limelightDistance )) / limelightDistance);
+    //double iniAngle = 4.8185346 * (midpart - 0.2268928);
   /** Moves the hood based on the distance gotten from the limelight. */
   public LimelightHoodLock(Limelight limelight, TrajectoryTable trajectoryTable,ShooterHood shooterHood, int mode, LEDSub ledSub, boolean idle) {
     this.limelight = limelight;
@@ -47,7 +50,7 @@ public class LimelightHoodLock extends CommandBase {
     double limelightDistance;
     double angle;
     limelightDistance = limelight.getDistance()/12;
-    double iniAngle =  ( Math.atan( (Constants.Shooter.height + Math.sqrt( Constants.Shooter.height * Constants.Shooter.height + limelightDistance * limelightDistance )) / limelightDistance)) -0.227;
+
     distance = (int)Math.round(limelightDistance);
 
 
@@ -58,51 +61,29 @@ public class LimelightHoodLock extends CommandBase {
 if (idle){
   ledSub.setRightLEDs(50, 50, 50);
   shooterHood.setHoodPos(0);
+} else {
+      //if (limelightDistance < 5.5) {
+      //  limelight.pipeline(0);
+      //} else{
+      //  limelight.pipeline(1);
+      //}
+      limelight.pipeline(2);
+      if(distance <25 && distance > 5){
+        angle =trajectoryTable.distanceToHoodAngle[distance] ;
+        limelight.setLights(mode);
+        shooterHood.setHoodPos(angle);
+        last_angle = angle;
+      } else{
+        shooterHood.setHoodPos(last_angle);
+      }
+    if (locked) {
+      ledSub.setRightLEDs(0, 255, 0);
+    } else {
+      ledSub.setRightLEDs(255, 0, 0);
+
+    }
+  }   
 }
-
-
-else{
-if(limelightDistance < 5.5){
-      limelight.pipeline(0);
-    }
-    else{
-      limelight.pipeline(1);
-    }
-    if(distance <25 && distance > 5){
-    angle = iniAngle; //trajectoryTable.distanceToHoodAngle[distance];
-    // angle = testEquation;
-    limelight.setLights(mode);
-    shooterHood.setHoodPos(angle);
-      last_angle = angle;
-    }
-    else{
-      shooterHood.setHoodPos(last_angle);
-    }
-
-
-  if(locked){
-    ledSub.setRightLEDs(0, 255, 0);
-  }
-  else{
-    ledSub.setRightLEDs(255, 0, 0);
-
-  }
-}
-    // if( locked){
-    //   ledSub.setRightLEDs(0, 255, 0);
-    // }
-    // else {
-    //   if(idle){
-    //     ledSub.setRightLEDs(255, 255, 255);
-    //   }
-    //   else{
-    //           ledSub.setRightLEDs(255, 0, 0);
-
-    //   }
-    // }
-    
-  }
-
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {

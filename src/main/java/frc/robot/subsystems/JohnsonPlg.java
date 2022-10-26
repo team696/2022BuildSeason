@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 /**
  * Creates a class to manage pulses of the Johnson Electric PLG Hall Effect Sensors as a relative quadrature encoder.
  * 
- * @author ThunderChickens 217
+ * @author ThunderChickens 217 (jk this is definitely all my code not stolen at all)
  */
 public class JohnsonPlg {
     private final DigitalInput hallSensor1, hallSensor2;
@@ -37,7 +37,7 @@ public class JohnsonPlg {
                     update();
                 }
             }
-        };
+        };  
         update.setDaemon(true);
         update.start();
     }

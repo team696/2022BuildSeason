@@ -228,13 +228,13 @@ public static final class Shooter {
         public static final double hoodLimitRev = 5;
         public static final boolean hoodSoftLimitForward = false;
         public static final boolean hoodSoftLimitReverse = false;
-        public static final double kP = 0.5;  /* TODO TUNE THIS PID  */
-        public static final double kI = 0.0005;
+        public static final double kP = 0.4;  /* TODO TUNE THIS PID  */
+        public static final double kI = 0.000;
         public static final double kD = 0.0000;
         public static final double kTolerance = 10;
         public static final int hoodMotorPort = 60;
         public static final double gravity = 32.152231;
-        public static final double height = 3;
+        public static final double height = 38.8;
         public static final double conversionFactor = 28.6478897566;
     }
 }

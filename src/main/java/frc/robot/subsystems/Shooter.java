@@ -19,22 +19,22 @@ public class Shooter extends SubsystemBase {
 public   WPI_TalonFX leftShooterMotor;
  public WPI_TalonFX rightShooterMotor;
  public double shooterSpeed;
+
   Limelight limelight;
   TrajectoryTable trajectoryTable;
   double lldistance;
-
-  /** Creates a new Shooter. */
+   ///speed = Math.sqrt(Constants.Shooter.gravity * (Constants.Shooter.height + Math.sqrt(Constants.Shooter.height * Constants.Shooter.height + limelightDistance * limelightDistance )) ) * Constants.Shooter.conversionFactor ;
   public Shooter() {
     limelight = new Limelight();
     trajectoryTable = new TrajectoryTable();
 
     leftShooterMotor = new WPI_TalonFX(41, "Alex");
     rightShooterMotor = new WPI_TalonFX(40, "Alex");
-
+/* TODO make all the config settings into one config file */
     leftShooterMotor.configFactoryDefault();
     leftShooterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
     leftShooterMotor.setSensorPhase(true );
-     leftShooterMotor.setNeutralMode(NeutralMode.Coast);
+    leftShooterMotor.setNeutralMode(NeutralMode.Coast);
     leftShooterMotor.configPeakOutputForward(1);
     leftShooterMotor.configPeakOutputReverse(-1);
     leftShooterMotor.configNominalOutputForward(0);
@@ -52,9 +52,7 @@ public   WPI_TalonFX leftShooterMotor;
     leftShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 255);
     leftShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_11_UartGadgeteer, 255);
     leftShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 255);
-    // leftShooterMotor.setControlFramePeriod(ControlFrame.Control_3_General, 25);
-    // leftShooterMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 500);
-    // leftShooterMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 25);
+  
 
     rightShooterMotor.configFactoryDefault();
     rightShooterMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 1, 10);
@@ -73,10 +71,7 @@ public   WPI_TalonFX leftShooterMotor;
     rightShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 255);
     rightShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_11_UartGadgeteer, 255);
     rightShooterMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 255);
-    // rightShooterMotor.setControlFramePeriod(ControlFrame.Control_3_General, 25);
-    // rightShooterMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 500);
-    // rightShooterMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 25);
-
+   
     rightShooterMotor.follow(leftShooterMotor);
    
   }
@@ -163,7 +158,7 @@ public   WPI_TalonFX leftShooterMotor;
  * @return the RPM of the shooter in TalonFX sensor units.
  */
   public double getShooterRPM(){
-    return talonFXtoRPM(leftShooterMotor.getSelectedSensorVelocity());
+    return talonFXtoRPM(rightShooterMotor.getSelectedSensorVelocity());
 
   }
 
@@ -188,19 +183,12 @@ public   WPI_TalonFX leftShooterMotor;
    // double speed;
    limelightDistance = lldistance/12;
    distance = (int)Math.round(limelightDistance);
-
    if(distance <21){
-   speed  = trajectoryTable.distanceToShooterSpeed[distance];
-   // speed = (Math.sqrt(limelightDistance) * 848.972) + 200;
+   speed  = trajectoryTable.distanceToShooterSpeed[distance]  + 100 ;
    last_speed = speed;
 
-   //THIS EQUATION IS OWNING. BY CODING KING
-   // 1833.96x^3+-2524.94x^2+1848.64x+1820.18
 
-   // speed = trajectoryTable.distanceToShooterSpeed[distance];
-   // limelight.setLights(mode);
-   // shooterHood.moveActuators(angle);
-   shooterSpeed =  speed - 50 ;
+   shooterSpeed =  speed /* - 50 */ ;
    }
    else{
      shooterSpeed =  last_speed ;
@@ -212,18 +200,13 @@ public   WPI_TalonFX leftShooterMotor;
     double limelightDistance;
     double speed;
     double last_speed = 3000;
-    // double speed;
+ 
     limelightDistance = lldistance/12;
     distance = (int)Math.round(limelightDistance); 
 
     if(distance <21){
-    speed = Math.sqrt(Constants.Shooter.gravity * (Constants.Shooter.height + Math.sqrt(Constants.Shooter.height * Constants.Shooter.height + limelightDistance * limelightDistance )) ) * Constants.Shooter.conversionFactor;
-    //speed  = trajectoryTable.distanceToShooterSpeed[distance];
-    // speed = (Math.sqrt(limelightDistance) * 848.972) + 200;
+      speed  = trajectoryTable.distanceToShooterSpeed[distance] /* + 200 */ ;
     last_speed = speed;
-    // speed = trajectoryTable.distanceToShooterSpeed[distance];
-    // limelight.setLights(mode);
-    // shooterHood.moveActuators(angle);
     return speed;
     }
     else{
@@ -231,9 +214,6 @@ public   WPI_TalonFX leftShooterMotor;
     }
     
   }
-
-  
-
 
 /**
  * Method for controlling the shooter wheels using velocity control.
@@ -255,6 +235,5 @@ public   WPI_TalonFX leftShooterMotor;
   public void periodic() {
     getLimelightDistance();
     getShootSpeed();
-    // This method will be called once per scheduler run
   }
 }

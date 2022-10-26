@@ -92,8 +92,24 @@ public class Swerve extends SubsystemBase {
     
     public Pose2d getPose() {
         return swerveOdometry.getPoseMeters();
+        
+        
     }
 
+    public double getVelocityMag() {
+        return Math.sqrt(gyro.getVelocityX() * gyro.getVelocityX() + gyro.getVelocityY() * gyro.getVelocityY() + gyro.getVelocityZ() * gyro.getVelocityZ());
+        
+    }
+    public double getVelocity(){
+        return gyro.getVelocityY();
+    }
+
+    public double[] getVelocityCorrected(){
+        double a = (Double.valueOf(gyro.getYaw())+180) * Math.PI / 180;
+        double x = gyro.getVelocityX();
+        double y = gyro.getVelocityY();
+        return new double[] { x * Math.cos(a) - y * Math.sin(a), x * Math.sin(a) + y * Math.cos(a) };
+    }
     public void resetOdometry(Pose2d pose) {
         swerveOdometry.resetPosition(pose, getYaw());
     }

@@ -16,9 +16,8 @@ public class LEDSub extends SubsystemBase {
   public AddressableLED rightLED;
   public AddressableLEDBuffer rightBuffer;
 
-//   public AddressableLED leftLED;
-//   public AddressableLEDBuffer leftBuffer;
 
+/* TODO JUST DONT TOUCH ANY OF THIS SHIT, WE MIGHT WANT TO MAKE IT LOOK COOL FOR DEMISTRATIONS */
   
 public int m_rainbowFirstPixelHue;
 public int pinkGreenFirstPixHue;

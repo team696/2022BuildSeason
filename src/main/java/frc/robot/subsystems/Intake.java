@@ -20,47 +20,13 @@ public class Intake extends SubsystemBase {
  public Talon intakeMotor;
  Solenoid intakeSolenoid;
  
- 
-
-  // Solenoid intakeSolenoid = new Solenoid(PneumaticsModuleType.REVPH, 4);
-
-  /** Creates a new Intake. */
   public Intake() {
 
     intakeMotor = new Talon( 0);
     
-    // intakeMotor.configFactoryDefault();
-
     intakeSolenoid = new Solenoid(PneumaticsModuleType.REVPH, 4);
-    // intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_21_FeedbackIntegrated, 1000);
-    // intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 255);
-    // intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
-    // intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_8_PulseWidth, 255);
-    // intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_9_MotProfBuffer, 255);
-    // intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 255);
-    // intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_11_UartGadgeteer, 255);
-    // intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 255);
-    // intakeMotor.setControlFramePeriod(ControlFrame.Control_3_General, 25);
-    // intakeMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 500);
-    // intakeMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 25);
-
-
+    
   }
-
-  // public void configMotors(){
-  //   intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_21_FeedbackIntegrated, 1000);
-  //   intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 255);
-  //   intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
-  //   intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_8_PulseWidth, 255);
-  //   intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_9_MotProfBuffer, 255);
-  //   intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 255);
-  //   intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_11_UartGadgeteer, 255);
-  //   intakeMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 255);
-  //   intakeMotor.setControlFramePeriod(ControlFrame.Control_3_General, 25);
-  //   intakeMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 500);
-  //   intakeMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 25);
-
-  // }
 /** Runs the intake motors off percent output
  *  @param power double for the speed of the motor
  * */ 
@@ -78,6 +44,5 @@ public class Intake extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
   }
 }

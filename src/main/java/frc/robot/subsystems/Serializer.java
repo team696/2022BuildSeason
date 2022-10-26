@@ -41,11 +41,8 @@ public Talon rightSerMotor;
   Limelight limelight;
   TrajectoryTable trajectoryTable;
 
-  /** Creates a new Serializer. */
   public Serializer() {
-    // i2cPort = I2C.Port.kOnboard;
-    // Color detectedColor = colorSensor.getColor();
-    // SmartDashboard.putNumber("RED ", detectedColor.red);
+    
     detectedColor = colorSensor.getColor();
     
 
@@ -77,31 +74,7 @@ public Talon rightSerMotor;
     leftSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 255);
     leftSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_11_UartGadgeteer, 255);
     leftSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 255);
-    // leftSerMotor.setControlFramePeriod(ControlFrame.Control_3_General, 25);
-    // leftSerMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 500);
-    // leftSerMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 25);
-
-
     
-
-    // rightSerMotor.configFactoryDefault();
-    // rightSerMotor.setSensorPhase(Constants.Serializer.serializerMotorSensorPhase);
-    // rightSerMotor.setInverted(Constants.Serializer.serializerMotorInverted);
-    // rightSerMotor.setNeutralMode(NeutralMode.Brake);
-    // rightSerMotor.configPeakOutputForward(Constants.Serializer.peakOutput);
-    // rightSerMotor.configPeakOutputReverse(-Constants.Serializer.peakOutput);
-    // rightSerMotor.configForwardSoftLimitEnable(false);
-    // rightSerMotor.configReverseSoftLimitEnable(false);
-    // rightSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 255);
-    // rightSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 255);
-    // rightSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_8_PulseWidth, 255);
-    // rightSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_9_MotProfBuffer, 255);
-    // rightSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 255);
-    // rightSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_11_UartGadgeteer, 255);
-    // rightSerMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 255);
-    // rightSerMotor.setControlFramePeriod(ControlFrame.Control_3_General, 25);
-    // rightSerMotor.setControlFramePeriod(ControlFrame.Control_6_MotProfAddTrajPoint, 500);
-    // rightSerMotor.setControlFramePeriod(ControlFrame.Control_4_Advanced, 25);
 
 
   }
@@ -128,7 +101,6 @@ chosenAlliance = allianceColor.getSelected();
   public boolean isBallWrong(){
     getColorSensor();
     if(chosenAlliance == "Red"){
-      // java.awt.Color.RGBtoHSB( (int) getRed()*255, (int) getGreen()*255, (int) getBlue()*255,);
       if(getBlue() > 0.28 && getBlue() < 0.45 &&
       getRed() > 0.0 && getRed() < 0.28 &&
       getGreen() > 0.37 && getGreen()  < 0.49){
@@ -245,8 +217,6 @@ chosenAlliance = allianceColor.getSelected();
   @Override
   public void periodic() {
 
-    // Color detectedColor = colorSensor.getColor();
-    // getColorSensor();
     getAllianceColor();
 
     allianceColor.setDefaultOption("Red Alliance", redAlliance);
@@ -254,9 +224,9 @@ chosenAlliance = allianceColor.getSelected();
     allianceColor.addOption("PRACTICE MODE", practiceMode);
 
     SmartDashboard.putData(allianceColor);
-    // SmartDashboard.putNumber("GREEN ", getGreen());
-    // SmartDashboard.putNumber("RED ", getRed());
-    // SmartDashboard.putNumber("BLUE ", getBlue());
+     SmartDashboard.putNumber("GREEN ", getGreen());
+     SmartDashboard.putNumber("RED ", getRed());
+     SmartDashboard.putNumber("BLUE ", getBlue());
     // SmartDashboard.putNumber("RED ", get.red);
     // double green = getGreen();
     // SmartDashboard.putNumber("GREEN", green);

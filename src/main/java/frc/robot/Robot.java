@@ -168,7 +168,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Shooter Speed", m_robotContainer.shooter.getShooterRPM());
     SmartDashboard.putNumber("HOOD ANGLE ", m_robotContainer.shooterHood.getEncoderPos());
     SmartDashboard.putBoolean("DIO 6 BEAM BREAK ", m_robotContainer.serializer.beamBreak.get());
-    // SmartDashboard.putNumber("Pressure ", m_robotContainer.pneumatics.getPressure());
+    SmartDashboard.putNumber("Velocity Magnitude", m_robotContainer.s_Swerve.getVelocityCorrected()[1]);
     SmartDashboard.putNumber("DISTANCE TO TARGET", m_robotContainer.limelight.getDistance()/12);
     SmartDashboard.putNumber("LL TX", m_robotContainer.limelight.tx());
     SmartDashboard.putBoolean("LOCKED ", m_robotContainer.limelight.crosshairOnTarget());
@@ -180,10 +180,6 @@ public class Robot extends TimedRobot {
     
     
 
-    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
-    // commands, running already-scheduled commands, removing finished or interrupted commands,
-    // and running subsystem periodic() methods.  This must be called from the robot's periodic
-    // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
   }
 
